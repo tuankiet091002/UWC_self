@@ -4,7 +4,7 @@ import { Box, alpha } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import MainLayout from "./components/MainLayout";
-import LoginLayout from "./components/LoginLayout";
+import AuthLayout from "./components/AuthLayout";
 
 import Login from "./pages/Login";
 import Signup from './pages/Signup';
@@ -13,6 +13,7 @@ import Task from "./pages/Task.js";
 import Map from "./pages/Map.js";
 import Truck from "./pages/Truck.js";
 import Employee from "./pages/Employee.js";
+import Chat from "./pages/Chat.js";
 
 const App = () => {
     const { user } = useAuthContext();
@@ -34,13 +35,14 @@ const App = () => {
                         <Route path="map" element={<Map />} />
                         <Route path="truck" element={<Truck />} />
                         <Route path="emp" element={<Employee />} />
+                        <Route path="chat" element={<Chat />} />
                         <Route path="login" element={<Login />} />
                         <Route path="signup" element={<Signup />} />
                     </Route>
                 </Routes>
                 :
                 <Routes>
-                    <Route element={<LoginLayout />} >
+                    <Route element={<AuthLayout />} >
                         <Route path="/" element={<Navigate replace to="login" />} />
                         <Route path='login' element={<Login />} />
                         <Route path="signup" element={<Signup />} />

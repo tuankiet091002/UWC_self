@@ -1,11 +1,11 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-const LoginLayout = ({ child }) => {
+const AuthLayout = () => {
     return (<>
-        <div>LoginLayout</div>
+        <div>AuthLayout</div>
         <Outlet />
     </>)
 }
 
-export default LoginLayout
+export default AuthLayout
