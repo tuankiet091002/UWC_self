@@ -5,7 +5,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 function OverviewTruck() {
     return (
-        <Card>
+        <Card sx={{height:'100%'}}>
             <CardContent>
                 <Stack
                     alignItems="flex-start"

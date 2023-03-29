@@ -58,7 +58,7 @@ const MainLayout = () => {
                 position="sticky"
                 elevation={2}
                 open={open}
-                sx={{ borderRadius: '10px', backgroundColor: alpha("#32850b", 0.04) }}>
+                sx={{ height: "12%", borderRadius: '10px', backgroundColor: alpha("#32850b", 0.04) }}>
                 <Toolbar>
                     <Link to="/">
                         <IconButton
@@ -111,13 +111,14 @@ const MainLayout = () => {
                     </Stack>
                 </Toolbar>
             </AppBar>
-            <Stack direction="row" padding={1} >
+            <Stack direction="row" padding={1} sx={{height: '88%'}}>
                 <Paper elevation={2}
                     sx={{
                         flexGrow: 0,
                         background: "#a3ffbd",
                         my: 5, mr: 5, ml: "-50px",
-                        borderRadius: '12px'
+                        borderRadius: '12px',
+                        height: "450px"
                     }}>
                     <List>
                         {links.map((link, index) => (

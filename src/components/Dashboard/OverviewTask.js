@@ -7,7 +7,7 @@ import ProgressBar from "@ramonak/react-progress-bar";
 
 function OverviewTask() {
     return (
-        <Card>
+        <Card sx={{height:'100%'}}>
             <CardContent>
                 <Stack
                     alignItems="flex-start"

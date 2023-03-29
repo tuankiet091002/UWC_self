@@ -2,11 +2,10 @@ import React from 'react'
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 
 import MapIcon from '@mui/icons-material/Map';
-import ProgressBar from "@ramonak/react-progress-bar";
 
 function OverviewMCP() {
     return (
-        <Card>
+        <Card sx={{height:'100%'}}>
             <CardContent>
                 <Stack
                     alignItems="flex-start"
