@@ -70,7 +70,7 @@ function TrashChart() {
             <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <Typography color="text.secondary"> Biểu đồ thu nhập </Typography>
-                    <Typography color="text.secondary"> Tổng: 69420 Morbilion Trash </Typography>
+                    <Typography color="text.secondary"> Tổng: 69420 Morbilion Kilogram of Trash </Typography>
                 </Stack>
                 <TableContainer>
                     <Box>

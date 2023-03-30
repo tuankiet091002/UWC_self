@@ -9,8 +9,8 @@ import TrashChart from '../components/Dashboard/TrashChart';
 import TaskProcess from '../components/Dashboard/TaskProcess';
 
 const Dashboard = () => {
-    return (<Container sx={{ padding: 3}}>
-        <Grid container spacing={3}  >
+    return (<Container sx={{ py: 3, mx: 0}}>
+        <Grid container spacing={3} sx={{width: "1300px"}} >
             <Grid item xs={3} sx={{height: "200px"}}>
                 <OverviewTask />
             </Grid>
