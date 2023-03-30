@@ -7,7 +7,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
+    '&:nth-of-type(4n+1)': {
         backgroundColor: theme.palette.action.hover,
     },
     // hide last border
@@ -21,55 +21,53 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         backgroundColor: theme.palette.common.black,
         color: theme.palette.common.white,
     },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
 }));
 
 const TaskRow = ({ row }) => {
     const [open, setOpen] = React.useState(false);
     return (<>
-        <StyledTableRow key={row.name} >
-            <StyledTableCell align="right" sx={{m:0, width:'1px'}}>
+        <StyledTableRow key={row.id} >
+            <StyledTableCell sx={{ m: 0, width: '1px' }}>
                 <IconButton onClick={() => setOpen(!open)} sx={{ height: '1rem' }}>
                     {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </IconButton>
             </StyledTableCell>
-            <StyledTableCell scope="row">
-                {row.name}
-            </StyledTableCell>
-            <StyledTableCell align="right">{row.calories}</StyledTableCell>
-            <StyledTableCell align="right">{row.fat}</StyledTableCell>
-            <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-            <StyledTableCell align="right">{row.protein}</StyledTableCell>
+            <StyledTableCell>{row.id}</StyledTableCell>
+            <StyledTableCell>{row.taskmaster}</StyledTableCell>
+            <StyledTableCell>{row.collector}</StyledTableCell>
+            <StyledTableCell>{row.truck}</StyledTableCell>
+            <StyledTableCell>{row.path}</StyledTableCell>
+            <StyledTableCell>{row.date}</StyledTableCell>
+            <StyledTableCell>{row.shift}</StyledTableCell>
+            <StyledTableCell>{row.state}</StyledTableCell>
+            <StyledTableCell>{row.checkIn}</StyledTableCell>
+            <StyledTableCell>{row.checkOut}</StyledTableCell>
         </StyledTableRow>
         <TableRow>
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <Box sx={{ margin: 1 }}>
                         <Typography>
-                            History
+                            Tiến độ
                         </Typography>
                         <Table size="small">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Date</TableCell>
-                                    <TableCell>Customer</TableCell>
-                                    <TableCell align="right">Amount</TableCell>
-                                    <TableCell align="right">Total price ($)</TableCell>
+                                    <TableCell>Thời gian</TableCell>
+                                    <TableCell>MCP</TableCell>
+                                    <TableCell align="center" sx={{ maxWidth: '1000px' }}>Nhân viên</TableCell>
+                                    <TableCell align="right">Khối lượng</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {row.history.map((historyRow) => (
-                                    <TableRow key={historyRow.date}>
+                                {row.process.map((state) => (
+                                    <TableRow key={state.time}>
                                         <TableCell component="th" scope="row">
-                                            {historyRow.date}
+                                            {state.time}
                                         </TableCell>
-                                        <TableCell>{historyRow.customerId}</TableCell>
-                                        <TableCell align="right">{historyRow.amount}</TableCell>
-                                        <TableCell align="right">
-                                            {Math.round(historyRow.amount * row.price * 100) / 100}
-                                        </TableCell>
+                                        <TableCell>{state.mcp}</TableCell>
+                                        <TableCell>{state.janitor}</TableCell>
+                                        <TableCell align="right">{state.amount}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

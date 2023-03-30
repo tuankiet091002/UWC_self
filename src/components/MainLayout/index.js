@@ -37,12 +37,7 @@ const links = [
 const settings = ['Profile', 'Logout'];
 
 const MainLayout = () => {
-    const [open, setOpen] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState(false);
-
-    const handleDrawer = () => {
-        setOpen(!open);
-    };
 
     const handleUser = (event) => {
         if (!anchorElUser)
@@ -57,12 +52,10 @@ const MainLayout = () => {
             <AppBar
                 position="sticky"
                 elevation={2}
-                open={open}
                 sx={{ height: "12%", borderRadius: '10px', backgroundColor: alpha("#32850b", 0.04) }}>
                 <Toolbar>
                     <Link to="/">
                         <IconButton
-                            onClick={handleDrawer}
                             color="text.primary"
                         >
                             <Box component="img" sx={{ height: '60px', width: '100px' }} src={logo} />

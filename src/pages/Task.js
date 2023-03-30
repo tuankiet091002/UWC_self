@@ -9,6 +9,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 
 import TaskPagination from '../components/Task/TaskPagination';
 import TaskRow from '../components/Task/TaskRow';
+import TaskForm from '../components/Task/TaskForm';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -21,48 +22,37 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 
-function createData(name, calories, fat, carbs, protein,) {
+function createData(id, taskmaster, collector, truck, path, date, shift, state, checkIn, checkOut) {
     return {
-        name, calories, fat, carbs, protein, history: [
+        id, taskmaster, collector, truck, path, date, shift, state, checkIn, checkOut, process: [
             {
-                date: '2020-01-05',
-                customerId: '11091700',
-                amount: 3,
+                time: '31/03/2023',
+                mcp: 1,
+                janitor: "Anh Ba Tô Cơm",
+                amount: 4.0,
             },
-            {
-                date: '2020-01-02',
-                customerId: 'Anonymous',
-                amount: 1,
-            },
+
         ],
     };
 }
 
 const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
+    createData(1, "Kiệt", "Kiệt", 1, '1->2->3->4', "29/3/2023", 1, 'Done', '04/01/2023', '04/01/2023'),
+    createData(1, "Kiệt", "Kiệt", 1, '1->2->3->4', "29/3/2023", 1, 'Done', '04/01/2023', '04/01/2023'),
+    createData(1, "Kiệt", "Kiệt", 1, '1->2->3->4', "29/3/2023", 1, 'Done', '04/01/2023', '04/01/2023'),
+    createData(1, "Kiệt", "Kiệt", 1, '1->2->3->4', "29/3/2023", 1, 'Done', '04/01/2023', '04/01/2023'),
+    createData(1, "Kiệt", "Kiệt", 1, '1->2->3->4', "29/3/2023", 1, 'Done', '04/01/2023', '04/01/2023'),
+
 ];
 const Task = () => {
+    const [open, setOpen] = React.useState(false);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    // Avoid a layout jump when reaching the last page with empty rows.
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -76,7 +66,6 @@ const Task = () => {
     };
 
     return (
-
         <TableContainer sx={{ py: 3, mx: 0, height: '100%' }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ px: 2, pb: 1 }}>
                 <Typography variant="h4" gutterBottom>Danh sách phân công</Typography>
@@ -85,11 +74,16 @@ const Task = () => {
                 <TableHead>
                     <TableRow>
                         <StyledTableCell style={{ width: '1px' }}></StyledTableCell>
-                        <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                        <StyledTableCell align="right">Calories</StyledTableCell>
-                        <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                        <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                        <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+                        <StyledTableCell>ID</StyledTableCell>
+                        <StyledTableCell>Người giao</StyledTableCell>
+                        <StyledTableCell>Collector</StyledTableCell>
+                        <StyledTableCell>Phương tiện</StyledTableCell>
+                        <StyledTableCell>Đoạn đường</StyledTableCell>
+                        <StyledTableCell>Ngày làm</StyledTableCell>
+                        <StyledTableCell>Ca</StyledTableCell>
+                        <StyledTableCell>Trạng thái</StyledTableCell>
+                        <StyledTableCell>Checkin</StyledTableCell>
+                        <StyledTableCell>Checkout</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -109,9 +103,10 @@ const Task = () => {
                     <TableRow>
                         <TableCell colSpan={99}>
                             <Stack direction='row' justifyContent='space-between' alignItems='center' >
-                                <Button variant="contained" color="success">
+                                <Button variant="contained" color="success" onClick={handleOpen}>
                                     Thêm Nhiệm vụ
                                 </Button>
+                                <TaskForm open={open} handleClose={handleClose} />
                                 <TablePagination
                                     rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                                     colSpan={99}

@@ -4,7 +4,6 @@ import { Box, alpha } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import MainLayout from "./components/MainLayout";
-import AuthLayout from "./components/AuthLayout";
 
 import Login from "./pages/Login";
 import Signup from './pages/Signup';
@@ -42,13 +41,10 @@ const App = () => {
                 </Routes>
                 :
                 <Routes>
-                    <Route element={<AuthLayout />} >
-                        <Route path="/" element={<Navigate replace to="login" />} />
-                        <Route path='login' element={<Login />} />
-                        <Route path="signup" element={<Signup />} />
-                    </Route>
+                    <Route path="/" element={<Navigate replace to="login" />} />
+                    <Route path='login' element={<Login />} />
+                    <Route path="signup" element={<Signup />} />
                 </Routes>
-
             }
             </Box>
         </ThemeProvider>
