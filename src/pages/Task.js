@@ -21,8 +21,21 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
+function createData(name, calories, fat, carbs, protein,) {
+    return {
+        name, calories, fat, carbs, protein, history: [
+            {
+                date: '2020-01-05',
+                customerId: '11091700',
+                amount: 3,
+            },
+            {
+                date: '2020-01-02',
+                customerId: 'Anonymous',
+                amount: 1,
+            },
+        ],
+    };
 }
 
 const rows = [
@@ -71,6 +84,7 @@ const Task = () => {
             <Table>
                 <TableHead>
                     <TableRow>
+                        <StyledTableCell style={{ width: '1px' }}></StyledTableCell>
                         <StyledTableCell>Dessert (100g serving)</StyledTableCell>
                         <StyledTableCell align="right">Calories</StyledTableCell>
                         <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
@@ -93,27 +107,27 @@ const Task = () => {
                 </TableBody>
                 <TableFooter>
                     <TableRow>
-                        <TableCell>
-                            <Button variant="contained" color="success">
-                                Thêm Nhiệm vụ
-                            </Button>
+                        <TableCell colSpan={99}>
+                            <Stack direction='row' justifyContent='space-between' alignItems='center' >
+                                <Button variant="contained" color="success">
+                                    Thêm Nhiệm vụ
+                                </Button>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                    colSpan={99}
+                                    count={rows.length}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    SelectProps={{
+                                        native: true,
+                                    }}
+                                    onPageChange={handleChangePage}
+                                    onRowsPerPageChange={handleChangeRowsPerPage}
+                                    ActionsComponent={TaskPagination}
+                                />
+                            </Stack>
                         </TableCell>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                            colSpan={99}
-                            count={rows.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            SelectProps={{
-                                inputProps: {
-                                    'aria-label': 'rows per page',
-                                },
-                                native: true,
-                            }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            ActionsComponent={TaskPagination}
-                        />
+
                     </TableRow>
                 </TableFooter>
 
