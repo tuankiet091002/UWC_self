@@ -1,13 +1,23 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
+import { useSignup } from '../hooks/useSignup';
 import FileBase from 'react-file-base64';
+
 import {
-    Stack, Button, CssBaseline, TextField, FormControlLabel,
-    Checkbox, Box, Typography, alpha, FormControl, MenuItem, InputLabel, Select
+    Stack, Button, CssBaseline, TextField, 
+    Box, Typography, alpha, FormControl, MenuItem, InputLabel, Select
 } from '@mui/material'
 
+
 const Signup = () => {
+    const { signup, isLoading, error } = useSignup();
+    const [name, setName] = React.useState('')
+    const [username, setUsername] = React.useState('')
+    const [password, setPassword] = React.useState('')
+    const [role, setRole] = React.useState('')
+    const [avatar, setAvatar] = React.useState('')
+
+
     return (
         <Box sx={{
             height: '100%',
@@ -37,14 +47,16 @@ const Signup = () => {
                             fullWidth
                             label="Tên"
                             name="name"
+                            onChange={(e) => setName(e.target.value)}
                         />
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                         <TextField
                             margin="normal"
@@ -55,21 +67,28 @@ const Signup = () => {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <FormControl required sx={{ minWidth: 200 }} margin="normal">
                             <InputLabel id="role">Chức vụ</InputLabel>
-                            <Select labelId="role" label="Chức vụ">
+                            <Select labelId="role" label="Chức vụ" onChange={(e) => setRole(e.target.value)}>
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={0}>Collector</MenuItem>
-                                <MenuItem value={1}>Janitor</MenuItem>
-                                <MenuItem value={2}>Back Officer</MenuItem>
+                                <MenuItem value='collector'>Collector</MenuItem>
+                                <MenuItem value='janitor'>Janitor</MenuItem>
+                                <MenuItem value='backofficer'>Back Officer</MenuItem>
                             </Select>
                         </FormControl>
-                        <Typography sx={{ mt: 2 }}>Ảnh đại diện: <FileBase type="file" multiple={false} /></Typography>
-
-                        <Button variant="contained" sx={{ my: 2 }}>
+                        <Typography sx={{ mt: 2 }}>Ảnh đại diện:
+                            <FileBase type="file" multiple={false} onDone={(e) => setAvatar(e.base64)} />
+                        </Typography>
+                        {error && <Typography color="error">{error}</Typography>}
+                        <Button
+                            variant="contained"
+                            sx={{ my: 2 }}
+                            disabled={isLoading}
+                            onClick={() => signup(name, username, password, role, avatar)}>
                             Sign In
                         </Button>
                         <Link to="/login">

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Outlet, Link } from 'react-router-dom';
-
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { useLogout } from '../../hooks/useLogout';
 
 import {
     alpha, AppBar, Tooltip,
@@ -8,8 +9,8 @@ import {
     ListItem, ListItemButton, ListItemIcon, Paper, Badge, Stack, Divider
 } from '@mui/material';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import MapIcon from '@mui/icons-material/Map';
@@ -34,9 +35,10 @@ const links = [
     { name: 'Đổi tài khoản', path: '/login', icon: <SwitchAccountIcon sx={{ fontSize: '40px' }} /> }
 ]
 
-const settings = ['Profile', 'Logout'];
-
 const MainLayout = () => {
+    const { user } = useAuthContext();
+
+    const { logout } = useLogout();
     const [anchorElUser, setAnchorElUser] = React.useState(false);
 
     const handleUser = (event) => {
@@ -45,6 +47,7 @@ const MainLayout = () => {
         else
             setAnchorElUser(null);
     };
+
 
     return (
         <Paper elevation={1} sx={{ p: 1, height: '100%', borderRadius: '10px', display: 'block', backgroundColor: "white" }}>
@@ -80,8 +83,8 @@ const MainLayout = () => {
                         </IconButton>
 
                         <IconButton onClick={handleUser}>
-                            <Avatar src={cum} sx={{ width: 40, height: 40 }} />
-                            <Typography padding={1} variant="h6" color="text.primary">Nguyễn Tuấn Kiệt</Typography>
+                            <Avatar src={user.avatar ? user.avatar : cum} sx={{ width: 40, height: 40 }} />
+                            <Typography padding={1} variant="h6" color="text.primary">{user.name}</Typography>
                             <ExpandMoreIcon sx={{ color: "text.primary" }} />
                         </IconButton>
 
@@ -95,16 +98,14 @@ const MainLayout = () => {
                                 horizontal: 'center',
                             }}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleUser}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={logout}>
+                                <Typography textAlign="center">Logout</Typography>
+                            </MenuItem>
                         </Menu>
                     </Stack>
                 </Toolbar>
             </AppBar>
-            <Stack direction="row" padding={1} sx={{height: '88%'}}>
+            <Stack direction="row" padding={1} sx={{ height: '88%' }}>
                 <Paper elevation={2}
                     sx={{
                         flexGrow: 0,
@@ -118,26 +119,24 @@ const MainLayout = () => {
                             <ListItem key={index} sx={{ p: 0, display: 'block' }}>
                                 {link.path === '/login' ? <Divider margin={1} variant="middle" sx={{ mt: 5 }} /> : null}
                                 <Link to={link.path}>
-
-                                
-                                <Tooltip title={link.name} placement='right' arrow>
-                                    <ListItemButton>
-                                        <ListItemIcon
-                                            sx={{
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                color: "text.primary"
-                                            }}>
-                                            {link.icon}
-                                        </ListItemIcon>
-                                    </ListItemButton>
-                                </Tooltip>
+                                    <Tooltip title={link.name} placement='right' arrow>
+                                        <ListItemButton>
+                                            <ListItemIcon
+                                                sx={{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    color: "text.primary"
+                                                }}>
+                                                {link.icon}
+                                            </ListItemIcon>
+                                        </ListItemButton>
+                                    </Tooltip>
                                 </Link>
                             </ListItem>
                         ))}
                     </List>
                 </Paper>
-                <Box componenet="main" sx={{ flexGrow: 1 }}>              
+                <Box componenet="main" sx={{ flexGrow: 1 }}>
                     <Outlet />
                 </Box>
             </Stack>

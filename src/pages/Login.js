@@ -1,13 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useLogin } from '../hooks/useLogin'
+
+
 import {
-    Stack, Button, CssBaseline, TextField, FormControlLabel,
-    Checkbox, Box, Typography, alpha, FormControl
+    Stack, Button, CssBaseline, TextField,
+    Box, Typography, alpha, FormControl
 } from '@mui/material'
 
 import logo from '../assets/logo.png'
 
 const Login = () => {
+    const { login, isLoading, error } = useLogin();
+    const [username, setUsername] = React.useState('')
+    const [password, setPassword] = React.useState('')
+
     return (
         <Box sx={{
             height: '100%',
@@ -36,10 +43,11 @@ const Login = () => {
                             margin="normal"
                             required
                             fullWidth
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
                             autoFocus
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                         <TextField
                             margin="normal"
@@ -48,17 +56,16 @@ const Login = () => {
                             name="password"
                             label="Password"
                             type="password"
-                            id="password"
                             autoComplete="current-password"
+                            onChange={(e) => setPassword(e.target.value)}
                         />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
+                        {error && <Typography color="error">{error}</Typography>}
                         <Button
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            disabled={isLoading}
+                            onClick={() => login(username, password)}
                         >
                             Sign In
                         </Button>
