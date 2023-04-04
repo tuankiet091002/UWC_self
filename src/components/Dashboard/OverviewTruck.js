@@ -12,8 +12,6 @@ function OverviewTruck() {
                     direction="row"
                     justifyContent="space-between"
                     spacing={2}
-                    noWrap
-
                 >
                     <Stack >
                         <Typography

@@ -12,8 +12,6 @@ function OverviewMCP() {
                     direction="row"
                     justifyContent="space-between"
                     spacing={3}
-                    noWrap
-
                 >
                     <Stack spacing={1}>
                         <Typography

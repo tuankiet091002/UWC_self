@@ -91,7 +91,7 @@ const Task = () => {
                         ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : rows
                     ).map((row) => (
-                        <TaskRow row={row} />
+                        <TaskRow key={row.id} row={row} />
                     ))}
                     {emptyRows > 0 && (
                         <TableRow>
@@ -122,7 +122,6 @@ const Task = () => {
                                 />
                             </Stack>
                         </TableCell>
-
                     </TableRow>
                 </TableFooter>
 

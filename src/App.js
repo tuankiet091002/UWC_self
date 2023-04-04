@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useAuthContext } from './hooks/useAuthContext'
+import { useAuthContext } from './hooks/Auth/useAuthContext'
 import { Box, alpha } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -16,7 +16,7 @@ import Chat from "./pages/Chat.js";
 
 const App = () => {
     const { user } = useAuthContext();
-
+ 
     const theme = createTheme({
         typography: {
             fontSize: 16,
@@ -41,7 +41,7 @@ const App = () => {
                 </Routes>
                 :
                 <Routes>
-                    <Route path="/" element={<Navigate replace to="login" />} />
+                    <Route path="" element={<Navigate to="login" />} />
                     <Route path='login' element={<Login />} />
                     <Route path="signup" element={<Signup />} />
                 </Routes>

@@ -26,7 +26,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const TaskRow = ({ row }) => {
     const [open, setOpen] = React.useState(false);
     return (<>
-        <StyledTableRow key={row.id} >
+        <StyledTableRow >
             <StyledTableCell sx={{ m: 0, width: '1px' }}>
                 <IconButton onClick={() => setOpen(!open)} sx={{ height: '1rem' }}>
                     {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}

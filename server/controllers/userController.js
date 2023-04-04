@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import UserModel from '../models/userModel.js';
 
 export const getUsers  = async (req, res) => {
-	const { name, role, available, mcp, truck } = req.query;
+	const { name, role, available } = req.query;
     try {
         var query = {}
 

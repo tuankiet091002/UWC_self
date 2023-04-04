@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import { useAuthContext } from '../../hooks/useAuthContext';
-import { useLogout } from '../../hooks/useLogout';
+import { useAuthContext } from '../../hooks/Auth/useAuthContext';
+import { TruckContextProvider } from '../../contexts/TruckContext';
+import { useLogout } from '../../hooks/Auth/useLogout';
 
 import {
     alpha, AppBar, Tooltip,
@@ -143,5 +144,6 @@ const MainLayout = () => {
         </Paper>
     );
 }
+
 
 export default MainLayout;

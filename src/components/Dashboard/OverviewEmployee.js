@@ -15,8 +15,6 @@ function OverviewEmployee() {
                     direction="row"
                     justifyContent="space-between"
                     spacing={3}
-                    noWrap
-
                 >
                     <Stack >
                         <Typography color="text.secondary">

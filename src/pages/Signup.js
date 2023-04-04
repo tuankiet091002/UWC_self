@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useSignup } from '../hooks/useSignup';
+import { useSignup } from '../hooks/Auth/useSignup';
 import FileBase from 'react-file-base64';
 
 import {
