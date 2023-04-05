@@ -7,6 +7,7 @@ import { AuthContextProvider } from './contexts/AuthContext';
 import { EmpContextProvider } from './contexts/EmpContext';
 import { TruckContextProvider } from './contexts/TruckContext';
 import { MCPContextProvider } from './contexts/MCPContext';
+import { ChatContextProvider } from './contexts/ChatContext';
 // import { TaskContextProvider } from './contexts/TaskContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -16,7 +17,9 @@ root.render(
             <EmpContextProvider>
                 <TruckContextProvider>
                     <MCPContextProvider>
-                        <App />
+                        <ChatContextProvider>
+                            <App />
+                        </ChatContextProvider>
                     </MCPContextProvider>
                 </TruckContextProvider>
             </EmpContextProvider>

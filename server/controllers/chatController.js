@@ -8,7 +8,8 @@ export const getChats = async (req, res) => {
         if (name) query.name = { $regex: name, $options: 'i' }
 
         let chats = await ChatModel.find(query)
-            .populate("users", "name role available")
+            .populate("users", "name role available avatar")
+            .populate("groupAdmin", "name role available avatar")
             .populate("latestMessage")
             .sort({ updateAt: -1 });
 
@@ -19,24 +20,24 @@ export const getChats = async (req, res) => {
     }
 };
 
-export const getSingleChat = async (req, res) => {
-    const { id } = req.params;
-    try {
-        let chat = await ChatModel.findById(id).sort({ updateAt: -1 })
-            .populate("users", "name role available")
-            .populate("groupAdmin", "name role available")
-            .populate("latestMessage");
-        if (!chat) return res.status(404).json("Chat not found");
-        if (!chat.users.map(x => x._id.toString()).includes(req.user._id.toString())) return res.status(403).json("You are not in this group");
+// export const getSingleChat = async (req, res) => {
+//     const { id } = req.params;
+//     try {
+//         let chat = await ChatModel.findById(id).sort({ updateAt: -1 })
+//             .populate("users", "name role available")
+//             .populate("groupAdmin", "name role available")
+//             .populate("latestMessage");
+//         if (!chat) return res.status(404).json("Chat not found");
+//         if (!chat.users.map(x => x._id.toString()).includes(req.user._id.toString())) return res.status(403).json("You are not in this group");
 
-        chat = await UserModel.populate(chat, { path: "lastestMessage.sender", select: "name role available" })
+//         chat = await UserModel.populate(chat, { path: "lastestMessage.sender", select: "name role available" })
 
-        res.status(200).json({ message: "Chat fetched", result: chat })
-    } catch (error) {
-        res.status(500).json({ message: "Something went wrong in getSingleChat process" });
-        console.log(error)
-    }
-}
+//         res.status(200).json({ message: "Chat fetched", result: chat })
+//     } catch (error) {
+//         res.status(500).json({ message: "Something went wrong in getSingleChat process" });
+//         console.log(error)
+//     }
+// }
 
 export const createChat = async (req, res) => {
     let { name, users } = req.body
@@ -49,8 +50,8 @@ export const createChat = async (req, res) => {
         users.push(req.user._id)
 
         const chat = await ChatModel.create({ name, users, groupAdmin: req.user });
-        await chat.populate("users", "name role available")
-        await chat.populate("groupAdmin", "name role available");
+        await chat.populate("users", "name role available avatar")
+        await chat.populate("groupAdmin", "name role available avatar");
 
         res.status(201).json({ message: "Chat created", result: chat });
     } catch (error) {
@@ -77,8 +78,8 @@ export const updateChat = async (req, res) => {
 
         chat = await ChatModel.findByIdAndUpdate(id, chat, { new: true, runValidators: true });
         chat = await ChatModel.findById(id)
-            .populate("users", "name role available")
-            .populate("groupAdmin", "name role available")
+            .populate("users", "name role available avatar")
+            .populate("groupAdmin", "name role available avatar")
             .populate("latestMessage");
         chat = await UserModel.populate(chat, { path: "lastestMessage.sender", select: "name role available" })
 

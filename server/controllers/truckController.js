@@ -3,13 +3,8 @@ import UserModel from '../models/userModel.js'
 
 
 export const getTrucks = async (req, res) => {
-    const { path } = req.query;
 	try {
-        let query = {};
-
-        if (path === 'null') query.path = null; 
-
-        const trucks = await TruckModel.find(query).select('-path -nextMCP').populate("driver", "name role available");
+        const trucks = await TruckModel.find(query).select('-path -nextMCP').populate("driver", "name role available avatar");
    
         res.status(200).json({ message: "Trucks fetched", result: trucks });
     } catch (error) {

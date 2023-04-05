@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router.route("/").get(authenticate, getChats);
-router.route("/:id").get(authenticate, getSingleChat);
+// router.route("/:id").get(authenticate, getSingleChat);
 router.route("/").post(authenticate, createChat);
 router.route("/:id").patch(authenticate, updateChat);
 router.route("/:id").delete(authenticate, deleteChat);
