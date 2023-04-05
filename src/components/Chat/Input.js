@@ -1,43 +1,30 @@
-import React, { useContext, useState } from "react";
-import Img from "../../img/img.png";
-import Attach from "../../img/attach.png";
-// import { AuthContext } from "../context/AuthContext";
-// import { ChatContext } from "../context/ChatContext";
+import React, { useState } from "react";
+
+import { useChatContext } from "../../hooks/Chat/useChatContext"
+import { useSendMessage } from '../../hooks/Chat/useSendMessage'
+
+import { Button } from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
 
 const Input = () => {
-  const [text, setText] = useState("");
-  const [img, setImg] = useState(null);
+    const [text, setText] = useState("");
 
-//   const { currentUser } = useContext(AuthContext);
-//   const { data } = useContext(ChatContext);
+    const { currChat } = useChatContext()
+    const { sendMessage } = useSendMessage()
 
-  const handleSend = async () => {
-    // code for sending the message
-  };
-
-  return (
-    <div className="input">
-      <input
-        type="text"
-        placeholder="Type something..."
-        onChange={(e) => setText(e.target.value)}
-        value={text}
-      />
-      <div className="send">
-        <img src={Attach} alt="" />
-        <input
-          type="file"
-          style={{ display: "none" }}
-          id="file"
-          onChange={(e) => setImg(e.target.files[0])}
-        />
-        <label htmlFor="file">
-          <img src={Img} alt="" />
-        </label>
-        <button onClick={handleSend}>Send</button>
-      </div>
-    </div>
-  );
+    return (
+        <div className="input">
+            <input
+                type="text"
+                placeholder="Type something..."
+                onChange={(e) => setText(e.target.value)}
+                value={text}
+            />
+            <div className="send">
+                <Button disabled={text.length > 0} onClick={() => sendMessage(currChat, text)}>Send<SendIcon sx={{fontSize: 16}}/></Button>
+            </div>
+        </div>
+    );
 };
 
 export default Input;

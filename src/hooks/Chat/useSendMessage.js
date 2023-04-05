@@ -1,20 +1,20 @@
 import { useState } from 'react'
 import { useChatContext } from './useChatContext'
 
-export const useChooseChat = () => {
+export const useSendMessage = () => {
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(null)
     const { dispatch } = useChatContext()
 
-    const sendMessage = async (id, form) => {
+    const sendMessage = async (chat, content) => {
         const token = localStorage.getItem('token')
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch(`http://localhost:5000/mess/chat/${id}`, {
+        const response = await fetch(`http://localhost:5000/mess/chat/${chat._id}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${JSON.parse(token)}` },
-            body: JSON.stringify(form)
+            body: JSON.stringify({ content })
         })
 
         const json = await response.json()
@@ -25,7 +25,7 @@ export const useChooseChat = () => {
         }
         if (response.ok) {
             // update the auth context
-            dispatch({ type: 'SEND_MESSAGE', payload: json.result })
+            dispatch({ type: 'SEND_MESSAGE', payload: {chat: {...chat, lastestMessage: json.result}, message: json.result} })
             // update loading state
             setIsLoading(false)
         }

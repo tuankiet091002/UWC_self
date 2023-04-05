@@ -1,49 +1,14 @@
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import React, { useState } from "react";
+import { TextField, Box, Typography } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 
 const Search = () => {
-  const [username, setUsername] = useState("");
-  const [user, setUser] = useState(null);
-  const [err, setErr] = useState(false);
-
-  const { currentUser } = useContext(AuthContext);
-
-  const handleSearch = async () => {
-    // Code for searching user in Firestore
-  };
-
-  const handleKey = (e) => {
-    // Code for handling Enter key press
-  };
-
-  const handleSelect = async () => {
-    // Code for creating a chat in Firestore and updating user chats
-    setUser(null);
-    setUsername("");
-  };
-
-  return (
-    <div className="search">
-      <div className="searchForm">
-        <input
-          type="text"
-          placeholder="Find a user"
-          onKeyDown={handleKey}
-          onChange={(e) => setUsername(e.target.value)}
-          value={username}
-        />
-      </div>
-      {err && <span>User not found!</span>}
-      {user && (
-        <div className="userChat" onClick={handleSelect}>
-          <img src={user.photoURL} alt="" />
-          <div className="userChatInfo">
-            <span>{user.displayName}</span>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+    const [search, setSearch] = useState('')
+    return (
+        <Box sx={{ mb: 1, px: 5, display: 'flex', alignItems: 'center', width: "100%", justifyContent: "center" }}>
+            <TextField fullWidth label={<Typography sx={{ display: 'flex', alignItems: 'center' }} value={search} onChange={e => setSearch(e.target.value)}><SearchIcon />Search</Typography>} variant="outlined" size="small" sx={{ '& .MuiOutlinedInput-root': { borderRadius: 10 } }} />
+        </Box>
+    );
 };
 
 export default Search;

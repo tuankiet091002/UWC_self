@@ -6,12 +6,12 @@ export const useChooseChat = () => {
     const [isLoading, setIsLoading] = useState(null)
     const { dispatch } = useChatContext()
 
-    const chooseChat = async (id) => {
+    const chooseChat = async (chat) => {
         const token = localStorage.getItem('token')
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch(`http://localhost:5000/mess/chat/${id}`, {
+        const response = await fetch(`http://localhost:5000/mess/chat/${chat._id}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${JSON.parse(token)}` },
             body: JSON.stringify()
@@ -25,7 +25,7 @@ export const useChooseChat = () => {
         }
         if (response.ok) {
             // update the auth context
-            dispatch({ type: 'CHOOSE_CHAT', payload: json.result })
+            dispatch({ type: 'CHOOSE_CHAT', payload: { chat: chat, messages: json.result } })
             // update loading state
             setIsLoading(false)
         }
