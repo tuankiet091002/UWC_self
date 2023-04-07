@@ -26,7 +26,7 @@ const Chats = () => {
                     <img src={chat.groupAdmin.avatar ? chat.groupAdmin.avatar : cum} alt="" />
                     <Stack sx={{}}>
                         <Typography color="text.primary" fontSize={25}>{chat.name}</Typography>
-                        <Typography color="text.secondary">ligma ball</Typography>
+                        <Typography color="text.secondary">{chat.latestMessage?.content}</Typography>
                     </Stack>
                 </div>
             ))}

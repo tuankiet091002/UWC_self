@@ -44,6 +44,24 @@ function TaskProcess() {
                                 <StyledTableCell>1</StyledTableCell>
                                 <StyledTableCell>Ông Liêm</StyledTableCell>
                                 <StyledTableCell>
+                                    <ProgressBar
+                                        filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
+                                        percent={80}
+
+                                    >
+                                        {[0, 1, 2, 3, 4, 5].map(x =>
+                                            <Step key={x} transition="scale">
+                                                {() => (
+                                                    x
+                                                )}
+                                            </Step>)}
+                                    </ProgressBar>
+                                </StyledTableCell>
+                            </StyledTableRow>
+                            <StyledTableRow>
+                                <StyledTableCell>1</StyledTableCell>
+                                <StyledTableCell>Ông Liêm</StyledTableCell>
+                                <StyledTableCell>
 
                                     <ProgressBar
                                         filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
@@ -70,26 +88,7 @@ function TaskProcess() {
 
                                     >
                                         {[0, 1, 2, 3, 4, 5].map(x =>
-                                            <Step transition="scale">
-                                                {() => (
-                                                    x
-                                                )}
-                                            </Step>)}
-                                    </ProgressBar>
-                                </StyledTableCell>
-                            </StyledTableRow>
-                            <StyledTableRow>
-                                <StyledTableCell>1</StyledTableCell>
-                                <StyledTableCell>Ông Liêm</StyledTableCell>
-                                <StyledTableCell>
-
-                                    <ProgressBar
-                                        filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-                                        percent={80}
-
-                                    >
-                                        {[0, 1, 2, 3, 4, 5].map(x =>
-                                            <Step transition="scale">
+                                            <Step key={x} transition="scale">
                                                 {() => (
                                                     x
                                                 )}

@@ -31,7 +31,8 @@ export const sendMessage = async (req, res) => {
 
         let message = await MessageModel.create({ sender: req.user._id, content, chat })
         await message.populate("sender", "name role available avatar")
-        chat = await ChatModel.findByIdAndUpdate(chat._id, { lastestMessage: message }).select("-__v");
+
+        chat = await ChatModel.findByIdAndUpdate(chat._id, { latestMessage: message }, { new: true, runValidators: true })
 
         res.status(200).json({ message: "Message sent", result: message });
     } catch (error) {

@@ -31,5 +31,5 @@ export const useDeleteChat = () => {
         }
     }
 
-    return { updateChat, isLoading, error }
+    return { deleteChat, isLoading, error }
 }

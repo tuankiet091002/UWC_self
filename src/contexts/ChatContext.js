@@ -13,18 +13,24 @@ export const chatReducer = (state, action) => {
             return { ...state, chats: [...state.chats, action.payload] }
         case 'SEND_MESSAGE':
             return {
-                ...state,
+                currChat: action.payload.chat,
                 chats: state.chats.map(chat => chat._id === action.payload.chat._id ? action.payload.chat : chat),
                 messages: [...state.messages, action.payload.message]
+            }
+        case 'CREATE_CHAT':
+            return {
+                ...state,
+                chats: [...state.chats, action.payload]
             }
         case 'UPDATE_CHAT':
             return {
                 ...state,
+                currChat: action.payload,
                 chats: state.chats.map((chat) => chat._id === action.payload._id ? action.payload : chat),
             }
         case 'DELETE_CHAT':
             return {
-                ...state,
+                currChat: null,
                 chats: state.chats.filter((chat) => chat._id !== action.payload._id),
                 messages: []
             }

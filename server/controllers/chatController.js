@@ -1,5 +1,6 @@
 import ChatModel from '../models/chatModel.js'
 import UserModel from '../models/userModel.js';
+import MessageModel from '../models/messageModel.js';
 
 export const getChats = async (req, res) => {
     const { name } = req.query
@@ -96,6 +97,12 @@ export const deleteChat = async (req, res) => {
         const chat = await ChatModel.findByIdAndDelete(id);
 
         if (!chat) return res.status(404).json({ message: "Chat not found" })
+
+        const messages = await MessageModel.find({chat: id});
+
+        for (const i in messages) {
+            await MessageModel.findByIdAndDelete(messages[i]._id);
+        }
 
         res.status(200).json({ message: "Chat deleted", result: chat });
     } catch (error) {

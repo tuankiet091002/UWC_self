@@ -1,41 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useAuthContext } from "../../hooks/Auth/useAuthContext"
 import { useChatContext } from "../../hooks/Chat/useChatContext"
 import { useChooseChat } from "../../hooks/Chat/useChooseChat";
 import { useSendMessage } from "../../hooks/Chat/useSendMessage";
+import { useDeleteChat } from "../../hooks/Chat/useDeleteChat";
 
-import Cam from "../../img/cam.png";
-import Add from "../../img/add.png";
-import More from "../../img/more.png";
+import ChatForm from './ChatForm';
 import Messages from "./Messages";
 import Input from "./Input";
 
-import { Typography, Stack } from "@mui/material";
+import { Typography, Stack, Button, ButtonGroup } from "@mui/material";
 
 import io from "socket.io-client";
-
-var socket;
-const setIo = (function () {
-    const _io = io();
-    return () => _io;
-})()
-
-
+let socket
 const MainChat = () => {
+    const [open, setOpen] = useState(false)
     const { user } = useAuthContext()
     const { currChat } = useChatContext()
     const { chooseChat } = useChooseChat();
-    const { sendMessage } = useChooseChat();
+    const { sendMessage } = useSendMessage();
+    const { deleteChat } = useDeleteChat();
+
 
     useEffect(() => {
-        console.log('ets')
-        socket = setIo()
+        socket = io('http://localhost:5000')
         socket.emit("setup", user);
         socket.on('connected', () => {
             console.log('socket connected')
         })
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         socket?.on("message received", () => {
@@ -55,12 +49,13 @@ const MainChat = () => {
                     <Typography variant="h5">{currChat?.name}</Typography>
                     <Typography variant="subtitle1">{currChat?.admin?.available ? "Online" : "Offline"}</Typography>
                 </Stack>
-
-                <div className="chatIcons">
-                    <img src={Cam} alt="" />
-                    <img src={Add} alt="" />
-                    <img src={More} alt="" />
-                </div>
+                {currChat && <>
+                    <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                        <Button onClick={() => setOpen(true)}>Chỉnh sửa</Button>
+                        <Button color='error' onClick={() => deleteChat(currChat._id)}>Xóa</Button>
+                    </ButtonGroup>
+                    <ChatForm open={open} onClose={() => setOpen(false)} currChat={currChat}></ChatForm>
+                </>}
             </div>
             <Messages />
             <Input handleSend={handleSend} />

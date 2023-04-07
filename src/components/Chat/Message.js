@@ -12,7 +12,7 @@ const Message = ({ message }) => {
     }, [message]);
 
     // Static data instead of fetching from a server
-    const isUser = message.sender._id == user._id
+    const isUser = message.sender._id === user._id
     return (
         <div
             ref={ref}
@@ -20,7 +20,6 @@ const Message = ({ message }) => {
         >
             <div className="messageInfo">
                 <img src={message.sender.avatar ? message.sender.avatar : cum} alt="" />
-                <span>{message.createAt}</span>
             </div>
             <div className="messageContent">
                 <p>{message.content}</p>
