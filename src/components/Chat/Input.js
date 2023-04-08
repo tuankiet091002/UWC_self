@@ -15,7 +15,7 @@ const Input = ({handleSend}) => {
                 value={text}
             />
             <div className="send">
-                <Button disabled={text.length === 0} onClick={() => handleSend(text)}>Send<SendIcon sx={{fontSize: 16}}/></Button>
+                <Button disabled={text.length === 0} onClick={() => {setText(''); handleSend(text)}}>Send<SendIcon sx={{fontSize: 16}}/></Button>
             </div>
         </div>
     );

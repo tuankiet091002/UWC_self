@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { Grid, Container, Stack, Typography } from '@mui/material'
+import { Grid, Container, Stack, Typography, Button } from '@mui/material'
 
 import { useTruckContext } from '../hooks/Trucks/useTruckContext'
 import { useGetTrucks } from '../hooks/Trucks/useGetTrucks'
-import TruckForm from '../components/Vehicle/TruckForm'
+import TruckSearch from '../components/Vehicle/TruckSearch'
 import TruckCard from '../components/Vehicle/TruckCard'
+import TruckForm from '../components/Vehicle/TruckForm'
 
 
 
@@ -13,25 +14,31 @@ const Truck = () => {
     const { trucks } = useTruckContext()
     const { getTrucks, isLoading, error } = useGetTrucks()
 
+    const [open, setOpen] = useState(false)
+
     useEffect(() => {
         getTrucks()
     }, [])
 
     return (
-        <Container maxWidth={false} sx={{ py: 3, mx: 0, maxHeight: '100%', width: '100%' }}>
-            <Stack spacing={3} direction="row">
-                <Stack spacing={3} alignItems="center" sx={{flexGrow: 0}}>
-                    <Typography textAlign="center" variant="h4">Danh sách phương tiện</Typography>
-                    <TruckForm />
-                </Stack>
-                <Grid container item spacing={2} sx={{width: "100%"}}>
-                    {trucks.map(truck => (
-                        <Grid item xs={12} sm={6} md={3} key={truck._id}>
-                            <TruckCard truck={truck} />
-                        </Grid>
-                    ))}
+        <Container maxWidth={false} sx={{ mx: 0, overflow: 'hidden' }}>
+            <Grid container spacing={3} sx={{ my: 2, height: '100%' }}>
+                <Grid item xs={3} columnSpacing={2} >
+                    <Typography textAlign="center" variant="h4">Phương tiện</Typography>
+                    <TruckSearch />
+                    <Button  onClick={() => setOpen(true)}>Thêm mới</Button>
+                    <TruckForm open={open} onClose={() => setOpen(false)} />
                 </Grid>
-            </Stack>
+                <Grid item xs={9} sx={{ maxHeight: '74vh', overflow: 'auto' }}>
+                    <Grid container spacing={3}>
+                        {trucks.map(truck => (
+                            <Grid item xs={12} sm={6} md={3} key={truck._id}>
+                                <TruckCard truck={truck} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Grid>
+            </Grid>
         </Container>)
 }
 

@@ -1,5 +1,8 @@
-import React from "react";
-import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Card, CardMedia, CardContent, Typography, CardActions, Button, ButtonGroup } from "@mui/material";
+
+import { useDeleteTruck } from "../../hooks/Trucks/useDeleteTruck";
+import TruckForm from "./TruckForm";
 
 const someImg = [
     "https://ftl-media.imgix.net/truck/refuse/refuse-white-green-640x427.jpg",
@@ -13,18 +16,31 @@ const someImg = [
 ]
 
 function TruckCard({ truck }) {
+    const [open, setOpen] = useState(false);
+
+    const { deleteTruck } = useDeleteTruck();
     return (
         <Card>
             <CardMedia
                 component="img"
                 sx={{ height: 140 }}
-                image={someImg[Math.floor(Math.random() * someImg.length)]}
+                image={someImg[truck._id % someImg.length]}
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div" textAlign="center">
-                    Truck no {truck._id}
+                    Xe số {truck._id}
+                </Typography>
+                <Typography variant="body2" align="center" color={!truck.driver ? "success.main" : "error.main"}>
+                    {truck.driver ? `Lái bởi ${truck.driver.name}` : "Có thể sử dụng"}
                 </Typography>
             </CardContent>
+            <CardActions sx={{display: 'flex', justifyContent:"end"}}>
+                <ButtonGroup variant="contained" size="small">
+                    <Button onClick={() => setOpen(true)}>Sửa</Button>
+                    <Button color="error" onClick={() => deleteTruck(truck._id)}>Xóa</Button>
+                </ButtonGroup>
+                <TruckForm currTruck={truck} open={open} onClose={() => setOpen(false)} />
+            </CardActions>
         </Card>
     )
 }
