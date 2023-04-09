@@ -19,25 +19,12 @@ const taskSchema = new mongoose.Schema({
         ref: 'Truck',
         default: null,
     },
-    janitor: {
-        type: [{
-            type: [{
-                type: mongoose.Types.ObjectId,
-                ref: 'User',
-            }],
-            validate: [2]
-        }],
-        default: [],
-    },
-    path: {
-        type: [{
-            type: Number,
-            ref: 'MCP',
-            required: true,
-        }],
-        min: [2],
-        required: true
-    },
+    path: [{
+        mcp: { type: Number, ref: 'MCP', required: true },
+        janitor: [{ type: mongoose.Types.ObjectId, ref: 'User', required: true }],
+        timestamp: { type: Date, default: null },
+        amount: { type: mongoose.Types.Decimal128, default: 0 },
+    }],
     date: { type: Date, required: true, default: new Date() },
     shift: { type: Number, required: true, enum: [1, 2, 3, 4] },
     state: {
