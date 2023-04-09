@@ -42,7 +42,7 @@ function TaskProcess() {
                         <TableBody>
                             <StyledTableRow>
                                 <StyledTableCell>1</StyledTableCell>
-                                <StyledTableCell>Ông Liêm</StyledTableCell>
+                                <StyledTableCell>Kiệt</StyledTableCell>
                                 <StyledTableCell>
                                     <ProgressBar
                                         filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
@@ -60,7 +60,7 @@ function TaskProcess() {
                             </StyledTableRow>
                             <StyledTableRow>
                                 <StyledTableCell>1</StyledTableCell>
-                                <StyledTableCell>Ông Liêm</StyledTableCell>
+                                <StyledTableCell>Kiệt</StyledTableCell>
                                 <StyledTableCell>
 
                                     <ProgressBar
@@ -79,7 +79,7 @@ function TaskProcess() {
                             </StyledTableRow>
                             <StyledTableRow>
                                 <StyledTableCell>1</StyledTableCell>
-                                <StyledTableCell>Ông Liêm</StyledTableCell>
+                                <StyledTableCell>Kiệt</StyledTableCell>
                                 <StyledTableCell>
 
                                     <ProgressBar

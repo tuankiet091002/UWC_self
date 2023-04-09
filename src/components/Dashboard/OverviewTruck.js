@@ -23,7 +23,7 @@ function OverviewTruck() {
                             10
                         </Typography>
                         <Typography fontSize={9}>
-                            Phương tiện sử dụng
+                            Phương tiện sử dụng trong ngày
                         </Typography>
                     </Stack>
                     <Box sx={{

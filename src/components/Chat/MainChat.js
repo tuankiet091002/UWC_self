@@ -5,6 +5,8 @@ import { useChatContext } from "../../hooks/Chat/useChatContext"
 import { useChooseChat } from "../../hooks/Chat/useChooseChat";
 import { useSendMessage } from "../../hooks/Chat/useSendMessage";
 import { useDeleteChat } from "../../hooks/Chat/useDeleteChat";
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import ChatForm from './ChatForm';
 import Messages from "./Messages";
@@ -51,8 +53,8 @@ const MainChat = () => {
                 </Stack>
                 {currChat && <>
                     <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                        <Button onClick={() => setOpen(true)}>Chỉnh sửa</Button>
-                        <Button color='error' onClick={() => deleteChat(currChat._id)}>Xóa</Button>
+                        <Button onClick={() => setOpen(true)}><BorderColorIcon /></Button>
+                        <Button color='error' onClick={() => deleteChat(currChat._id)}><DeleteOutlineIcon /></Button>
                     </ButtonGroup>
                     <ChatForm open={open} onClose={() => setOpen(false)} currChat={currChat}></ChatForm>
                 </>}
