@@ -204,7 +204,7 @@ const Map = () => {
 
                 <Grid xs={9}>
                     {position.haveMCPLocation && (
-                        <MapContainer style={{ height: '800vh' }} center={[position.location.lat, position.location.lng]} zoom={15} scrollWheelZoom={true}>
+                        <MapContainer style={{ height: '100%' }} center={[position.location.lat, position.location.lng]} zoom={15} scrollWheelZoom={true}>
                             <TileLayer
                                 attribution='&copy; <a href="https://www.facebook.com/chacachiene/">Nguyen Phat</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
