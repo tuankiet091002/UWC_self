@@ -1,11 +1,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { TextField, FormControl, InputLabel, MenuItem, Select, Box, Button, Container } from '@mui/material';
+import { TextField, FormControl, InputLabel, MenuItem, Select, Button, Container, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Icons } from '../icon.js';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+
+import MapSearch from '../components/Map/MapSearch.js';
 
 var MCPfull = L.icon({
     //iconUrl: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',  
@@ -42,6 +45,8 @@ var mylocation = L.icon({
     iconAnchor: [22, 94],
     popupAnchor: [-3, -76],
 });
+
+
 
 console.log(Icons);
 // function ComponentDidMount(){
@@ -190,75 +195,57 @@ const Map = () => {
 
     //const po=[position.location.lat, position.location.lng];
     return (
-        <>
-            <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2}>
-                    <Grid xs={12} md={3} lg={2} >
-                        <h1>Map</h1>
-                        <FormControl fullWidth>
-                            <InputLabel id="select-label">Item</InputLabel>
-                            <Select
-                                labelId="select-label"
-                                id="simple-select"
-                                value={Item}
-                                label="Item"
-                                onChange={handleChange}
-                                sx={{ mb: "2px" }}
-                            >
-                                <MenuItem value={10}>Truck</MenuItem>
-                                <MenuItem value={20}>MCP</MenuItem>
-                                <MenuItem value={30}></MenuItem>
-                            </Select>
-                        </FormControl>
-                        <TextField id="outlined-basic" label="Search" variant="outlined" sx={{ mb: "2px" }} />
-                        <Button variant="contained" color="success" onClick={handleOpen}>Search</Button>
-                    </Grid>
-
-                    <Grid xs={12} md={9} lg={10} sx={{ width: "100%" }} >
-                        {position.haveMCPLocation && (
-                            <MapContainer style={{ height: '500px' }} center={[position.location.lat, position.location.lng]} zoom={15} scrollWheelZoom={true}>
-                                <TileLayer
-                                    attribution='&copy; <a href="https://www.facebook.com/chacachiene/">Nguyen Phat</a> contributors'
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                />
-
-                                <Marker icon={mylocation} position={[position.location.lat, position.location.lng]}>
-                                    <Popup>
-                                        This is my location.
-                                    </Popup>
-                                </Marker>
-
-
-                                <Marker icon={truckIcon} position={[truckLocation.location.lat, truckLocation.location.lng]}>
-                                    <Popup>
-                                        I am a truck <br /> I am going to MCP.
-                                    </Popup>
-                                </Marker>
-
-                                <Marker icon={MCPfull} position={[MCPFullLocation.location.lat, MCPFullLocation.location.lng]}>
-                                    <Popup>
-                                        This MCP is full <br /> Please come here now.
-                                    </Popup>
-                                </Marker>
-
-                                <Marker icon={MCPhalf} position={[MCPHalfLocation.location.lat, MCPHalfLocation.location.lng]}>
-                                    <Popup>
-                                        This MCP is half of full <br /> You can come here or not.
-                                    </Popup>
-                                </Marker>
-
-                                <Marker icon={MCPemp} position={[MCPEmpLocation.location.lat, MCPEmpLocation.location.lng]}>
-                                    <Popup>
-                                        This MCP is empty <br /> Stay away from me.
-                                    </Popup>
-                                </Marker>
-                            </MapContainer>
-
-                        )}
-                    </Grid>
+        <Container maxWidth={false} sx={{ mx: 0, overflow: 'hidden' }}>
+            <Grid container spacing={3} sx={{ my: 2, height: '100%' }}>
+                <Grid item xs={3} columnSpacing={2} >
+                    <Typography textAlign="center" variant="h4">Phương tiện</Typography>
+                    <MapSearch />
                 </Grid>
-            </Box>
-        </>
+
+                <Grid xs={9}>
+                    {position.haveMCPLocation && (
+                        <MapContainer style={{ height: '800vh' }} center={[position.location.lat, position.location.lng]} zoom={15} scrollWheelZoom={true}>
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.facebook.com/chacachiene/">Nguyen Phat</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+
+                            <Marker icon={mylocation} position={[position.location.lat, position.location.lng]}>
+                                <Popup>
+                                    This is my location.
+                                </Popup>
+                            </Marker>
+
+
+                            <Marker icon={truckIcon} position={[truckLocation.location.lat, truckLocation.location.lng]}>
+                                <Popup>
+                                    I am a truck <br /> I am going to MCP.
+                                </Popup>
+                            </Marker>
+
+                            <Marker icon={MCPfull} position={[MCPFullLocation.location.lat, MCPFullLocation.location.lng]}>
+                                <Popup>
+                                    This MCP is full <br /> Please come here now.
+                                </Popup>
+                            </Marker>
+
+                            <Marker icon={MCPhalf} position={[MCPHalfLocation.location.lat, MCPHalfLocation.location.lng]}>
+                                <Popup>
+                                    This MCP is half of full <br /> You can come here or not.
+                                </Popup>
+                            </Marker>
+
+                            <Marker icon={MCPemp} position={[MCPEmpLocation.location.lat, MCPEmpLocation.location.lng]}>
+                                <Popup>
+                                    This MCP is empty <br /> Stay away from me.
+                                </Popup>
+                            </Marker>
+                        </MapContainer>
+
+                    )}
+                </Grid>
+            </Grid>
+        </Container>
     )
 }
 //why can't change humand
