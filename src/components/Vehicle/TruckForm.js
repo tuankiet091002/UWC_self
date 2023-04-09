@@ -15,8 +15,6 @@ const TruckForm = ({ open, onClose, currTruck = null }) => {
     const [form, setForm] = React.useState(!(!currTruck) ? { cap: currTruck.cap, load: currTruck.load.$numberDecimal }
         : { cap: 0, load: 0 });
 
-    console.log(form)
-
     const handleSubmit = (e) => {
         if (currTruck) {
             updateTruck(currTruck._id, form);
