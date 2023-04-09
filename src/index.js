@@ -8,7 +8,7 @@ import { EmpContextProvider } from './contexts/EmpContext';
 import { TruckContextProvider } from './contexts/TruckContext';
 import { MCPContextProvider } from './contexts/MCPContext';
 import { ChatContextProvider } from './contexts/ChatContext';
-// import { TaskContextProvider } from './contexts/TaskContext';
+import { TaskContextProvider } from './contexts/TaskContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,9 +17,11 @@ root.render(
             <EmpContextProvider>
                 <TruckContextProvider>
                     <MCPContextProvider>
-                        <ChatContextProvider>
-                            <App />
-                        </ChatContextProvider>
+                        <TaskContextProvider>
+                            <ChatContextProvider>
+                                <App />
+                            </ChatContextProvider>
+                        </TaskContextProvider>
                     </MCPContextProvider>
                 </TruckContextProvider>
             </EmpContextProvider>

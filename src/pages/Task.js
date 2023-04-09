@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 
 import { styled } from '@mui/material/styles';
 import {
@@ -10,6 +10,9 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TaskPagination from '../components/Task/TaskPagination';
 import TaskRow from '../components/Task/TaskRow';
 import TaskForm from '../components/Task/TaskForm';
+import { useTaskContext } from '../hooks/Tasks/useTaskContext';
+import { useGetTasks } from '../hooks/Tasks/useGetTasks';
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -21,40 +24,24 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
 }));
 
-
-function createData(id, taskmaster, collector, truck, path, date, shift, state, checkIn, checkOut) {
-    return {
-        id, taskmaster, collector, truck, path, date, shift, state, checkIn, checkOut, process: [
-            {
-                time: '31/03/2023',
-                mcp: 1,
-                janitor: "Anh Ba Tô Cơm",
-                amount: 4.0,
-            },
-
-        ],
-    };
-}
-
-const rows = [
-    createData(1, "Kiệt", "Kiệt", 1, '1->2->3->4', "29/3/2023", 1, 'Done', '04/01/2023', '04/01/2023'),
-    createData(2, "Kiệt", "Kiệt", 1, '1->2->3->4', "29/3/2023", 1, 'Done', '04/01/2023', '04/01/2023'),
-    createData(3, "Kiệt", "Kiệt", 1, '1->2->3->4', "29/3/2023", 1, 'Done', '04/01/2023', '04/01/2023'),
-    createData(4, "Kiệt", "Kiệt", 1, '1->2->3->4', "29/3/2023", 1, 'Done', '04/01/2023', '04/01/2023'),
-    createData(5, "Kiệt", "Kiệt", 1, '1->2->3->4', "29/3/2023", 1, 'Done', '04/01/2023', '04/01/2023'),
-
-];
 const Task = () => {
     const [open, setOpen] = React.useState(false);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+    const { tasks } = useTaskContext();
+    const { getTasks } = useGetTasks();
+
+    useEffect(() => {
+        getTasks();
+    }, []);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tasks.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -68,7 +55,7 @@ const Task = () => {
     return (
         <TableContainer sx={{ py: 3, mx: 0, height: '100%' }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ px: 2, pb: 1 }}>
-                <Typography variant="h4" gutterBottom>Danh sách phân công</Typography>
+                <Typography variant="h4" gutterBottom>Phân công</Typography>
             </Stack>
             <Table>
                 <TableHead>
@@ -78,7 +65,6 @@ const Task = () => {
                         <StyledTableCell>Người giao</StyledTableCell>
                         <StyledTableCell>Collector</StyledTableCell>
                         <StyledTableCell>Phương tiện</StyledTableCell>
-                        <StyledTableCell>Đoạn đường</StyledTableCell>
                         <StyledTableCell>Ngày làm</StyledTableCell>
                         <StyledTableCell>Ca</StyledTableCell>
                         <StyledTableCell>Trạng thái</StyledTableCell>
@@ -88,10 +74,10 @@ const Task = () => {
                 </TableHead>
                 <TableBody>
                     {(rowsPerPage > 0
-                        ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : rows
-                    ).map((row) => (
-                        <TaskRow key={row.id} row={row} />
+                        ? tasks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : tasks
+                    ).map((task) => (
+                        <TaskRow key={task._id} task={task} />
                     ))}
                     {emptyRows > 0 && (
                         <TableRow>
@@ -110,7 +96,7 @@ const Task = () => {
                                 <TablePagination
                                     rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                                     colSpan={99}
-                                    count={rows.length}
+                                    count={tasks.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     SelectProps={{

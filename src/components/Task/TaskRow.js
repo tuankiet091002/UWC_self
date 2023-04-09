@@ -23,7 +23,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
 }));
 
-const TaskRow = ({ row }) => {
+const TaskRow = ({ task }) => {
+    console.log(task.path[0].timestamp)
     const [open, setOpen] = React.useState(false);
     return (<>
         <StyledTableRow >
@@ -32,16 +33,20 @@ const TaskRow = ({ row }) => {
                     {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </IconButton>
             </StyledTableCell>
-            <StyledTableCell>{row.id}</StyledTableCell>
-            <StyledTableCell>{row.taskmaster}</StyledTableCell>
-            <StyledTableCell>{row.collector}</StyledTableCell>
-            <StyledTableCell>{row.truck}</StyledTableCell>
-            <StyledTableCell>{row.path}</StyledTableCell>
-            <StyledTableCell>{row.date}</StyledTableCell>
-            <StyledTableCell>{row.shift}</StyledTableCell>
-            <StyledTableCell>{row.state}</StyledTableCell>
-            <StyledTableCell>{row.checkIn}</StyledTableCell>
-            <StyledTableCell>{row.checkOut}</StyledTableCell>
+            <StyledTableCell><Typography>{task._id}</Typography></StyledTableCell>
+            <StyledTableCell><Typography>{task.taskmaster.name}</Typography></StyledTableCell>
+            <StyledTableCell><Typography>{task.collector.name}</Typography></StyledTableCell>
+            <StyledTableCell><Typography>{task.truck._id}</Typography></StyledTableCell>
+            <StyledTableCell><Typography>{(new Date(task.date)).toLocaleDateString()}</Typography></StyledTableCell>
+            <StyledTableCell><Typography>{task.shift}</Typography></StyledTableCell>
+            <StyledTableCell>
+                <Typography color={task.state === 'waiting' ? 'silver' : task.state === "executing" ? 'blue' : task.state === 'success' ? 'green' :
+                    'red'}>
+                    {task.state}
+                </Typography>
+            </StyledTableCell>
+            <StyledTableCell><Typography>{task.checkIn ? task.checkIn : 'chưa'}</Typography></StyledTableCell>
+            <StyledTableCell><Typography>{task.checkOut ? task.checkOut : 'chưa'}</Typography></StyledTableCell>
         </StyledTableRow>
         <TableRow>
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -53,29 +58,29 @@ const TaskRow = ({ row }) => {
                         <Table size="small">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Thời gian</TableCell>
                                     <TableCell>MCP</TableCell>
                                     <TableCell align="center" sx={{ maxWidth: '1000px' }}>Nhân viên</TableCell>
-                                    <TableCell align="right">Khối lượng</TableCell>
+                                    <TableCell align="center">Khối lượng</TableCell>
+                                    <TableCell align="center">Hoàn thành lúc</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {row.process.map((state) => (
-                                    <TableRow key={state.time}>
-                                        <TableCell component="th" scope="row">
-                                            {state.time}
+                                {task.path.map((state) => (
+                                    <TableRow key={state.mcp._id}>
+                                        <TableCell><Typography>{state.mcp._id}</Typography></TableCell>
+                                        <TableCell align='center'><Typography>{state.janitor.map(x => x.name).join(', ')}</Typography></TableCell>
+                                        <TableCell align="center"><Typography>{state.amount.$numberDecimal}</Typography></TableCell>
+                                        <TableCell align='center' scope="row">
+                                            <Typography>{state.timestamp ? (new Date(state.timestamp).toLocaleString()) : 'chưa'}</Typography>
                                         </TableCell>
-                                        <TableCell>{state.mcp}</TableCell>
-                                        <TableCell>{state.janitor}</TableCell>
-                                        <TableCell align="right">{state.amount}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
                     </Box>
                 </Collapse>
-            </TableCell>
-        </TableRow>
+            </TableCell >
+        </TableRow >
     </>)
 }
 
