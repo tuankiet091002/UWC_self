@@ -4,7 +4,6 @@ import { TextField, FormControl, InputLabel, MenuItem, Select, Button, Container
 import Grid from '@mui/material/Unstable_Grid2';
 import { Icons } from '../icon.js';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -45,8 +44,6 @@ var mylocation = L.icon({
     iconAnchor: [22, 94],
     popupAnchor: [-3, -76],
 });
-
-
 
 console.log(Icons);
 // function ComponentDidMount(){
@@ -204,7 +201,7 @@ const Map = () => {
 
                 <Grid xs={9}>
                     {position.haveMCPLocation && (
-                        <MapContainer style={{ height: '100%' }} center={[position.location.lat, position.location.lng]} zoom={15} scrollWheelZoom={true}>
+                        <MapContainer style={{ height: '500px' }} center={[position.location.lat, position.location.lng]} zoom={15} scrollWheelZoom={true}>
                             <TileLayer
                                 attribution='&copy; <a href="https://www.facebook.com/chacachiene/">Nguyen Phat</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
