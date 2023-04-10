@@ -12,7 +12,6 @@ const JanitorPicker = ({ janitors, janitorChecked, setJanitorChecked }) => {
         } else {
             newChecked.splice(currentIndex, 1);
         }
-
         setJanitorChecked(newChecked);
     };
 
@@ -59,10 +58,10 @@ const JanitorPicker = ({ janitors, janitorChecked, setJanitorChecked }) => {
                 component="div"
                 role="list"
             >
-                {janitors.map((janitor) => {
+                {janitors?.map((janitor) => {
                     return (
                         <ListItem
-                            key={janitor}
+                            key={janitor._id}
                             role="listitem"
                             onClick={handleToggle(janitor)}
                         >
@@ -73,7 +72,7 @@ const JanitorPicker = ({ janitors, janitorChecked, setJanitorChecked }) => {
                                     disableRipple
                                 />
                             </ListItemIcon>
-                            <ListItemText primary={`Janitor số ${janitor}`} />
+                            <ListItemText primary={janitor.name} />
                         </ListItem>
                     );
                 })}

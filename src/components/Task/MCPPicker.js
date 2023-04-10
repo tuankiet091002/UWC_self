@@ -2,19 +2,26 @@ import React from 'react'
 
 import { Card, CardHeader, Checkbox, Divider, List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
 
+function indexOf(a, b) {
+    for (let i = 0; i < a.length; i++) {
+        if (a[i]._id === b._id) {
+            return i;
+        }
+    }
+    return -1;
+}
 
-const MCPPicker = ({ mcps, mcpChecked, setMCPChecked, unCheckMCP}) => {
-    const handleToggle = (value) => () => {
-        const currentIndex = mcpChecked.indexOf(value);
+const MCPPicker = ({ mcps, mcpChecked, setMCPChecked, unCheckMCP }) => {
+    
+    const handleToggle = (mcp) => () => {
+        let currentIndex = indexOf(mcpChecked, mcp)
         const newChecked = [...mcpChecked];
-
         if (currentIndex === -1) {
-            newChecked.push(value);
+            newChecked.push(mcp);
         } else {
             newChecked.splice(currentIndex, 1);
-            unCheckMCP(value)
+            unCheckMCP(mcp._id)
         }
-
         setMCPChecked(newChecked);
     };
 
@@ -28,7 +35,6 @@ const MCPPicker = ({ mcps, mcpChecked, setMCPChecked, unCheckMCP}) => {
             setMCPChecked(mcps);
         }
     };
-
 
     return (
         <Card>
@@ -65,25 +71,26 @@ const MCPPicker = ({ mcps, mcpChecked, setMCPChecked, unCheckMCP}) => {
                 {mcps.map((mcp) => {
                     return (
                         <ListItem
-                            key={mcp}
+                            key={mcp._id}
                             role="listitem"
                             onClick={handleToggle(mcp)}
                         >
                             <ListItemIcon>
                                 <Checkbox
-                                    checked={mcpChecked.indexOf(mcp) !== -1}
+                                    checked={indexOf(mcpChecked, mcp) !== -1}
                                     tabIndex={-1}
                                     disableRipple
                                 />
                             </ListItemIcon>
-                            <ListItemText primary={`MCP số ${mcp}`} />
+                            <ListItemText primary={`MCP số ${mcp._id}`} />
                         </ListItem>
                     );
                 })}
             </List>
         </Card>
 
-)};
+    )
+};
 
 
 export default MCPPicker

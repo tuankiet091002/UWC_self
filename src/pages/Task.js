@@ -6,6 +6,7 @@ import {
     Typography, TableBody, TableFooter, Button, Stack
 } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import TaskPagination from '../components/Task/TaskPagination';
 import TaskRow from '../components/Task/TaskRow';
@@ -60,16 +61,17 @@ const Task = () => {
             <Table>
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell style={{ width: '1px' }}></StyledTableCell>
-                        <StyledTableCell>ID</StyledTableCell>
-                        <StyledTableCell>Người giao</StyledTableCell>
-                        <StyledTableCell>Collector</StyledTableCell>
-                        <StyledTableCell>Phương tiện</StyledTableCell>
-                        <StyledTableCell>Ngày làm</StyledTableCell>
-                        <StyledTableCell>Ca</StyledTableCell>
-                        <StyledTableCell>Trạng thái</StyledTableCell>
-                        <StyledTableCell>Checkin</StyledTableCell>
-                        <StyledTableCell>Checkout</StyledTableCell>
+                        <StyledTableCell style={{ width: '1px' }} align="center"></StyledTableCell>
+                        <StyledTableCell align="center">ID</StyledTableCell>
+                        <StyledTableCell align="center">Người giao</StyledTableCell>
+                        <StyledTableCell align="center">Collector</StyledTableCell>
+                        <StyledTableCell align="center">Phương tiện</StyledTableCell>
+                        <StyledTableCell align="center">Ngày làm</StyledTableCell>
+                        <StyledTableCell align="center">Ca</StyledTableCell>
+                        <StyledTableCell align="center">Trạng thái</StyledTableCell>
+                        <StyledTableCell align="center">Checkin</StyledTableCell>
+                        <StyledTableCell align="center">Checkout</StyledTableCell>
+                        <StyledTableCell align='center'><MoreVertIcon/></StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

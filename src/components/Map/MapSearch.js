@@ -12,8 +12,8 @@ import { useGetTrucks } from "../../hooks/Trucks/useGetTrucks";
 function MapSearch() {
 
     return (
-        <Card marginTop={5} sx={{ p: 3, width: '100%' }}>
-            <Grid marginTop={2}>
+        <Card sx={{ mt: 5, p: 3, width: '100%' }}>
+            <Grid sx={{ mt: 2 }}>
                 <FormControl fullWidth>
                     <InputLabel id="select-label">Item</InputLabel>
                     <Select
@@ -29,11 +29,11 @@ function MapSearch() {
                 </FormControl>
             </Grid>
 
-            <Grid marginTop={2}>
+            <Grid sx={{ mt: 2 }}>
                 <TextField id="outlined-basic" label="Search" variant="outlined" fullWidth sx={{ mb: "2px" }} />
             </Grid>
 
-            <Box marginTop={2}>
+            <Box sx={{ mt: 2 }}>
                 <Button fullWidth variant="contained" color="success" sx={{ borderRadius: 28 }}>
                     <SearchIcon />Search
                 </Button>

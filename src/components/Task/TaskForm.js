@@ -1,37 +1,69 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-
 import {
     Dialog, DialogTitle, DialogContent, DialogActions, Button,
-    FormControl, InputLabel, Select, MenuItem, Stack,
+    FormControl, InputLabel, Select, MenuItem, Stack, Typography,
 } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { DateField } from '@mui/x-date-pickers/DateField';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+import { useMCPContext } from '../../hooks/MCPs/useMCPContext';
+import { useGetMCPs } from '../../hooks/MCPs/useGetMCPs';
+import { useEmpContext } from '../../hooks/Emps/useEmpContext';
+import { useGetEmps } from '../../hooks/Emps/useGetEmps';
+import { useTruckContext } from '../../hooks/Trucks/useTruckContext';
+import { useGetTrucks } from '../../hooks/Trucks/useGetTrucks';
+import { useCreateTask } from '../../hooks/Tasks/useCreateTask'
 
 import MCPPicker from './MCPPicker';
 import JanitorPicker from './JanitorPicker';
 import PairPicker from './PairPicker';
 
 const TaskForm = ({ open, handleClose }) => {
-    const [shift, setShift] = React.useState(0);
-    const [collector, setCollector] = React.useState(null);
-    const [truck, setTruck] = React.useState(null);
+    const { mcps } = useMCPContext()
+    const { emps } = useEmpContext()
+    const { trucks } = useTruckContext()
+    const { getMCPs } = useGetMCPs()
+    const { getEmps } = useGetEmps()
+    const { getTrucks } = useGetTrucks()
+    const { createTask, isLoading, error } = useCreateTask()
+    const initialState = { date: '01-01-2023', shift: '', collector: '', truck: '' }
+    const [form, setForm] = useState(initialState)
 
-    const [mcps, setMCPs] = React.useState([0, 1, 2, 3]);
-    const [mcpChecked, setMCPChecked] = React.useState([]);
+    const [mcpChecked, setMCPChecked] = useState([]);
+    const collectors = emps.filter(emp => emp.role === 'collector');
+    const [janitors, setJanitors] = useState([]);
+    const [janitorChecked, setJanitorChecked] = useState([]);
+    const [workers, setWorkers] = useState([]);
 
-    const [janitors, setJanitors] = React.useState([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-    const [janitorChecked, setJanitorChecked] = React.useState([]);
+    useEffect(() => {
+        getMCPs();
+        getEmps();
+        getTrucks();
+    }, [])
 
-    const [workers, setWorkers] = React.useState(new Array(mcps.length).fill([]));
-    function unCheckMCP(mcp){
-        if(mcp === -1){
+    useEffect(() => {
+        setJanitors(emps.filter(emp => emp.role === 'janitor'))
+        setWorkers(new Array(mcps.length + 1).fill([]))
+    }, [mcps, emps])
+
+
+    function unCheckMCP(value) {
+        if (value === -1) {
             setJanitors([...janitors, ...workers.flat()])
-        }else
-            setJanitors([...janitors, ...workers[mcp]])
-        setWorkers(workers.map((worker, index) => index === mcp ? [] : worker))
+        } else
+            setJanitors([...janitors, ...workers[value]])
+        setWorkers(workers.map((worker, index) => index === value ? [] : worker))
+    }
+
+    const handleSubmit = () => {
+        let path = [];
+        for (let i = 0; i < mcpChecked.length; i++) {
+            path[i] = { mcp: mcpChecked[i]._id, janitor: workers[mcpChecked[i]._id].map(x => x._id) }
+        }
+        createTask({...form, path})
     }
 
     return (<LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -40,56 +72,45 @@ const TaskForm = ({ open, handleClose }) => {
             <DialogContent>
                 <Stack direction="row" spacing={2}>
                     <Stack spacing={2}>
-                        <DateField label="Ngày làm việc *" sx={{ mt: 1 }} />
+                        <DatePicker label="Ngày làm việc *" sx={{ mt: 1 }}
+                            format="DD/MM/YYYY"
+                            onChange={(e) => setForm({ ...form, date: e.$d })} />
                         <FormControl required sx={{ minWidth: 200 }}>
                             <InputLabel id="shift">Ca làm </InputLabel>
                             <Select
                                 labelId="shift"
-                                value={shift}
+                                value={form.shift}
                                 label="Ca làm"
-                                onChange={(e) => { setShift(e.target.value) }}
+                                onChange={(e) => { setForm({ ...form, shift: e.target.value }) }}
                             >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={0}>6-9h</MenuItem>
-                                <MenuItem value={1}>9-12h</MenuItem>
-                                <MenuItem value={2}>12-15h</MenuItem>
-                                <MenuItem value={3}>15-18h</MenuItem>
+                                <MenuItem value={1}>6-9h</MenuItem>
+                                <MenuItem value={2}>9-12h</MenuItem>
+                                <MenuItem value={3}>12-15h</MenuItem>
+                                <MenuItem value={4}>15-18h</MenuItem>
                             </Select>
                         </FormControl>
                         <FormControl required sx={{ minWidth: 200 }}>
                             <InputLabel id="collector">Collector</InputLabel>
                             <Select
                                 labelId="collector"
-                                value={collector}
+                                value={form.collector}
                                 label="Collector"
-                                onChange={(e) => { setCollector(e.target.value) }}
+                                onChange={(e) => { setForm({ ...form, collector: e.target.value }) }}
                             >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={0}>Kiệt</MenuItem>
-                                <MenuItem value={1}>Kiệt</MenuItem>
-                                <MenuItem value={2}>Kiệt</MenuItem>
-                                <MenuItem value={3}>Kiệt</MenuItem>
+                                {collectors.map((collector) =>
+                                    <MenuItem key={collector._id} value={collector._id}>{collector.name}</MenuItem>)}
                             </Select>
                         </FormControl>
                         <FormControl required sx={{ minWidth: 200 }}>
                             <InputLabel id="truck">Phương tiện</InputLabel>
                             <Select
                                 labelId="truck"
-                                value={truck}
+                                value={form.truck}
                                 label="Phương tiện"
-                                onChange={(e) => { setTruck(e.target.value) }}
+                                onChange={(e) => { setForm({ ...form, truck: e.target.value }) }}
                             >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={0}>1(50kg)</MenuItem>
-                                <MenuItem value={1}>2(100kg)</MenuItem>
-                                <MenuItem value={2}>3(70kg)</MenuItem>
-                                <MenuItem value={3}>4(90kg)</MenuItem>
+                                {trucks.map((truck) =>
+                                    <MenuItem key={truck._id} value={truck._id}>{truck._id} ({truck.cap})</MenuItem>)}
                             </Select>
                         </FormControl>
                     </Stack>
@@ -97,22 +118,23 @@ const TaskForm = ({ open, handleClose }) => {
                         <MCPPicker
                             mcps={mcps}
                             mcpChecked={mcpChecked}
-                            setMCPChecked={setMCPChecked}
-                            unCheckMCP={unCheckMCP}
+                            setMCPChecked={(e) => setMCPChecked(e)}
+                            unCheckMCP={(e) => unCheckMCP(e)}
                         />
                         <ArrowForwardIcon />
                         <Stack alignItems='center' justifyContent='center' spacing={1}>
                             {
                                 mcpChecked.map((mcp) => <PairPicker
-                                    key={mcp}
+                                    key={mcp._id}
                                     mcp={mcp}
                                     janitors={janitors}
-                                    setJanitors={setJanitors}
+                                    setJanitors={(e) => setJanitors(e)}
                                     janitorChecked={janitorChecked}
-                                    setJanitorChecked={setJanitorChecked}
+                                    setJanitorChecked={(e) => setJanitorChecked(e)}
                                     workers={workers}
-                                    setWorkers={setWorkers}
-                                />)}
+                                    setWorkers={(e) => setWorkers(e)}
+                                />)
+                            }
                         </Stack>
                         <JanitorPicker
                             janitors={janitors}
@@ -123,8 +145,9 @@ const TaskForm = ({ open, handleClose }) => {
                 </Stack>
             </DialogContent >
             <DialogActions>
-                <Button onClick={handleClose}>Xác nhận</Button>
-                <Button onClick={handleClose} color="error">Hủy</Button>
+                <Typography color="error">{error}</Typography>
+                <Button onClick={() => handleSubmit()} disabled={isLoading}>Xác nhận</Button>
+                <Button onClick={() => handleClose()} color="error">Hủy</Button>
             </DialogActions>
         </Dialog >
     </LocalizationProvider>)

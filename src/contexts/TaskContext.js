@@ -7,6 +7,10 @@ export const authReducer = (state, action) => {
     switch (action.type) {
         case 'GET_TASKS':
             return { tasks: action.payload }
+        case 'CREATE_TASK':
+            return { tasks: [...state.tasks, action.payload] }
+        case 'DELETE_TASK':
+            return { tasks: state.tasks.filter(task => task._id !== action.payload._id) }
         default:
             return state
     }

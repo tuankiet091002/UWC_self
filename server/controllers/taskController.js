@@ -80,16 +80,16 @@ export const createTask = async (req, res) => {
             for (const k in path[i].janitor) {
                 path[i].janitor[k] = await UserModel.findById(path[i].janitor[k]).select("name role available task");
 
-                if (!path[k].janitor[k]) return res.status(404).json({ message: `Janitor for MCP ${path[i].mcp._id} not found` });
-                if (path[k].janitor[k].role != "janitor") return res.status(400).json({ message: `${path[k].janitor[k].name} is not a janitor` });
-                for (const l in path[k].janitor[k].task) {
-                    if (path[k].janitor[k].task[l].date == date && path[k].janitor[k].task[l].shift == shift)
+                if (!path[i].janitor[k]) return res.status(404).json({ message: `Janitor for MCP ${path[i].mcp._id} not found` });
+                if (path[i].janitor[k].role != "janitor") return res.status(400).json({ message: `${path[i].janitor[k].name} is not a janitor` });
+                for (const l in path[i].janitor[k].task) {
+                    if (path[i].janitor[k].task[l].date == date && path[i].janitor[k].task[l].shift == shift)
                         return res.status(400).json({ message: "Janitor is busy at that time" })
                 }
             }
         }
-
-        const newTask = await TaskModel.create({ taskmaster: req.user._id, collector, truck, path, date, shift })
+        
+        const newTask = await TaskModel.create({ taskmaster: req.user, collector, truck, path, date, shift })
         await UserModel.findByIdAndUpdate(collector._id, { $push: { task: newTask._id } })
         for (const i in path)
             for (const k in path[i].janitor)

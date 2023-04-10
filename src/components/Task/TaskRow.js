@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { styled } from '@mui/material/styles';
-import { TableRow, Box, Collapse, IconButton, Typography, Table, TableHead, TableBody } from '@mui/material';
+import { TableRow, Box, Collapse, IconButton, Typography, Table, TableHead, TableBody, Button } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
+import { useDeleteTask } from '../../hooks/Tasks/useDeleteTask'
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(4n+1)': {
@@ -24,29 +27,35 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const TaskRow = ({ task }) => {
-    console.log(task.path[0].timestamp)
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const { deleteTask, isLoading, error } = useDeleteTask()
     return (<>
         <StyledTableRow >
-            <StyledTableCell sx={{ m: 0, width: '1px' }}>
+            <StyledTableCell sx={{ m: 0, width: '1px' }} align="center">
                 <IconButton onClick={() => setOpen(!open)} sx={{ height: '1rem' }}>
                     {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </IconButton>
             </StyledTableCell>
-            <StyledTableCell><Typography>{task._id}</Typography></StyledTableCell>
-            <StyledTableCell><Typography>{task.taskmaster.name}</Typography></StyledTableCell>
-            <StyledTableCell><Typography>{task.collector.name}</Typography></StyledTableCell>
-            <StyledTableCell><Typography>{task.truck._id}</Typography></StyledTableCell>
-            <StyledTableCell><Typography>{(new Date(task.date)).toLocaleDateString()}</Typography></StyledTableCell>
-            <StyledTableCell><Typography>{task.shift}</Typography></StyledTableCell>
-            <StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task._id}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.taskmaster.name}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.collector.name}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.truck._id}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{(new Date(task.date)).toLocaleDateString()}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.shift}</Typography></StyledTableCell>
+            <StyledTableCell align="center">
                 <Typography color={task.state === 'waiting' ? 'silver' : task.state === "executing" ? 'blue' : task.state === 'success' ? 'green' :
                     'red'}>
                     {task.state}
                 </Typography>
             </StyledTableCell>
-            <StyledTableCell><Typography>{task.checkIn ? task.checkIn : 'chưa'}</Typography></StyledTableCell>
-            <StyledTableCell><Typography>{task.checkOut ? task.checkOut : 'chưa'}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.checkIn ? task.checkIn : 'chưa'}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.checkOut ? task.checkOut : 'chưa'}</Typography></StyledTableCell>
+            <StyledTableCell align="center">
+                <Button onClick={() => deleteTask(task._id)} disabled={isLoading} variant="contained" color='error'>
+                    <DeleteForeverIcon />
+                </Button>
+
+            </StyledTableCell>
         </StyledTableRow>
         <TableRow>
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
