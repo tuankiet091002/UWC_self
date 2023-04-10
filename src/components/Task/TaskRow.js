@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 
 import { styled } from '@mui/material/styles';
-import { TableRow, Box, Collapse, IconButton, Typography, Table, TableHead, TableBody, Button } from '@mui/material';
+import { TableRow, Box, Collapse, IconButton, Typography, Table, TableHead, TableBody, Button, ButtonGroup } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
+import TaskEditorForm from './TaskEditorForm';
 import { useDeleteTask } from '../../hooks/Tasks/useDeleteTask'
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -28,7 +30,12 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const TaskRow = ({ task }) => {
     const [open, setOpen] = useState(false);
+    const [openForm, setOpenForm] = useState(false);
     const { deleteTask, isLoading, error } = useDeleteTask()
+
+    const handleOpen = () => setOpenForm(true);
+    const handleClose = () => setOpenForm(false);
+
     return (<>
         <StyledTableRow >
             <StyledTableCell sx={{ m: 0, width: '1px' }} align="center">
@@ -51,10 +58,15 @@ const TaskRow = ({ task }) => {
             <StyledTableCell align="center"><Typography>{task.checkIn ? task.checkIn : 'chưa'}</Typography></StyledTableCell>
             <StyledTableCell align="center"><Typography>{task.checkOut ? task.checkOut : 'chưa'}</Typography></StyledTableCell>
             <StyledTableCell align="center">
-                <Button onClick={() => deleteTask(task._id)} disabled={isLoading} variant="contained" color='error'>
-                    <DeleteForeverIcon />
-                </Button>
-
+                <ButtonGroup variant='contained'>
+                    <Button onClick={() => handleOpen()} disabled={isLoading} variant="contained">
+                        <BorderColorIcon />
+                    </Button>
+                    <Button onClick={() => deleteTask(task._id)} disabled={isLoading} color='error'>
+                        <DeleteForeverIcon />
+                    </Button>
+                </ButtonGroup>
+                <TaskEditorForm open={openForm} handleClose={() => handleClose()} currTask={task}></TaskEditorForm>
             </StyledTableCell>
         </StyledTableRow>
         <TableRow>

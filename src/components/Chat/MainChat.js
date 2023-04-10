@@ -8,7 +8,7 @@ import { useDeleteChat } from "../../hooks/Chat/useDeleteChat";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-import ChatForm from './ChatForm';
+import ChatEditorForm from './ChatEditorForm';
 import Messages from "./Messages";
 import Input from "./Input";
 
@@ -56,7 +56,7 @@ const MainChat = () => {
                         <Button onClick={() => setOpen(true)}><BorderColorIcon /></Button>
                         <Button color='error' onClick={() => deleteChat(currChat._id)}><DeleteOutlineIcon /></Button>
                     </ButtonGroup>
-                    <ChatForm open={open} onClose={() => setOpen(false)} currChat={currChat}></ChatForm>
+                    <ChatEditorForm open={open} onClose={() => setOpen(false)} currChat={currChat}></ChatEditorForm>
                 </>}
             </div>
             <Messages />

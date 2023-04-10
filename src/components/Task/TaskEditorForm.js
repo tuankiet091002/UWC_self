@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import dayjs from 'dayjs';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -10,48 +11,40 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { useMCPContext } from '../../hooks/MCPs/useMCPContext';
-import { useGetMCPs } from '../../hooks/MCPs/useGetMCPs';
 import { useEmpContext } from '../../hooks/Emps/useEmpContext';
-import { useGetEmps } from '../../hooks/Emps/useGetEmps';
 import { useTruckContext } from '../../hooks/Trucks/useTruckContext';
-import { useGetTrucks } from '../../hooks/Trucks/useGetTrucks';
-import { useCreateTask } from '../../hooks/Tasks/useCreateTask'
+import { useUpdateTask } from '../../hooks/Tasks/useUpdateTask'
 
 import MCPPicker from './MCPPicker';
 import JanitorPicker from './JanitorPicker';
 import PairPicker from './PairPicker';
 
-const TaskForm = ({ open, handleClose }) => {
+const TaskEditorForm = ({ open, handleClose, currTask }) => {
     const { mcps } = useMCPContext()
     const { emps } = useEmpContext()
     const { trucks } = useTruckContext()
-    const { getMCPs } = useGetMCPs()
-    const { getEmps } = useGetEmps()
-    const { getTrucks } = useGetTrucks()
-    const { createTask, isLoading, error } = useCreateTask()
-    const initialState = { date: null, shift: '', collector: '', truck: '' }
-    const [form, setForm] = useState(initialState)
+
+    const { updateTask, isLoading, error } = useUpdateTask()
+    const [form, setForm] = useState({ ...currTask, collector: currTask.collector._id, truck: currTask.truck._id, date: dayjs(currTask.date) })
 
     const [mcpChecked, setMCPChecked] = useState([]);
     const collectors = emps.filter(emp => emp.role === 'collector');
-    const [janitors, setJanitors] = useState([]);
+    const [janitors, setJanitors] = useState(emps.filter(emp => emp.role === 'janitor'));
     const [janitorChecked, setJanitorChecked] = useState([]);
-    const [workers, setWorkers] = useState([]);
+    const [workers, setWorkers] = useState(new Array(Math.max(...mcps.map(mcp => mcp._id)) + 1).fill([]));
 
     useEffect(() => {
-        getMCPs();
-        getEmps();
-        getTrucks();
+        let newMCPChecked = [];
+        let newWorkers = new Array(Math.max(...mcps.map(mcp => mcp._id)) + 1).fill([])
+        for (let i = 0; i < currTask.path.length; i++) {
+            newMCPChecked[i] = currTask.path[i].mcp
+            newWorkers[currTask.path[i].mcp._id] = currTask.path[i].janitor
+        }
+        setMCPChecked(newMCPChecked)
+        setWorkers(newWorkers)
     }, [])
 
-    useEffect(() => {
-        setJanitors(emps.filter(emp => emp.role === 'janitor'))
-    }, [emps])
 
-    useEffect(() => {
-        if (mcps.length > 0)
-            setWorkers(new Array(Math.max(...mcps.map(mcp => mcp._id)) + 1).fill([]))
-    }, [mcps])
 
 
     function unCheckMCP(value) {
@@ -67,12 +60,12 @@ const TaskForm = ({ open, handleClose }) => {
         for (let i = 0; i < mcpChecked.length; i++) {
             path[i] = { mcp: mcpChecked[i]._id, janitor: workers[mcpChecked[i]._id].map(x => x._id) }
         }
-        createTask({ ...form, path, date: form.date.$d })
+        updateTask(currTask._id, { ...form, path, date: form.date.$d })
     }
 
     return (<LocalizationProvider dateAdapter={AdapterDayjs}>
         <Dialog open={open} onClose={handleClose} maxWidth="xl" >
-            <DialogTitle align="center" variant="h4">Task Form</DialogTitle>
+            <DialogTitle align="center" variant="h4">{`Task Editor for Task ${currTask._id}`}</DialogTitle>
             <DialogContent>
                 <Stack direction="row" spacing={2}>
                     <Stack spacing={2}>
@@ -158,4 +151,4 @@ const TaskForm = ({ open, handleClose }) => {
     </LocalizationProvider>)
 }
 
-export default TaskForm
+export default TaskEditorForm

@@ -8,7 +8,6 @@ import {
 import { useAuthContext } from '../../hooks/Auth/useAuthContext'
 import { useEmpContext } from '../../hooks/Emps/useEmpContext'
 import { useGetEmps } from '../../hooks/Emps/useGetEmps'
-import { useCreateChat } from '../../hooks/Chat/useCreateChat'
 import { useUpdateChat } from '../../hooks/Chat/useUpdateChat'
 
 const MenuProps = {
@@ -20,13 +19,17 @@ const MenuProps = {
     },
 };
 
-const ChatForm = ({ open, onClose }) => {
+const ChatEditorForm = ({ open, onClose, currChat }) => {
     const { user } = useAuthContext();
     const { emps } = useEmpContext();
     const { getEmps } = useGetEmps();
-    const { createChat, isLoading, error } = useCreateChat();
+    const { updateChat, isLoading, error } = useUpdateChat();
 
-    const [form, setForm] = React.useState({ name: '', users: [] });
+    const [form, setForm] = React.useState({ name: currChat.name, users: currChat.users.map(x => x._id) });
+
+    useEffect(() => {
+        setForm({ name: currChat.name, users: currChat.users.map(x => x._id) });
+    }, [currChat])
 
     useEffect(() => {
         getEmps();
@@ -38,13 +41,12 @@ const ChatForm = ({ open, onClose }) => {
     };
 
     const handleSubmit = (e) => {
-        createChat(form);
-        setForm({ name: '', users: [] });
+        updateChat(currChat._id, form);
         onClose();
     }
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle align='center' variant="h5">Chat Form</DialogTitle>
+            <DialogTitle align='center' variant="h5">{`Chat Editor for Chat ${currChat.name}`}</DialogTitle>
             <DialogContent>
                 <Stack alignItems='center' spacing={3}  >
                     <TextField label="Tên nhóm" required fullWidth variant="outlined"
@@ -81,11 +83,11 @@ const ChatForm = ({ open, onClose }) => {
             </DialogContent>
             <DialogActions>
                 <Typography variant='h6' color="error">{error}</Typography>
-                <Button onClick={handleSubmit}>Xác nhận</Button>
+                <Button onClick={handleSubmit} disabled={isLoading}>Xác nhận</Button>
                 <Button onClick={() => setForm({ name: '', users: [] })} color="error">Clear</Button>
             </DialogActions>
         </Dialog>
     )
 }
 
-export default ChatForm
+export default ChatEditorForm
