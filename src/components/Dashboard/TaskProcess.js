@@ -1,102 +1,111 @@
 import React from 'react'
+
 import { styled } from '@mui/material/styles';
-import { Card, CardContent, Typography, Table, TableBody, TableRow, TableHead, TableContainer } from '@mui/material';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import { ProgressBar, Step } from "react-step-progress-bar";
-import "react-step-progress-bar/styles.css";
+import {
+    Card, CardContent, Typography, Table, TableBody, TableRow,
+    TableHead, TableContainer, Stepper, Step, StepLabel, TableCell
+} from '@mui/material';
+import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
+import Check from '@mui/icons-material/Check';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: "blue",
-        color: "white"
+import { useTaskContext } from '../../hooks/Tasks/useTaskContext'
+
+const QontoConnector = styled(StepConnector)(({ theme }) => ({
+    [`&.${stepConnectorClasses.alternativeLabel}`]: {
+        top: 10,
+        left: 'calc(-50% + 16px)',
+        right: 'calc(50% + 16px)',
     },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 15,
+    [`&.${stepConnectorClasses.active}`]: {
+        [`& .${stepConnectorClasses.line}`]: {
+            borderColor: '#784af4',
+        },
+    },
+    [`&.${stepConnectorClasses.completed}`]: {
+        [`& .${stepConnectorClasses.line}`]: {
+            borderColor: '#784af4',
+        },
+    },
+    [`& .${stepConnectorClasses.line}`]: {
+        borderColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
+        borderTopWidth: 4,
+        borderRadius: 2,
     },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
+const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
+    color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
+    display: 'flex',
+    height: 26,
+    alignItems: 'center',
+    ...(ownerState.active && {
+        color: '#784af4',
+    }),
+    '& .QontoStepIcon-completedIcon': {
+        color: '#784af4',
+        fontSize: 20,
     },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
+    '& .QontoStepIcon-circle': {
+        width: 10,
+        height: 10,
+        borderRadius: '50%',
+        backgroundColor: 'currentColor',
     },
 }));
+
+function QontoStepIcon(props) {
+    const { active, completed, className } = props;
+
+    return (
+        <QontoStepIconRoot ownerState={{ active }} className={className}>
+            {completed ? (
+                <Check className="QontoStepIcon-completedIcon"/>
+            ) : (
+                <div className="QontoStepIcon-circle" />
+            )}
+        </QontoStepIconRoot>
+    );
+}
 
 function TaskProcess() {
+    const { tasks } = useTaskContext();
+    const dailyTask = tasks.filter(task => new Date().getDate() == new Date(task.date).getDate()).sort((a, b) => a.shift - b.shift)
+
     return (
         <Card sx={{ height: "100%" }}>
             <CardContent>
                 <Typography color="text.secondary"> Tiến độ nhiệm vụ </Typography>
-                <TableContainer sx={{ borderRadius: "10px" }}>
+                <TableContainer sx={{ borderRadius: "10px", overflow: "auto" }}>
                     <Table size="small" >
                         <TableHead >
                             <TableRow>
-                                <StyledTableCell sx={{ width: '15%' }} >ID</StyledTableCell>
-                                <StyledTableCell sx={{ width: '30%' }}>Collector</StyledTableCell>
-                                <StyledTableCell >Tiến độ</StyledTableCell>
+                                <TableCell align="center">Ca</TableCell>
+                                <TableCell align="center" width='35%'>Collector</TableCell>
+                                <TableCell align='center'>Tiến độ</TableCell>
                             </TableRow >
                         </TableHead>
                         <TableBody>
-                            <StyledTableRow>
-                                <StyledTableCell>1</StyledTableCell>
-                                <StyledTableCell>Kiệt</StyledTableCell>
-                                <StyledTableCell>
-                                    <ProgressBar
-                                        filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-                                        percent={80}
-
-                                    >
-                                        {[0, 1, 2, 3, 4, 5].map(x =>
-                                            <Step key={x} transition="scale">
-                                                {() => (
-                                                    x
-                                                )}
-                                            </Step>)}
-                                    </ProgressBar>
-                                </StyledTableCell>
-                            </StyledTableRow>
-                            <StyledTableRow>
-                                <StyledTableCell>1</StyledTableCell>
-                                <StyledTableCell>Kiệt</StyledTableCell>
-                                <StyledTableCell>
-
-                                    <ProgressBar
-                                        filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-                                        percent={80}
-
-                                    >
-                                        {[0, 1, 2, 3, 4, 5].map(x =>
-                                            <Step key={x} transition="scale">
-                                                {() => (
-                                                    x
-                                                )}
-                                            </Step>)}
-                                    </ProgressBar>
-                                </StyledTableCell>
-                            </StyledTableRow>
-                            <StyledTableRow>
-                                <StyledTableCell>1</StyledTableCell>
-                                <StyledTableCell>Kiệt</StyledTableCell>
-                                <StyledTableCell>
-
-                                    <ProgressBar
-                                        filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-                                        percent={80}
-
-                                    >
-                                        {[0, 1, 2, 3, 4, 5].map(x =>
-                                            <Step key={x} transition="scale">
-                                                {() => (
-                                                    x
-                                                )}
-                                            </Step>)}
-                                    </ProgressBar>
-                                </StyledTableCell>
-                            </StyledTableRow>
-
+                            {dailyTask.map((task) =>
+                                <TableRow key={task._id}>
+                                    <TableCell align="center">{task.shift}</TableCell>
+                                    <TableCell align="center" >{task.collector.name}</TableCell>
+                                    <TableCell>
+                                        <Stepper activeStep={2} connector={<QontoConnector />}>
+                                            {task.path.map((pair) => {
+                                                return <Step key={pair.mcp._id}>
+                                                    <StepLabel 
+                                                    StepIconComponent={QontoStepIcon}
+                                                    sx={{
+                                                        '& .MuiStepLabel-iconContainer': {
+                                                            px: 0,
+                                                          },
+                                                    }}/>
+                                                </Step>
+                                            }
+                                            )}
+                                        </Stepper>
+                                    </TableCell>
+                                </TableRow>)}
                         </TableBody>
                     </Table>
                 </TableContainer>

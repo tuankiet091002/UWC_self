@@ -1,12 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 
 import PersonIcon from '@mui/icons-material/Person';
 import { PieChart } from 'react-minimal-pie-chart';
 
+import { useGetEmps } from '../../hooks/Emps/useGetEmps';
+import { useEmpContext } from '../../hooks/Emps/useEmpContext'
 
 function OverviewEmployee() {
+    const { emps } = useEmpContext();
+    const { getEmps } = useGetEmps();
+
+    useEffect(() => {
+        getEmps()
+    }, [])
+
+    const workerEmps = emps.filter(emp => emp.role !== 'backofficer').length;
+    const workingJan = emps.filter(emp => emp.role === 'janitor' && !emp.available).length;
+    const workingCol = emps.filter(emp => emp.role === 'collector' && !emp.available).length;
+
     return (
         <Card sx={{ height: '100%' }}>
             <CardContent>
@@ -25,16 +38,16 @@ function OverviewEmployee() {
                     <Box sx={{ width: '100px', height: "100px" }}>
                         <PieChart
                             data={[
-                                { title: '1', value: 10, color: 'red' },
-                                { title: '2', value: 15, color: 'blue' },
-                                { title: '3', value: 20, color: 'yellow' },
+                                { title: 'Else', value: workerEmps, color: 'red' },
+                                { title: 'Col', value: workingCol, color: 'blue' },
+                                { title: 'Jan', value: workingJan, color: 'yellow' },
                             ]}
                             label={x => x.dataEntry.title}
                         />
                     </Box>
 
                 </Stack>
-                <Typography>25/40 nhân viên làm việc </Typography>
+                <Typography>{workingJan + workingCol}/{workerEmps} nhân viên làm việc </Typography>
             </CardContent>
         </Card>
     );

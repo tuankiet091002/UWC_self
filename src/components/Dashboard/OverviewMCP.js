@@ -1,9 +1,23 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 
 import MapIcon from '@mui/icons-material/Map';
 
+import { useGetMCPs } from '../../hooks/MCPs/useGetMCPs';
+import { useMCPContext } from '../../hooks/MCPs/useMCPContext'
+
 function OverviewMCP() {
+    const { mcps } = useMCPContext();
+    const { getMCPs } = useGetMCPs();
+
+    useEffect(() => {
+        getMCPs();
+    }, [])
+
+    const overloadedMCP = mcps.filter(mcp => mcp.load.$numberDecimal/mcp.cap > 0.8).length
+    const fullMCP = mcps.filter(mcp => mcp.load.$numberDecimal/mcp.cap <= 0.8 && mcp.load.$numberDecimal/mcp.cap > 0.3 ).length
+    const emptyMCP = mcps.filter(mcp => mcp.load.$numberDecimal/mcp.cap < 0.3).length
+
     return (
         <Card sx={{height:'100%'}}>
             <CardContent>
@@ -20,13 +34,13 @@ function OverviewMCP() {
                             MCP
                         </Typography >
                         <Typography sx={{ fontSize: 16 }}>
-                            2 MCP quá tải
+                            {overloadedMCP} MCP quá tải
                         </Typography>
                         <Typography sx={{ fontSize: 16 }}>
-                            3 MCP sắp đầy
+                            {fullMCP} MCP sắp đầy
                         </Typography>
                         <Typography sx={{ fontSize: 16 }}>
-                            5 MCP trống
+                            {emptyMCP} MCP trống
                         </Typography>
                     </Stack>
                     <Box sx={{
