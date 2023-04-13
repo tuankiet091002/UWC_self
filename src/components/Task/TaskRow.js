@@ -1,15 +1,21 @@
 import React, { useState } from 'react'
 
 import { styled } from '@mui/material/styles';
-import { TableRow, Box, Collapse, IconButton, Typography, Table, TableHead, TableBody, Button, ButtonGroup } from '@mui/material';
+import {
+    TableRow, Box, Collapse, IconButton, Typography, Table,
+    TableHead, TableBody, Button, ButtonGroup
+} from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import BeenhereIcon from '@mui/icons-material/Beenhere';
 
 import TaskEditorForm from './TaskEditorForm';
 import { useDeleteTask } from '../../hooks/Tasks/useDeleteTask'
+import { useCheckTask } from '../../hooks/Tasks/useCheckTask'
+import { useAuthContext } from '../../hooks/Auth/useAuthContext'
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(4n+1)': {
@@ -32,14 +38,15 @@ const TaskRow = ({ task }) => {
     const [open, setOpen] = useState(false);
     const [openForm, setOpenForm] = useState(false);
     const { deleteTask, isLoading, error } = useDeleteTask()
-
+    const { checkTask, isLoading: isLoadingCheck, error: errorCheck } = useCheckTask()
+    const { user } = useAuthContext()
     const handleOpen = () => setOpenForm(true);
     const handleClose = () => setOpenForm(false);
 
     return (<>
         <StyledTableRow >
             <StyledTableCell sx={{ m: 0, width: '1px' }} align="center">
-                <IconButton onClick={() => setOpen(!open)} sx={{ height: '1rem' }}>
+                <IconButton onClick={() => setOpen(!open)} sx={{ height: '0.9rem' }}>
                     {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </IconButton>
             </StyledTableCell>
@@ -48,7 +55,7 @@ const TaskRow = ({ task }) => {
             <StyledTableCell align="center"><Typography>{task.collector.name}</Typography></StyledTableCell>
             <StyledTableCell align="center"><Typography>{task.truck._id}</Typography></StyledTableCell>
             <StyledTableCell align="center"><Typography>{(new Date(task.date)).toLocaleDateString()}</Typography></StyledTableCell>
-            <StyledTableCell align="center"><Typography>{task.shift}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.shift * 3 + 3}-{task.shift * 3 + 6}h</Typography></StyledTableCell>
             <StyledTableCell align="center">
                 <Typography color={task.state === 'waiting' ? 'silver' : task.state === "executing" ? 'blue' : task.state === 'success' ? 'green' :
                     'red'}>
@@ -57,17 +64,27 @@ const TaskRow = ({ task }) => {
             </StyledTableCell>
             <StyledTableCell align="center"><Typography>{task.checkIn ? task.checkIn : 'chưa'}</Typography></StyledTableCell>
             <StyledTableCell align="center"><Typography>{task.checkOut ? task.checkOut : 'chưa'}</Typography></StyledTableCell>
-            <StyledTableCell align="center">
-                <ButtonGroup variant='contained'>
-                    <Button onClick={() => handleOpen()} disabled={isLoading} variant="contained">
-                        <BorderColorIcon />
-                    </Button>
-                    <Button onClick={() => deleteTask(task._id)} disabled={isLoading} color='error'>
-                        <DeleteForeverIcon />
-                    </Button>
-                </ButtonGroup>
+            {user.role === 'backofficer' ? <StyledTableCell align="center">
+                <Box >
+                    <Typography color="error">{error}</Typography>
+                    <ButtonGroup variant='contained'>
+                        <Button onClick={() => handleOpen()} disabled={isLoading} variant="contained" >
+                            <BorderColorIcon />
+                        </Button>
+                        <Button onClick={() => deleteTask(task._id)} disabled={isLoading} color='error'>
+                            <DeleteForeverIcon />
+                        </Button>
+                    </ButtonGroup>
+                </Box>
+
                 <TaskEditorForm open={openForm} handleClose={() => handleClose()} currTask={task}></TaskEditorForm>
-            </StyledTableCell>
+            </StyledTableCell> :
+                <StyledTableCell align="center">
+                   <Box>
+                        <Typography color="error" align="center">{errorCheck}</Typography>
+                        <Button variant='contained' onClick={() => checkTask(task._id)} disabled={isLoadingCheck}><BeenhereIcon /></Button>
+                    </Box>
+                </StyledTableCell>}
         </StyledTableRow>
         <TableRow>
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

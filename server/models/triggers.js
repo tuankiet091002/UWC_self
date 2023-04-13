@@ -8,31 +8,27 @@ exports = async function () {
     var collection = db.collection("tasks");
     var userCollection = db.collection("users");
     var mcpCollection = db.collection("mcps");
-    var truckCollection = db.collection("trucks");
+
     try {
         const taskList = await collection.find().toArray();
         for (const i in taskList) {
             let task = taskList[i];
 
             const checkinDeadline = new Date(task.date.getTime() + 3600000 * (task.shift * 3 + 3.5));
-            const checkoutDeadline = new Date(task.date.getTime() + 3600000 * (task.shift * 3 + 6.5));
 
             if (!task.checkIn && Date.now() > checkinDeadline.getTime()) {
                 task.state = "fail"
-                
-                await truckCollection.updateOne({ _id: task.truck }, { $set: { driver: null, path: [], nextMCP: null} })
-      
-                let taskPath = []
-                for (const k in task.janitor) {
-                    taskPath.push(await mcpCollection.findOne({_id: task.path[Number(k)+1]}))
-                    for (const l in task.janitor[i]) {
-                        taskPath[k].janitor = taskPath[k].janitor.filter((jan) => jan.toString() != task.janitor[k][l].toString())
+                // thu don neu task fail
+                for (const i in task.path) {
+                    let mcpJan = task.path[i].janitor
+                    for (const k in task.path[i].janitor) {
+                        await userCollection.updateOne({ _id: task.path[i].janitor[k] }, { $set: { available: true } })
+                        mcpJan = mcpJan.filter((jan) => jan != task.path[i].janitor[k])
                     }
-                    await mcpCollection.updateOne({ _id: task.path[Number(k)+1] }, { $set: taskPath[k] })
+                    await mcpCollection.updateOne({ _id: task.path[i].mcp }, { $set: { janitor: mcpJan } })
                 }
+                collection.updateOne({ _id: task._id }, { $set: task });
             }
-
-            collection.updateOne({ _id: task._id }, { $set: task });
         }
     } catch (error) {
         console.log(error)
@@ -40,13 +36,13 @@ exports = async function () {
 };
 
 // Truck Location Manager
-function dToInt(a){
+function dToInt(a) {
     // type nội bộ mongo => type float của js
     return parseFloat(a.toString());
 }
 const SPEED_MODIFIER = 1;
 
-exports =  async function() {
+exports = async function () {
     const mongodb = context.services.get("Cluster");
     const db = mongodb.db("test")
     var truckCollection = db.collection("trucks");
@@ -54,28 +50,28 @@ exports =  async function() {
     var userCollection = db.collection("users");
     try {
         const truckList = await truckCollection.find().toArray();
-  
-        for (const i in truckList){
+
+        for (const i in truckList) {
             const truck = truckList[i];
-            
+
             if (truck.nextMCP != null) {
                 const index = (truck.path.map(x => x.toString())).indexOf(truck.nextMCP.toString(), 1)
-                  
+
                 const nextMCP = await mcpCollection.findOne({ _id: truck.nextMCP })
-            
-                const distance = Math.sqrt((nextMCP.x - truck.x)*(nextMCP.x - truck.x) + (nextMCP.y - truck.y)*(nextMCP.y - truck.y));
-                const cos = (nextMCP.x - truck.x)/distance;
-                const sin = (nextMCP.y - truck.y)/distance;
+
+                const distance = Math.sqrt((nextMCP.x - truck.x) * (nextMCP.x - truck.x) + (nextMCP.y - truck.y) * (nextMCP.y - truck.y));
+                const cos = (nextMCP.x - truck.x) / distance;
+                const sin = (nextMCP.y - truck.y) / distance;
 
                 if (distance <= SPEED_MODIFIER) {
                     // truong hop chua ve noi xuat phat
-                    if (index < truck.path.length - 1){
+                    if (index < truck.path.length - 1) {
                         truck.x = nextMCP.x;
                         truck.y = nextMCP.y;
-                        truck.nextMCP = truck.path[index+1];
+                        truck.nextMCP = truck.path[index + 1];
                         // thay doi load + xoa truck khoi danh sach 
-                  
-                        if ( nextMCP.load + truck.load < truck.cap ){
+
+                        if (nextMCP.load + truck.load < truck.cap) {
                             truck.load = dToInt(truck.load) + nextMCP.load;
                             nextMCP.load = 0;
                         } else {
@@ -90,16 +86,16 @@ exports =  async function() {
                         truck.nextMCP = null;
                     }
                 } else {
-                    truck.x = dToInt(truck.x) + cos*SPEED_MODIFIER;
-                    truck.y = dToInt(truck.y) + sin*SPEED_MODIFIER;
+                    truck.x = dToInt(truck.x) + cos * SPEED_MODIFIER;
+                    truck.y = dToInt(truck.y) + sin * SPEED_MODIFIER;
                 }
-  
-                await truckCollection.updateOne({ _id: truck._id }, {$set: truck});
-                await mcpCollection.updateOne({_id: nextMCP._id}, {$set: nextMCP});
-            } 
+
+                await truckCollection.updateOne({ _id: truck._id }, { $set: truck });
+                await mcpCollection.updateOne({ _id: nextMCP._id }, { $set: nextMCP });
+            }
         }
-    } catch(error) {
-          console.log(error)
+    } catch (error) {
+        console.log(error)
     }
 };
 

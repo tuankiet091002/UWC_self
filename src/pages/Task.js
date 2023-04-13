@@ -54,8 +54,8 @@ const Task = () => {
     };
 
     return (
-        <TableContainer sx={{ py: 3, mx: 0, height: '100%' }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ px: 2, pb: 1 }}>
+        <TableContainer sx={{ mx: 0, height: '100%' }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ px: 2 }}>
                 <Typography variant="h4" gutterBottom>Phân công</Typography>
             </Stack>
             <Table>
@@ -71,7 +71,7 @@ const Task = () => {
                         <StyledTableCell align="center">Trạng thái</StyledTableCell>
                         <StyledTableCell align="center">Checkin</StyledTableCell>
                         <StyledTableCell align="center">Checkout</StyledTableCell>
-                        <StyledTableCell align='center'><MoreVertIcon/></StyledTableCell>
+                        <StyledTableCell align='center'><MoreVertIcon /></StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -89,27 +89,24 @@ const Task = () => {
                 </TableBody>
                 <TableFooter>
                     <TableRow>
-                        <TableCell colSpan={99}>
-                            <Stack direction='row' justifyContent='space-between' alignItems='center' >
-                                <Button variant="contained" color="success" onClick={handleOpen}>
-                                    Thêm Nhiệm vụ
-                                </Button>
-                                <TaskForm open={open} handleClose={handleClose} />
-                                <TablePagination
-                                    rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                    colSpan={99}
-                                    count={tasks.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    SelectProps={{
-                                        native: true,
-                                    }}
-                                    onPageChange={handleChangePage}
-                                    onRowsPerPageChange={handleChangeRowsPerPage}
-                                    ActionsComponent={TaskPagination}
-                                />
-                            </Stack>
+                        <TableCell colSpan={3} sx={{ pb: 1 }}>
+                            <Button variant="contained" color="success" onClick={handleOpen}>
+                                Thêm Nhiệm vụ
+                            </Button>
+                            <TaskForm open={open} handleClose={handleClose} />
                         </TableCell>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                            count={tasks.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            SelectProps={{
+                                native: true,
+                            }}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            ActionsComponent={TaskPagination}
+                        />
                     </TableRow>
                 </TableFooter>
 

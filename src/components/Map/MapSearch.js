@@ -2,38 +2,34 @@ import React, { useState } from "react";
 
 import {
     Button, Card, Select, FormControl, InputLabel,
-    MenuItem, Grid, Box, TextField, Typography
+    MenuItem, Grid, Box, TextField,
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
-import { useTruckContext } from '../../hooks/Trucks/useTruckContext';
-import { useGetTrucks } from "../../hooks/Trucks/useGetTrucks";
 
 function MapSearch() {
-
+    const [form, setForm] = useState({ name: "", role: "" });
     return (
-        <Card sx={{ mt: 5, p: 3, width: '100%' }}>
-            <Grid sx={{ mt: 2 }}>
+        <Card sx={{ p: 3, width: '100%' }}>
+            <Grid marginTop={2}>
                 <FormControl fullWidth>
                     <InputLabel id="select-label">Item</InputLabel>
                     <Select
                         labelId="select-label"
-                        id="simple-select"
-                        label="Item"
-                        sx={{ mb: "2px" }}
+                        label="Hiển thị"
                     >
-                        <MenuItem value={10}>Truck</MenuItem>
-                        <MenuItem value={20}>MCP</MenuItem>
-                        <MenuItem value={30}></MenuItem>
+                        <MenuItem value={0}>Tất cả</MenuItem>
+                        <MenuItem value={1}>Truck</MenuItem>
+                        <MenuItem value={2}>MCP</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
 
-            <Grid sx={{ mt: 2 }}>
-                <TextField id="outlined-basic" label="Search" variant="outlined" fullWidth sx={{ mb: "2px" }} />
+            <Grid marginTop={2}>
+                <TextField label="Search" variant="outlined" fullWidth />
             </Grid>
 
-            <Box sx={{ mt: 2 }}>
+            <Box marginTop={2}>
                 <Button fullWidth variant="contained" color="success" sx={{ borderRadius: 28 }}>
                     <SearchIcon />Search
                 </Button>

@@ -15,6 +15,8 @@ function OverviewTask() {
         getTasks();
     }, [])
 
+    console.log(tasks)
+
 
     const dailyTask = tasks.filter(task => new Date().getDate() == new Date(task.date).getDate())
     const finishedTask = dailyTask.filter(task => task.status === "done" || task.state==="fail").length;

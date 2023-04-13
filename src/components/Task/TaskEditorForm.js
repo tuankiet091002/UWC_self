@@ -31,18 +31,20 @@ const TaskEditorForm = ({ open, handleClose, currTask }) => {
     const collectors = emps.filter(emp => emp.role === 'collector');
     const [janitors, setJanitors] = useState(emps.filter(emp => emp.role === 'janitor'));
     const [janitorChecked, setJanitorChecked] = useState([]);
-    const [workers, setWorkers] = useState(new Array(Math.max(...mcps.map(mcp => mcp._id)) + 1).fill([]));
+    const [workers, setWorkers] = useState([]);
 
     useEffect(() => {
-        let newMCPChecked = [];
-        let newWorkers = new Array(Math.max(...mcps.map(mcp => mcp._id)) + 1).fill([])
-        for (let i = 0; i < currTask.path.length; i++) {
-            newMCPChecked[i] = currTask.path[i].mcp
-            newWorkers[currTask.path[i].mcp._id] = currTask.path[i].janitor
+        if (mcps.length > 0) {
+            let newMCPChecked = [];
+            let newWorkers = new Array(Math.max(...mcps.map(mcp => mcp._id)) + 1).fill([])
+            for (let i = 0; i < currTask.path.length; i++) {
+                newMCPChecked[i] = currTask.path[i].mcp
+                newWorkers[currTask.path[i].mcp._id] = currTask.path[i].janitor
+            }
+            setMCPChecked(newMCPChecked)
+            setWorkers(newWorkers)
         }
-        setMCPChecked(newMCPChecked)
-        setWorkers(newWorkers)
-    }, [])
+    }, [mcps])
 
 
 

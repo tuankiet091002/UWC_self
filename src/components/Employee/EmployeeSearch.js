@@ -8,7 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import { useGetEmps } from "../../hooks/Emps/useGetEmps";
 
-function EmployeeSearch(_type, _name) {
+function EmployeeSearch() {
     const [form, setForm] = useState({ name: "", role: "" });
     const { getEmps, isLoading, error } = useGetEmps();
 
@@ -32,7 +32,7 @@ function EmployeeSearch(_type, _name) {
 
             <Grid marginTop={2}>
                 <FormControl fullWidth>
-                    <TextField id="name-field" label="Tên" variant="outlined" onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                    <TextField label="Tên" variant="outlined" onChange={(e) => setForm({ ...form, name: e.target.value })} />
                 </FormControl>
             </Grid>
             <Stack marginTop={2} alignItems='center'>

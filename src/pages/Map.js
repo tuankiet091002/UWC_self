@@ -194,11 +194,10 @@ const Map = () => {
     return (
         <Container maxWidth={false} sx={{ mx: 0, overflow: 'hidden' }}>
             <Grid container spacing={3} sx={{ my: 2, height: '100%' }}>
-                <Grid item xs={3} columnSpacing={2} >
-                    <Typography textAlign="center" variant="h4">Phương tiện</Typography>
+                <Grid item xs={3} columnSpacing={2} sx={{pt:3}}>
+                    <Typography textAlign="center" variant="h4">Bản đồ</Typography>
                     <MapSearch />
                 </Grid>
-
                 <Grid xs={9}>
                     {position.haveMCPLocation && (
                         <MapContainer style={{ height: '500px' }} center={[position.location.lat, position.location.lng]} zoom={15} scrollWheelZoom={true}>
