@@ -1,11 +1,19 @@
 import TruckModel from '../models/truckModel.js'
-import UserModel from '../models/userModel.js'
+import TaskModel from '../models/taskModel.js'
 
 import mongoose from 'mongoose'
 
 export const getTrucks = async (req, res) => {
-    const { driver, cap } = req.query
+    const { driver, cap, task } = req.query
     try {
+        if (task) {
+            const pickedTask = await TaskModel.findById(task)
+            if(!pickedTask) return res.status(404).json({ message: "Task not found" });
+
+            const trucks = await TruckModel.find({ _id: pickedTask.truck }).select('-path -nextMCP').populate("driver", "name role available avatar");
+
+            return res.status(200).json({ message: "Trucks fetched", result: trucks });
+        }
         //driver: true => co tai xe, false => khong co tai xe, null => khong quan tam
         const query = {}
         if (driver) {

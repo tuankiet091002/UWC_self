@@ -19,13 +19,13 @@ exports = async function () {
             if (!task.checkIn && Date.now() > checkinDeadline.getTime()) {
                 task.state = "fail"
                 // thu don neu task fail
-                for (const i in task.path) {
-                    let mcpJan = task.path[i].janitor
-                    for (const k in task.path[i].janitor) {
-                        await userCollection.updateOne({ _id: task.path[i].janitor[k] }, { $set: { available: true } })
-                        mcpJan = mcpJan.filter((jan) => jan != task.path[i].janitor[k])
+                for (const k in task.path) {
+                    let mcpJan = task.path[k].janitor
+                    for (const l in task.path[k].janitor) {
+                        await userCollection.updateOne({ _id: task.path[k].janitor[l] }, { $set: { available: true } })
+                        mcpJan = mcpJan.filter((jan) => jan.toString() != task.path[k].janitor[l])
                     }
-                    await mcpCollection.updateOne({ _id: task.path[i].mcp }, { $set: { janitor: mcpJan } })
+                    await mcpCollection.updateOne({ _id: task.path[k].mcp }, { $set: { janitor: mcpJan } })
                 }
                 collection.updateOne({ _id: task._id }, { $set: task });
             }

@@ -165,7 +165,7 @@ export const checkTask = async (req, res) => {
         // const checkinDeadline = task.date.getTime() + 3600000 * (task.shift * 3 + 3.5)
         // const checkoutPoint = task.date.getTime() + 3600000 * (task.shift * 3 + 5.5)
 
-        const checkinDeadline = Date.now() - 360000
+        const checkinDeadline = Date.now() + 360000
         const checkoutPoint = Date.now() - 360000
 
         if (req.user.role == "collector") {
@@ -224,9 +224,6 @@ export const checkTask = async (req, res) => {
 
             const mcp = await MCPModel.findById(path.mcp._id)
 
-            console.log('mcp la' ,mcp)
-            console.log('path la', path)
-
             if (Date.now() < checkinDeadline) {
                 if (checkinDeadline - Date.now() > 3600000)
                     return res.status(400).json({ message: "Too early to check" })
@@ -239,11 +236,12 @@ export const checkTask = async (req, res) => {
                 return res.status(200).json({ message: "Checkin successed", result: task })
             }
             else if (Date.now() > checkoutPoint) {
-                if (path.timestamp == null) {
-                    return res.status(400).json({ message: "The MCP is not collected yet. Checkout failed" })
-                }
+                // if (path.timestamp == null) {
+                //     return res.status(400).json({ message: "The MCP is not collected yet. Checkout failed" })
+                // }
+
                 await UserModel.findByIdAndUpdate(req.user._id, { available: true })
-                await MCPModel.findByIdAndUpdate(mcp._id, { janitor: mcp.janitor.filter((jan) => jan != req.user._id) })
+                await MCPModel.findByIdAndUpdate(mcp._id, { janitor: mcp.janitor.filter((jan) => jan.toString() != req.user._id) })
 
                 return res.status(200).json({ message: "Checkout successed", result: task })
             }
@@ -269,9 +267,12 @@ export const deleteTask = async (req, res) => {
         await UserModel.findByIdAndUpdate(task.collector._id, { task: task.collector.task.filter(x => x != task._id) })
 
         for (const i in task.path) {
+            let mcpJan = task.path[i].janitor
             for (const k in task.path[i].janitor) {
-                await UserModel.findByIdAndUpdate(task.path[i].janitor[k]._id, { task: task.path[i].janitor[k].task.filter(x => x != task._id) })
+                await UserModel.findByIdAndUpdate(task.path[i].janitor[k]._id, { available: true, task: task.path[i].janitor[k].task.filter(x => x != task._id) })
+                mcpJan = mcpJan.filter((jan) => jan._id != task.path[i].janitor[k]._id)
             }
+            await MCPModel.findByIdAndUpdate(task.path[i].mcp, {janitor: mcpJan})
         }
 
         task = await TaskModel.findByIdAndRemove(id);
