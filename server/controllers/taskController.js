@@ -50,6 +50,8 @@ export const createTask = async (req, res) => {
 
         truck = await TruckModel.findById(truck)
         if (!truck) return res.status(404).json({ message: "Truck not found" });
+        const anotherTask = await TaskModel.findOne({ truck: truck._id, shift: shift, date: date })
+        if (anotherTask) return res.status(400).json({ message: "Truck is busy at that time" })
 
         for (const i in path) {
             path[i].mcp = await MCPModel.findById(path[i].mcp).select("x y cap load")
@@ -104,6 +106,8 @@ export const updateTask = async (req, res) => {
 
         truck = await TruckModel.findById(truck)
         if (!truck) return res.status(404).json({ message: "Truck not found" });
+        const anotherTask = await TaskModel.findOne({ truck: truck._id, shift: shift, date: date })
+        if (anotherTask) return res.status(400).json({ message: "Truck is busy at that time" })
 
         for (const i in path) {
             path[i].mcp = await MCPModel.findById(path[i].mcp).select("x y cap load")
@@ -162,11 +166,11 @@ export const checkTask = async (req, res) => {
         if (task.state == "done" || task.state == "fail") return res.status(400).json({ message: "Task is already finished" });
 
         // 6->9 || 9->12 || 12->15 || 15->18  diem danh duoc quyen tre nua tieng, diem danh ra duoc som nua tieng
-        // const checkinDeadline = task.date.getTime() + 3600000 * (task.shift * 3 + 3.5)
-        // const checkoutPoint = task.date.getTime() + 3600000 * (task.shift * 3 + 5.5)
+        const checkinDeadline = task.date.getTime() + 3600000 * (task.shift * 3 + 3.5)
+        const checkoutPoint = task.date.getTime() + 3600000 * (task.shift * 3 + 5.5)
 
-        const checkinDeadline = Date.now() + 360000
-        const checkoutPoint = Date.now() - 360000
+        // const checkinDeadline = Date.now() + 360000
+        // const checkoutPoint = Date.now() - 360000
 
         if (req.user.role == "collector") {
             if (!req.user.task.includes(task._id))
@@ -272,7 +276,7 @@ export const deleteTask = async (req, res) => {
                 await UserModel.findByIdAndUpdate(task.path[i].janitor[k]._id, { available: true, task: task.path[i].janitor[k].task.filter(x => x != task._id) })
                 mcpJan = mcpJan.filter((jan) => jan._id != task.path[i].janitor[k]._id)
             }
-            await MCPModel.findByIdAndUpdate(task.path[i].mcp, {janitor: mcpJan})
+            await MCPModel.findByIdAndUpdate(task.path[i].mcp, { janitor: mcpJan })
         }
 
         task = await TaskModel.findByIdAndRemove(id);
@@ -283,5 +287,7 @@ export const deleteTask = async (req, res) => {
         console.log(error)
     }
 }
+
+
 
 
