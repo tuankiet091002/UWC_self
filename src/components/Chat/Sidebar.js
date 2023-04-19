@@ -1,8 +1,7 @@
 import React from "react";
-import Navbar from "./Navbar"
 import Search from "./Search"
 import Chats from "./Chats"
-import { Button } from "@mui/material";
+import { Button, Typography, Divider } from "@mui/material";
 import PeopleIcon from '@mui/icons-material/People';
 import ChatForm from './ChatForm';
 const Sidebar = () => {
@@ -10,14 +9,15 @@ const Sidebar = () => {
 
     return (
         <div className="container" style={{ display: "flex", flexDirection: "column", width: "23vw", borderRadius: "20px 0 20px 20px" }}>
-            <div className="sidebar" style={{ backgroundColor: "#6b7c97", padding: "10px" }}>
-                <Navbar />
+            <div className="sidebar" style={{ backgroundColor: "#f0f2f5", padding: "10px" }}>
+                <Typography variant='h4' align='center' sx={{pb: 1}}>Chat box</Typography>
                 <Search />
+                <Divider/>
                 <Chats />
             </div>
             <div style={{ margin: "auto" }}>
                 <ChatForm open={open} onClose={() => setOpen(false)}></ChatForm>
-                <Button sx={{ backgroundColor: "#3b3a5a", width: "23vw" }} fullWidth variant="contained" onClick={() => setOpen(true)}
+                <Button sx={{ width: "23vw" }} variant="contained" onClick={() => setOpen(true)}
                 ><PeopleIcon />Tạo nhóm</Button>
             </div>
         </div>

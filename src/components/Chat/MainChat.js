@@ -12,7 +12,7 @@ import ChatEditorForm from './ChatEditorForm';
 import Messages from "./Messages";
 import Input from "./Input";
 
-import { Typography, Stack, Button, ButtonGroup } from "@mui/material";
+import { Typography, Stack, Button, ButtonGroup, Paper } from "@mui/material";
 
 import io from "socket.io-client";
 let socket
@@ -46,19 +46,19 @@ const MainChat = () => {
 
     return (
         <div className="chat">
-            <div className="chatInfo">
+            <Paper elevation={3} sx={{ alignItems:'center', padding: '10px', height: '80px', display: 'flex', justifyContent: "space-between" }}>
                 <Stack>
                     <Typography variant="h5">{currChat?.name}</Typography>
                     <Typography variant="subtitle1">{currChat?.admin?.available ? "Online" : "Offline"}</Typography>
                 </Stack>
                 {currChat && <>
-                    <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                    <ButtonGroup variant="contained">
                         <Button onClick={() => setOpen(true)}><BorderColorIcon /></Button>
                         <Button color='error' onClick={() => deleteChat(currChat._id)}><DeleteOutlineIcon /></Button>
                     </ButtonGroup>
                     <ChatEditorForm open={open} onClose={() => setOpen(false)} currChat={currChat}></ChatEditorForm>
                 </>}
-            </div>
+            </Paper>
             <Messages />
             <Input handleSend={handleSend} />
         </div>
