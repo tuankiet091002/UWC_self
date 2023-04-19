@@ -6,7 +6,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import { PieChart } from 'react-minimal-pie-chart';
 
 import { useGetEmps } from '../../hooks/Emps/useGetEmps';
-import { useEmpContext } from '../../hooks/Emps/useEmpContext'
+import { useEmpContext } from '../../hooks/Emps/useEmpContext';
+import DoughnutChart from '../ui/charts/DoughNutChart'
 
 function OverviewEmployee() {
     const { emps } = useEmpContext();
@@ -30,12 +31,12 @@ function OverviewEmployee() {
                     spacing={3}
                 >
                     <Stack >
-                        <Typography color="text.secondary">
+                        {/* <Typography color="text.secondary">
                             Nhân viên
                         </Typography>
-                        <PersonIcon sx={{ color: "blue", fontSize: 80 }} />
+                        <PersonIcon sx={{ color: "blue", fontSize: 80 }} /> */}
                     </Stack>
-                    <Box sx={{ width: '100px', height: "100px" }}>
+                    {/* <Box sx={{ width: '100px', height: "100px" }}>
                         <PieChart
                             data={[
                                 { title: 'Else', value: workerEmps, color: 'red' },
@@ -44,8 +45,9 @@ function OverviewEmployee() {
                             ]}
                             label={x => x.dataEntry.title}
                         />
-                    </Box>
-
+                         
+                    </Box> */}
+                    <DoughnutChart dataInput={[ workingCol, workingJan, workerEmps]} size={120} />
                 </Stack>
                 <Typography>{workingJan + workingCol}/{workerEmps} nhân viên làm việc </Typography>
             </CardContent>

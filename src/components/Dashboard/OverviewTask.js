@@ -15,7 +15,7 @@ function OverviewTask() {
         getTasks();
     }, [])
 
-    console.log(tasks)
+    console.log("task: ",tasks)
 
 
     const dailyTask = tasks.filter(task => new Date().getDate() == new Date(task.date).getDate())
