@@ -1,7 +1,7 @@
 import React from "react";
 import Chart from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
-
+import styles from "./Bar.module.css"
 const VerticalChart = ({ dataInput,size }) => {
   const data = {
     datasets: [
@@ -22,9 +22,7 @@ const VerticalChart = ({ dataInput,size }) => {
   };
   return (
     <div
-      style={{
-        width: `${size}px`,
-      }}
+     className={styles.bar}
     >
       <Bar data={data} />
     </div>

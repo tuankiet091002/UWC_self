@@ -6,14 +6,14 @@ export const useGetMCPs = () => {
     const [isLoading, setIsLoading] = useState(null)
     const { dispatch } = useMCPContext()
 
-    const getMCPs = async () => {
+    const getMCPs = async (query = {}) => {
         const token = localStorage.getItem('token')
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch('http://localhost:5000/mcp', {
+        const response = await fetch(`http://localhost:5000/mcp?${Object.keys(query).map(prop => `${prop}=${query[prop]}`).join('&&')}`, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${JSON.parse(token)}`},
+            headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${JSON.parse(token)}` },
             body: JSON.stringify()
         })
         const json = await response.json()

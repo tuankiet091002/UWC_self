@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 
 const Input = ({ handleSend }) => {
@@ -17,7 +17,6 @@ const Input = ({ handleSend }) => {
             />
             <div className="send">
                 <Button disabled={text.length === 0} onClick={() => { setText(''); handleSend(text) }} sx={{
-                    bgcolor: "#5d5b8d",
                     color: "#fff",
                 }}>Send<SendIcon sx={{ fontSize: 16 }} /></Button>
             </div>

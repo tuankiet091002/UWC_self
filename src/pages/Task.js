@@ -13,7 +13,7 @@ import TaskRow from '../components/Task/TaskRow';
 import TaskForm from '../components/Task/TaskForm';
 import { useTaskContext } from '../hooks/Tasks/useTaskContext';
 import { useGetTasks } from '../hooks/Tasks/useGetTasks';
-
+import { useAuthContext } from '../hooks/Auth/useAuthContext';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -29,7 +29,7 @@ const Task = () => {
     const [open, setOpen] = React.useState(false);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+    const { user } = useAuthContext();
     const { tasks } = useTaskContext();
     const { getTasks } = useGetTasks();
 
@@ -90,9 +90,9 @@ const Task = () => {
                 <TableFooter>
                     <TableRow>
                         <TableCell colSpan={3} sx={{ pb: 1 }}>
-                            <Button variant="contained" color="success" onClick={handleOpen}>
+                            {user.role === 'backofficer' && <Button variant="contained" color="success" onClick={handleOpen}>
                                 Thêm Nhiệm vụ
-                            </Button>
+                            </Button>}
                             <TaskForm open={open} handleClose={handleClose} />
                         </TableCell>
                         <TablePagination

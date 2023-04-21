@@ -19,14 +19,14 @@ const Employee = () => {
     return (
         <Container maxWidth={false} sx={{ mx:0, overflow: 'hidden'}}>
             <Grid container spacing={3} sx={{ my: 2, height: '100%' }}>
-                <Grid item xs={3} columnSpacing={2} >
+                <Grid item xl={3} lg={3} md={4} sm={12} xs={12} columnSpacing={2} >
                     <Typography textAlign="center" variant="h4">Nhân viên</Typography>
                     <EmployeeSearch />
                 </Grid>
-                <Grid item xs={9}  sx={{ maxHeight: '74vh', overflow: 'auto' }}>
+                <Grid item xl={9} lg={9}  md={8} sm={12} xs={12}    sx={{ maxHeight: '74vh', overflow: 'auto' }}>
                     <Grid container spacing={3}>
                     {emps.map(emp => (
-                        <Grid item xs={12} sm={6} md={3} key={emp.id}>
+                        <Grid item xl={3} lg={4} sm={6} xs={12} key={emp.id}>
                             <EmployeeCard emp={emp} />
                         </Grid>
                     ))}

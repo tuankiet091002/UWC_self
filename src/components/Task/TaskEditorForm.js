@@ -29,7 +29,8 @@ const TaskEditorForm = ({ open, handleClose, currTask }) => {
 
     const [mcpChecked, setMCPChecked] = useState([]);
     const collectors = emps.filter(emp => emp.role === 'collector');
-    const [janitors, setJanitors] = useState(emps.filter(emp => emp.role === 'janitor'));
+    const [janitors, setJanitors] = useState(emps.filter(emp => emp.role === 'janitor' &&
+        !currTask.path.some(pair => pair.janitor.some(janitor => janitor._id === emp._id))));
     const [janitorChecked, setJanitorChecked] = useState([]);
     const [workers, setWorkers] = useState([]);
 
@@ -45,9 +46,6 @@ const TaskEditorForm = ({ open, handleClose, currTask }) => {
             setWorkers(newWorkers)
         }
     }, [mcps])
-
-
-
 
     function unCheckMCP(value) {
         if (value === -1) {

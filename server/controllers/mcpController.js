@@ -1,9 +1,18 @@
 import MCPModel from '../models/mcpModel.js'
-
+import TaskModel from '../models/taskModel.js'
 export const getMCPs = async (req, res) => {
+    const { task } = req.query
     try {
+        if (task) {
+            const pickedTask = await TaskModel.findById(task)
+            if (!pickedTask) return res.status(404).json({ message: "Task not found" });
+
+            const mcps = await MCPModel.find({ _id: { $in: pickedTask.path.map(x => x.mcp) } }).populate("janitor", "name role available");
+           
+            return res.status(200).json({ message: "MCPs fetched", result: mcps.filter(mcp => mcp._id != 0) })
+        }
         const mcps = await MCPModel.find().sort({ _id: 1 }).populate("janitor", "name role available");
-   
+
         res.status(200).json({ message: "MCPs fetched", result: mcps.filter(mcp => mcp._id != 0) })
     } catch (error) {
         res.status(500).json({ message: "Something went wrong in getMCPs process" });
@@ -52,7 +61,7 @@ export const updateMCP = async (req, res) => {
             return res.status(400).json({ message: "Incorrect logic in current load and/or max capacity value" })
 
         const newMCP = await MCPModel.findByIdAndUpdate(id, mcp, { new: true, runValidators: true })
-                                    .populate("janitor", "name role avaiable")
+            .populate("janitor", "name role avaiable")
 
         res.status(200).json({ message: "MCP updated", result: newMCP })
     } catch (error) {

@@ -9,7 +9,6 @@ import { useAuthContext } from '../../hooks/Auth/useAuthContext'
 import { useEmpContext } from '../../hooks/Emps/useEmpContext'
 import { useGetEmps } from '../../hooks/Emps/useGetEmps'
 import { useCreateChat } from '../../hooks/Chat/useCreateChat'
-import { useUpdateChat } from '../../hooks/Chat/useUpdateChat'
 
 const MenuProps = {
     PaperProps: {
