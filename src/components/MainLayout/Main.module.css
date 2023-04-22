@@ -60,15 +60,22 @@
 
 .outerContainer {
     min-width: 82vw;
+    margin: 0;
 }
 
 
 .navbar {
+    /* max-height: 70vh; */
     margin-top: 40px;
     position: absolute;
     left: 20px;
     background: #a3ffbd;
     border-radius: 18px;
+}
+
+.displayNav {
+    display: none;
+    
 }
 
 @media screen and (max-width: 1180px) {
@@ -108,9 +115,17 @@
         display: none;
     }
     
-.navbar {
-    display: none;
-}
+    .navbar {
+        display: none;
+    }
+    .displayNav {
+        width: 30px;
+        cursor: pointer;
+        display: block;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
 }
 
 

@@ -4,15 +4,13 @@ import { useAuthContext } from '../../hooks/Auth/useAuthContext';
 import { TruckContextProvider } from '../../contexts/TruckContext';
 import { useLogout } from '../../hooks/Auth/useLogout';
 
-
 import {
     alpha, AppBar, Tooltip,
     Box, Toolbar, List, CssBaseline, Typography, IconButton, Avatar, Menu, MenuItem,
     ListItem, ListItemButton, ListItemIcon, Paper, Badge, Stack, Divider
 } from '@mui/material';
 
-import { Grid, Container } from '@mui/material';
-
+import MenuIcon from '@mui/icons-material/Menu';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
@@ -110,7 +108,11 @@ const MainLayout = () => {
                     </div>
                
             </div>
-            <Stack direction="row" sx={{ minHeight: '70vh' }}>
+            <div className={styles.displayNav} >
+                        <MenuIcon sx={{color: 'text.primary'}}/>
+                    </div>       
+            <Stack direction="row" sx={{ minHeight: '70vh', mx:4}}>
+                            
                
                     <div className={styles.navbar}>
                     <List>
@@ -119,12 +121,16 @@ const MainLayout = () => {
                                 {link.path === '/login' ? <Divider margin={1} variant="middle" sx={{ mt: 5 }} /> : null}
                                 <Link to={link.path}>
                                     <Tooltip title={link.name} placement='right' arrow>
-                                        <ListItemButton>
+                                        <ListItemButton >
                                             <ListItemIcon
                                                 sx={{
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
-                                                    color: "text.primary"
+                                                    color: "text.primary",
+                                                    '& svg': {
+                                                        fontSize: '40px',
+
+                                                    },
                                                 }}>
                                                 {link.icon}
                                             </ListItemIcon>
@@ -135,7 +141,9 @@ const MainLayout = () => {
                         ))}
                     </List>
                     </div>
+                    
                 <div className={styles.outerContainer} >
+                    
                     <Outlet />
                 </div>
             </Stack>
