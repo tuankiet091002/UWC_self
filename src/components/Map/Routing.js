@@ -50,5 +50,3 @@ const Routing = () => {
     return null;
 
 }
-
-export default Routing

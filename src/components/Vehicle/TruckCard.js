@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, CardMedia, CardContent, Typography, CardActions, Button, ButtonGroup } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, CardActions, Button, ButtonGroup, Stack } from "@mui/material";
 
 import { useDeleteTruck } from "../../hooks/Trucks/useDeleteTruck";
 import TruckForm from "./TruckForm";
@@ -30,11 +30,17 @@ function TruckCard({ truck }) {
                 <Typography gutterBottom variant="h5" component="div" textAlign="center">
                     Xe số {truck._id}
                 </Typography>
-                <Typography variant="body2" align="center" color={!truck.driver ? "success.main" : "error.main"}>
-                    {truck.driver ? `Lái bởi ${truck.driver.name}` : "Có thể sử dụng"}
-                </Typography>
+                <Stack direction='row' justifyContent='space-between'>
+                    <Typography variant="body2" align="center" color={!truck.driver ? "success.main" : "error.main"}>
+                        {truck.driver ? `Lái bởi ${truck.driver.name}` : "Có thể sử dụng"}
+                    </Typography>
+                    <Typography variant="body2" align="center">
+                        {truck.load.$numberDecimal}/{truck.cap}
+                    </Typography>
+
+                </Stack>
             </CardContent>
-            <CardActions sx={{display: 'flex', justifyContent:"end"}}>
+            <CardActions sx={{ display: 'flex', justifyContent: "end" }}>
                 <ButtonGroup variant="contained" size="small">
                     <Button onClick={() => setOpen(true)}>Sửa</Button>
                     <Button color="error" onClick={() => deleteTruck(truck._id)}>Xóa</Button>

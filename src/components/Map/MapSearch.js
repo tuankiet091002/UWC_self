@@ -35,6 +35,8 @@ function MapSearch({ display, setDisplay }) {
                         label="Hiển thị"
                         value={display}
                         onChange={(e) => setDisplay(e.target.value)}
+                        value={display}
+                        onChange={(e) => setDisplay(e.target.value)}
                     >
                         <MenuItem value={0}>Tất cả</MenuItem>
                         <MenuItem value={1}>Truck</MenuItem>
@@ -57,9 +59,23 @@ function MapSearch({ display, setDisplay }) {
                         ))}
                     </Select>
                 </FormControl>
+                <FormControl fullWidth>
+                    <InputLabel id="select-label">Nhiệm vụ</InputLabel>
+                    <Select
+                        labelId="select-label"
+                        label="Nhiệm vụ"
+                        value={task}
+                        onChange={(e) => setTask(e.target.value)}
+                    >
+                        {tasks.map((task) => (
+                            <MenuItem key={task._id} value={task._id}>{task._id}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Grid>
 
             <Box marginTop={2}>
+                <Button fullWidth variant="contained" color="success" sx={{ borderRadius: 28 }} onClick={handleSubmit}>
                 <Button fullWidth variant="contained" color="success" sx={{ borderRadius: 28 }} onClick={handleSubmit}>
                     <SearchIcon />Search
                 </Button>

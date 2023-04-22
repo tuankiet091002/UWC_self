@@ -127,6 +127,8 @@ const MainLayout = () => {
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                     color: "text.primary",
+                                                    fontSize: '40px'
+                                                    color: "text.primary",
                                                     '& svg': {
                                                         fontSize: '40px',
 
