@@ -35,8 +35,6 @@ function MapSearch({ display, setDisplay }) {
                         label="Hiển thị"
                         value={display}
                         onChange={(e) => setDisplay(e.target.value)}
-                        value={display}
-                        onChange={(e) => setDisplay(e.target.value)}
                     >
                         <MenuItem value={0}>Tất cả</MenuItem>
                         <MenuItem value={1}>Truck</MenuItem>
@@ -75,7 +73,6 @@ function MapSearch({ display, setDisplay }) {
             </Grid>
 
             <Box marginTop={2}>
-                <Button fullWidth variant="contained" color="success" sx={{ borderRadius: 28 }} onClick={handleSubmit}>
                 <Button fullWidth variant="contained" color="success" sx={{ borderRadius: 28 }} onClick={handleSubmit}>
                     <SearchIcon />Search
                 </Button>
