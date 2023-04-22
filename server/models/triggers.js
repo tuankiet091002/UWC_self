@@ -35,6 +35,7 @@ exports = async function () {
     }
 };
 
+
 //////////////////////////////////// MCP Load Manager//////////////////////////////////
 exports = async function () {
     const mongodb = context.services.get("Cluster");
@@ -62,7 +63,7 @@ exports = async function () {
 };
 
 /////////////////////////////Truck Location Manager/////////////////////////////////////////////
-const SPEED_MODIFIER = 1;
+const SPEED_MODIFIER = 0.00006782787;
 
 function dToInt(a) {
     // type nội bộ mongo => type float của js
@@ -128,8 +129,8 @@ exports = async function () {
                     } else {
                         truck.path = [];
                         truck.load = 0;
-                        truck.x = 0;
-                        truck.y = 0;
+                        truck.x = 10.881356
+                        truck.y = 106.804923;
                         truck.nextMCP = null;
                     }
                 } else {
