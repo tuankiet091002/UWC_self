@@ -126,7 +126,8 @@ const MainLayout = () => {
                                                 sx={{
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
-                                                    color: "text.primary"
+                                                    color: "text.primary",
+                                                    fontSize: '40px'
                                                 }}>
                                                 {link.icon}
                                             </ListItemIcon>

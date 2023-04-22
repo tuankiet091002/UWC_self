@@ -10,19 +10,17 @@ import { useTaskContext } from "../../hooks/Tasks/useTaskContext";
 import { useGetMCPs } from "../../hooks/MCPs/useGetMCPs";
 import { useGetTrucks } from "../../hooks/Trucks/useGetTrucks";
 
-function MapSearch({ display, setDisplay }) {
+function MapSearch({ task, setTask ,display, setDisplay }) {
     const { tasks } = useTaskContext();
 
     const { getTrucks } = useGetTrucks();
     const { getMCPs } = useGetMCPs();
 
-
-    const [task, setTask] = useState('');
-
     const handleSubmit = (e) => {
         e.preventDefault();
         getTrucks({ task })
         getMCPs({ task })
+        
     }
 
     return (

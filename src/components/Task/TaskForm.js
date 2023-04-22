@@ -4,7 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
     Dialog, DialogTitle, DialogContent, DialogActions, Button,
-    FormControl, InputLabel, Select, MenuItem, Stack, Typography,
+    FormControl, InputLabel, Select, MenuItem, Stack, Typography, Snackbar,
 } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -67,8 +67,10 @@ const TaskForm = ({ open, handleClose }) => {
         for (let i = 0; i < mcpChecked.length; i++) {
             path[i] = { mcp: mcpChecked[i]._id, janitor: workers[mcpChecked[i]._id].map(x => x._id) }
         }
-        createTask({ ...form, path, date: form.date.$d })
+        // createTask({ ...form, path, date: form.date.$d })
+        createTask({ ...form, path, date: form.date })
     }
+    
 
     return (<LocalizationProvider dateAdapter={AdapterDayjs}>
         <Dialog open={open} onClose={handleClose} maxWidth="xl" >

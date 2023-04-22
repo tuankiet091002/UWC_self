@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -9,46 +9,51 @@ import { useGetTrucks } from '../../hooks/Trucks/useGetTrucks';
 import { useGetMCPs } from '../../hooks/MCPs/useGetMCPs';
 import { useTruckContext } from '../../hooks/Trucks/useTruckContext'
 import { useMCPContext } from '../../hooks/MCPs/useMCPContext.js';
-const Routing = () => {
-    const { mcps } = useMCPContext();
-    const { trucks } = useTruckContext();
-    const path = [
-        { x: 10.88131, y: 106.804855 },
-        { x: 10.876958, y: 106.794195 },
-        { x: 10.872158, y: 106.798235 },
-    ]
-    const { getTrucks } = useGetTrucks();
-    const { getMCPs, isLoading, error } = useGetMCPs();
+const Routing = ({truck, mcps}) => {
+    const map = useMap();   
+    // const path = [
+    //     { x: 10.88131, y: 106.804855 },
+    //     { x: 10.876958, y: 106.794195 },
+    //     { x: 10.872158, y: 106.798235 },
+    // ]
+    const [waypoints, setWaypoint] = useState([]);
+    useEffect( ()=>{
+        setWaypoint([{ x: truck.x.$numberDecimal, y: truck.y.$numberDecimal},
+        ...mcps.map(mcp => {return {x:mcp.x.$numberDecimal, y: mcp.y.$numberDecimal}})
+        ])
+    }, [truck, mcps])
+    const waypointsReal = waypoints.map(x => {
+        return L.latLng(x.x, x.y)  
+    })
 
+    console.log(waypointsReal);
+    console.log(map);
     useEffect(() => {
-        getMCPs();
-        getTrucks();
-
-    }, []);
-    const map = useMap();
-    useEffect(() => {
-        L.Routing.control({
-            waypoints: [
-                L.latLng(path[0].x, path[0].y),
-                L.latLng(path[1].x, path[1].y),
-                L.latLng(path[2].x, path[2].y),
-                // L.latLng(10.876958, 106.342423),
-                // L.latLng(mcps[0].x.$numberDecimal, mcps[0].y.$numberDecimal),
-                // ...mcps.map(mcp=>{
-                //     L.latLng(mcp.x.$numberDecimal, mcp.y.$numberDecimal)
-                // })
-            ],
-            lineOptions: {
-                styles: [{
-                    color: "blue",
-                    weight: 6,
-                    opacity: 0.7
-                }]
-            }
-        }).addTo(map);
+        if(truck && mcps){
+            L.Routing.control({
+                waypoints: waypointsReal
+                ,
+                lineOptions: {
+                    styles: [{
+                        color: "blue",
+                        weight: 6,
+                        opacity: 0.7
+                    }]
+                },
+                addWaypoints: false,
+                draggableWaypoints: false,
+                fitSelectedRoutes: true,
+                showAlternatives: false,
+                show: false,
+                routeWhileDragging: false,
+                autoRoute: true,
+                useZoomParameter: true,
+                createMarker: function () {
+                    return null; // This will prevent the marker icon from being shown
+                },
+            }).addTo(map);
+        }
     }, []);
     return null;
-
 }
-
 export default Routing
