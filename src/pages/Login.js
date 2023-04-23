@@ -16,6 +16,7 @@ const Login = () => {
     const [password, setPassword] = React.useState('')
 
     return (
+        
         <Box sx={{
             height: '100%',
             backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -30,7 +31,7 @@ const Login = () => {
                     alignItems='center'
                     sx={{
                         py: 2,
-                        width: '650px',
+                        minWidth: '450px',
                         backgroundColor: alpha('#ffffff', 0.54)
                     }}
                 >
@@ -38,7 +39,7 @@ const Login = () => {
                     <Typography variant="h5" sx={{ my: 2 }}>
                         Đăng nhập
                     </Typography>
-                    <FormControl sx={{ width: '550px' }}>
+                    <FormControl sx={{ minWidth: '350px' }}>
                         <TextField
                             margin="normal"
                             required

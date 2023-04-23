@@ -7,13 +7,16 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 
 import { useGetEmps } from "../../hooks/Emps/useGetEmps";
+import styles from "./Employee.module.css"
+
 
 function EmployeeSearch() {
     const [form, setForm] = useState({ name: "", role: "" });
     const { getEmps, isLoading, error } = useGetEmps();
 
     return (
-        <Card marginTop={5} sx={{ p: 3, width: '100%' }}>
+    
+        <div className={styles.search}>
             <Grid marginTop={2}>
                 <FormControl fullWidth>
                     <InputLabel id="role-select">Vị trí</InputLabel>
@@ -42,7 +45,7 @@ function EmployeeSearch() {
                     <SearchIcon />Search
                 </Button>
             </Stack>
-        </Card>
+        </div>
     )
 }
 export default EmployeeSearch;

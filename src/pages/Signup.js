@@ -33,14 +33,14 @@ const Signup = () => {
                     alignItems='center'
                     sx={{
                         py: 2,
-                        width: '750px',
+                        minWidth: '450px',
                         backgroundColor: alpha('#ffffff', 0.75)
                     }}
                 >
                     <Typography variant="h5" sx={{ my: 2 }}>
                         Đăng ký
                     </Typography>
-                    <FormControl sx={{ width: '650px' }}>
+                    <FormControl sx={{ minWidth: '350px' }}>
                         <TextField
                             margin="normal"
                             required

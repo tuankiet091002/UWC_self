@@ -9,22 +9,24 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useTaskContext } from "../../hooks/Tasks/useTaskContext";
 import { useGetMCPs } from "../../hooks/MCPs/useGetMCPs";
 import { useGetTrucks } from "../../hooks/Trucks/useGetTrucks";
-
-function MapSearch({ task, setTask ,display, setDisplay }) {
+import styles from "../Employee/Employee.module.css"
+function MapSearch({ display, setDisplay }) {
     const { tasks } = useTaskContext();
 
     const { getTrucks } = useGetTrucks();
     const { getMCPs } = useGetMCPs();
 
+
+    const [task, setTask] = useState('');
+
     const handleSubmit = (e) => {
         e.preventDefault();
         getTrucks({ task })
         getMCPs({ task })
-        
     }
 
     return (
-        <Card sx={{ p: 3, width: '100%' }}>
+        <div className={styles.search}>
             <Grid marginTop={2}>
                 <FormControl fullWidth>
                     <InputLabel id="select-label">Hiển thị</InputLabel>
@@ -55,6 +57,19 @@ function MapSearch({ task, setTask ,display, setDisplay }) {
                         ))}
                     </Select>
                 </FormControl>
+                <FormControl fullWidth>
+                    <InputLabel id="select-label">Nhiệm vụ</InputLabel>
+                    <Select
+                        labelId="select-label"
+                        label="Nhiệm vụ"
+                        value={task}
+                        onChange={(e) => setTask(e.target.value)}
+                    >
+                        {tasks.map((task) => (
+                            <MenuItem key={task._id} value={task._id}>{task._id}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Grid>
 
             <Box marginTop={2}>
@@ -62,7 +77,7 @@ function MapSearch({ task, setTask ,display, setDisplay }) {
                     <SearchIcon />Search
                 </Button>
             </Box>
-        </Card>
+        </div>
     )
 }
 export default MapSearch;

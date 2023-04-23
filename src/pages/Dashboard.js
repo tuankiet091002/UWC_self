@@ -9,24 +9,28 @@ import TrashChart from '../components/Dashboard/TrashChart';
 import TaskProcess from '../components/Dashboard/TaskProcess';
 
 const Dashboard = () => {
-    return (<Container sx={{ py: 3, mx: 0}}>
-        <Grid container spacing={3} sx={{width: "1300px"}} >
-            <Grid item xs={3} sx={{height: "200px"}}>
+    
+
+    return (
+    
+    <Container sx={{ py: 3, mx:   5}} >
+        <Grid container spacing={3} sx={{width:  '70vw'}}  >
+            <Grid item lg={3} md={4} sm={12} xs={12}  sx={{minHeight: "200px"}}>
                 <OverviewTask />
             </Grid>
-            <Grid item xs={3} sx={{height: "200px"}}>
+            <Grid item lg={3} md={4} sm={12} xs={12}  sx={{minHeight: "200px"}}>
                 <OverviewEmployee />
             </Grid>
-            <Grid item xs={3} sx={{height: "200px"}}>
+            <Grid item lg={3} md={4} sm={12} xs={12}  sx={{minHeight: "200px"}}>
                 <OverviewTruck />
             </Grid>
-            <Grid item xs={3} sx={{height: "200px"}}>
+            <Grid item lg={3} md={4} sm={12} xs={12}  sx={{minHeight: "200px"}}>
                 <OverviewMCP />
             </Grid>
-            <Grid item xs={4} sx={{height: "350px"}}>
+            <Grid item lg={4}  md={8}  sm={12} xs={12} sx={{minHeight: "350px"}}>
                 <TaskProcess/>
             </Grid>
-            <Grid item xs={8} sx={{height: "350px"}}>
+            <Grid item lg={8}  md={12}  sm={12} xs={12} sx={{minHeight: "350px"}}>
                 <TrashChart />
             </Grid>
         </Grid>

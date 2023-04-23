@@ -10,7 +10,7 @@ import {
     ListItem, ListItemButton, ListItemIcon, Paper, Badge, Stack, Divider
 } from '@mui/material';
 
-
+import MenuIcon from '@mui/icons-material/Menu';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
@@ -21,6 +21,8 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ChatIcon from '@mui/icons-material/Chat';
 import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
+import styles from "./Main.module.css"
+
 
 import logo from '../../assets/logo.png';
 import cum from '../../assets/cum.jpg';
@@ -51,24 +53,24 @@ const MainLayout = () => {
 
 
     return (
-        <Paper elevation={1} sx={{ p: 1, height: '100%', borderRadius: '10px', display: 'block', backgroundColor: "white" }}>
-            <CssBaseline />
-            <AppBar
-                position="sticky"
-                elevation={2}
-                sx={{ height: "12%", borderRadius: '10px', backgroundColor: alpha("#32850b", 0.04) }}>
-                <Toolbar>
-                    <Link to="/">
+        
+        <div className={styles.container}>
+            <div className={styles.header}
+            >
+                
+                <div className={styles.logo} >
+                     <Link to="/">
                         <IconButton
                             color="text.primary"
                         >
-                            <Box component="img" sx={{ height: '60px', width: '100px' }} src={logo} />
+                            <img src={logo}></img>
                         </IconButton>
                     </Link>
+                    
+                    </div>
+                    <h4 className={styles.title}>Đồ án tổng hợp CNPM</h4>
 
-
-                    <Typography sx={{ flexGrow: 1 }} variant="h4" color="text.primary">Đồ án tổng hợp CNPM</Typography>
-                    <Stack direction='row' spacing={3} alignItems='center' sx={{ flexGrow: 0.05, color: "text.primary" }}>
+                    <div className={styles.rightHeader}>
                         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={4} color="error">
                                 <MailIcon />
@@ -83,11 +85,11 @@ const MainLayout = () => {
                             </Badge>
                         </IconButton>
 
-                        <IconButton onClick={handleUser}>
+                        <div className={styles.user} onClick={handleUser}>
                             <Avatar src={user.avatar ? user.avatar : cum} sx={{ width: 40, height: 40 }} />
-                            <Typography padding={1} variant="h6" color="text.primary">{user.name}</Typography>
+                            <h6 className={styles.username}>{user.name}</h6>
                             <ExpandMoreIcon sx={{ color: "text.primary" }} />
-                        </IconButton>
+                        </div>
 
                         <Menu
                             anchorEl={anchorElUser}
@@ -103,31 +105,28 @@ const MainLayout = () => {
                                 <Typography textAlign="center">Logout</Typography>
                             </MenuItem>
                         </Menu>
-                    </Stack>
-                </Toolbar>
-            </AppBar>
-            <Stack direction="row" padding={1} sx={{ height: '88%' }}>
-                <Paper elevation={2}
-                    sx={{
-                        flexGrow: 0,
-                        background: "#a3ffbd",
-                        my: 5, mr: 5, ml: "-50px",
-                        borderRadius: '12px',
-                        height: "450px"
-                    }}>
+                    </div>
+               
+            </div>
+            <div className={styles.displayNav} >
+                        <MenuIcon sx={{color: 'text.primary'}}/>
+                    </div>       
+            <Stack direction="row" sx={{ minHeight: '70vh', mx:4}}>
+                            
+               
+                    <div className={styles.navbar}>
                     <List>
                         {links.map((link, index) => (
                             <ListItem key={index} sx={{ p: 0, display: 'block' }}>
                                 {link.path === '/login' ? <Divider margin={1} variant="middle" sx={{ mt: 5 }} /> : null}
                                 <Link to={link.path}>
                                     <Tooltip title={link.name} placement='right' arrow>
-                                        <ListItemButton>
+                                        <ListItemButton >
                                             <ListItemIcon
                                                 sx={{
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                     color: "text.primary",
-                                                    fontSize: '40px'
                                                 }}>
                                                 {link.icon}
                                             </ListItemIcon>
@@ -137,12 +136,16 @@ const MainLayout = () => {
                             </ListItem>
                         ))}
                     </List>
-                </Paper>
-                <Box componenet="main" sx={{ flexGrow: 1 }}>
+                    </div>
+                    
+                <div className={styles.outerContainer} >
+                    
                     <Outlet />
-                </Box>
+                </div>
             </Stack>
-        </Paper>
+        </div>
+    
+
     );
 }
 

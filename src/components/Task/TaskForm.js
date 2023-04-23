@@ -4,7 +4,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
     Dialog, DialogTitle, DialogContent, DialogActions, Button,
-    FormControl, InputLabel, Select, MenuItem, Stack, Typography, Snackbar,
+    FormControl, InputLabel, Select, MenuItem, Stack, Typography,
+    Snackbar
+    
 } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -20,6 +22,12 @@ import { useCreateTask } from '../../hooks/Tasks/useCreateTask'
 import MCPPicker from './MCPPicker';
 import JanitorPicker from './JanitorPicker';
 import PairPicker from './PairPicker';
+
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const TaskForm = ({ open, handleClose }) => {
     const { mcps } = useMCPContext()
@@ -37,7 +45,7 @@ const TaskForm = ({ open, handleClose }) => {
     const [janitors, setJanitors] = useState([]);
     const [janitorChecked, setJanitorChecked] = useState([]);
     const [workers, setWorkers] = useState([]);
-
+    const [isOpenSnack, setIsOpenSnack] = useState(false)
     useEffect(() => {
         getMCPs();
         getEmps();
@@ -67,12 +75,34 @@ const TaskForm = ({ open, handleClose }) => {
         for (let i = 0; i < mcpChecked.length; i++) {
             path[i] = { mcp: mcpChecked[i]._id, janitor: workers[mcpChecked[i]._id].map(x => x._id) }
         }
-        // createTask({ ...form, path, date: form.date.$d })
-        createTask({ ...form, path, date: form.date })
+        createTask({ ...form, path, date: form.date.$d })
+        if(!error) {
+            handleSnackbarOpen()
+            handleClose()
+        }
+       
     }
-    
+
+    const handleSnackbarOpen = () => {
+        setIsOpenSnack(true)
+    }
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+          }
+      
+          setIsOpenSnack(false);
+        }
 
     return (<LocalizationProvider dateAdapter={AdapterDayjs}>
+
+
+        <Snackbar open={isOpenSnack} autoHideDuration={1000} onClose={handleSnackbarClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+            <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+            Create Task Successfully!!
+            </Alert>
+      </Snackbar>
+      {/* <Alert severity="success">This is a success message!</Alert> */}
         <Dialog open={open} onClose={handleClose} maxWidth="xl" >
             <DialogTitle align="center" variant="h4">Task Form</DialogTitle>
             <DialogContent>

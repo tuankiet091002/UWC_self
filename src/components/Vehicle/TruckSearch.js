@@ -8,6 +8,8 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import { useTruckContext } from '../../hooks/Trucks/useTruckContext';
 import { useGetTrucks } from "../../hooks/Trucks/useGetTrucks";
+import styles from "./Truck.module.css"
+
 
 function TruckSearch() {
     const { trucks } = useTruckContext();
@@ -18,7 +20,7 @@ function TruckSearch() {
     const allCap = [...(new Set(trucks.map(truck => truck.cap)))]
 
     return (
-        <Card marginTop={5} sx={{ p: 3, width: '100%' }}>
+        <div className={styles.search}>
             <Grid marginTop={2}>
                 <FormControl fullWidth>
                     <InputLabel id="available-select">Trạng thái</InputLabel>
@@ -57,7 +59,7 @@ function TruckSearch() {
                     <SearchIcon />Search
                 </Button>
             </Box>
-        </Card>
+        </div>
     )
 }
 export default TruckSearch;

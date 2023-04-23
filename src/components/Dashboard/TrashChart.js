@@ -11,6 +11,10 @@ import {
 
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import ReactApexChart from 'react-apexcharts';
+import { ApexOptions } from 'apexcharts';
+
+
 
 ChartJS.register(
     CategoryScale,
@@ -20,6 +24,8 @@ ChartJS.register(
     Tooltip,
     Legend,
 );
+
+
 
 const options = {
     plugins: {
@@ -33,6 +39,7 @@ const options = {
         mode: 'index',
         intersect: false,
     },
+  
     scales: {
         x: {
             stacked: true,
@@ -40,6 +47,7 @@ const options = {
         y: {
             stacked: true,
         },
+        
     },
 };
 
@@ -52,19 +60,21 @@ const data = {
             data: labels.map(() => Math.floor(Math.random() * 100)),
             backgroundColor: '#0F88F9',
             stack: 'Stack 0',
-            barThickness: 16,
+            barThickness:  16,
         },
         {
             label: 'Collector',
             data: labels.map(() => Math.floor(Math.random() * 100)),
             backgroundColor: '#10D5F8',
             stack: 'Stack 1',
-            barThickness: 16,
+            barThickness:  16,
         },
     ],
 };
 
 function TrashChart() {
+
+
     return (
         <Card sx={{ height: "100%" }}>
             <CardContent>
