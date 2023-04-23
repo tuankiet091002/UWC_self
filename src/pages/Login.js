@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+
 import { useLogin } from '../hooks/Auth/useLogin'
+import { useAuthContext } from '../hooks/Auth/useAuthContext'
 
 
 import {
@@ -12,11 +14,12 @@ import logo from '../assets/logo.png'
 
 const Login = () => {
     const { login, isLoading, error } = useLogin();
+    const { user } = useAuthContext()
     const [username, setUsername] = React.useState('')
     const [password, setPassword] = React.useState('')
 
     return (
-        
+
         <Box sx={{
             height: '100%',
             backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -71,14 +74,14 @@ const Login = () => {
                             Sign In
                         </Button>
 
-                        <Link to="/signup">
+                        {user?.role === 'backofficer' && < Link to="/signup">
                             {"Chưa có tài khoản? Đăng ký"}
-                        </Link>
+                        </Link>}
                     </FormControl>
                 </Stack>
                 <Box sx={{ flexGrow: 2 }} />
             </Stack>
-        </Box>
+        </Box >
     )
 }
 

@@ -40,14 +40,14 @@ const App = () => {
                         <Route path="emp" element={<Employee />} />
                         <Route path="chat" element={<Chat />} />
                         <Route path="login" element={<Login />} />
-                        <Route path="signup" element={<Signup />} />
+                        {user.role == 'backofficer' &&
+                            <Route path="signup" element={<Signup />} />}
                     </Route>
                 </Routes>
                 :
                 <Routes>
                     <Route path="" element={() => <Navigate to="login" />} />
                     <Route path='login' element={<Login />} />
-                    <Route path="signup" element={<Signup />} />
                 </Routes>
             }
             </div>
