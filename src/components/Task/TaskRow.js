@@ -53,7 +53,7 @@ const TaskRow = ({ task }) => {
             <StyledTableCell align="center"><Typography>{task._id}</Typography></StyledTableCell>
             <StyledTableCell align="center"><Typography>{task.taskmaster.name}</Typography></StyledTableCell>
             <StyledTableCell align="center"><Typography>{task.collector.name}</Typography></StyledTableCell>
-            <StyledTableCell align="center"><Typography>{task.truck._id}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.truck?._id}</Typography></StyledTableCell>
             <StyledTableCell align="center"><Typography>{(new Date(task.date)).toLocaleDateString()}</Typography></StyledTableCell>
             <StyledTableCell align="center"><Typography>{task.shift * 3 + 3}-{task.shift * 3 + 6}h</Typography></StyledTableCell>
             <StyledTableCell align="center">
@@ -62,8 +62,8 @@ const TaskRow = ({ task }) => {
                     {task.state}
                 </Typography>
             </StyledTableCell>
-            <StyledTableCell align="center"><Typography>{task.checkIn ? task.checkIn : 'chưa'}</Typography></StyledTableCell>
-            <StyledTableCell align="center"><Typography>{task.checkOut ? task.checkOut : 'chưa'}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.checkIn ? (new Date(task.checkIn)).toLocaleString() : 'chưa'}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.checkOut ? (new Date(task.checkOut)).toLocaleString() : 'chưa'}</Typography></StyledTableCell>
             {user.role === 'backofficer' ? <StyledTableCell align="center">
                 <Box >
                     <Typography color="error">{error}</Typography>

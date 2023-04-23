@@ -16,7 +16,7 @@ function OverviewTask() {
     }, [])
 
     const dailyTask = tasks.filter(task => new Date().getDate() == new Date(task.date).getDate())
-    const finishedTask = dailyTask.filter(task => task.status === "done" || task.state==="fail").length;
+    const finishedTask = dailyTask.filter(task => task.state === "done" || task.state === "fail").length;
     const totalTask = dailyTask.length;
     return (
         <Card sx={{ height: '100%' }}>
@@ -50,7 +50,7 @@ function OverviewTask() {
 
                 </Stack>
                 <Box sx={{ mt: 1 }}>
-                    <ProgressBar completed={finishedTask/totalTask} bgColor="blue"/>
+                    <ProgressBar completed={finishedTask / totalTask * 100} bgColor="blue" />
                 </Box>
             </CardContent>
         </Card>

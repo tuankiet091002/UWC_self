@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate,  } from "react-router-dom";
 import { useAuthContext } from './hooks/Auth/useAuthContext'
 import { Box, alpha } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -30,7 +30,7 @@ const App = () => {
 
     return (<BrowserRouter>
         <ThemeProvider theme={theme}>
-            <div className={styles.container}  >{user ?
+        <Box position="sticky" sx={{ py: 4, pl: 8, pr: 4, height: "100vh", backgroundColor: alpha('#aeffc5', 0.79) }}>{user ?
                 <Routes>
                     <Route element={<MainLayout />} >
                         <Route path="" element={user.role === 'backofficer' ? <Dashboard /> : <Calendar />} />
@@ -50,7 +50,7 @@ const App = () => {
                     <Route path="signup" element={<Signup />} />
                 </Routes>
             }
-            </div>
+            </Box>
         </ThemeProvider>
     </BrowserRouter >)
 }

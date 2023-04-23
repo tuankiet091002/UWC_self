@@ -53,13 +53,22 @@ const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
     },
 }));
 
+const findProcess = (task) => {
+    let i = 0;
+    for (i = 0; i < task.path.length; i++) {
+        if (task.path[i].timestamp == null)
+            break;
+    }
+    return i
+}
+
 function QontoStepIcon(props) {
     const { active, completed, className } = props;
 
     return (
         <QontoStepIconRoot ownerState={{ active }} className={className}>
             {completed ? (
-                <Check className="QontoStepIcon-completedIcon"/>
+                <Check className="QontoStepIcon-completedIcon" />
             ) : (
                 <div className="QontoStepIcon-circle" />
             )}
@@ -90,16 +99,16 @@ function TaskProcess() {
                                     <TableCell align="center">{task.shift}</TableCell>
                                     <TableCell align="center" >{task.collector.name}</TableCell>
                                     <TableCell>
-                                        <Stepper activeStep={2} connector={<QontoConnector />}>
+                                        <Stepper activeStep={findProcess(task)} connector={<QontoConnector />}>
                                             {task.path.map((pair) => {
                                                 return <Step key={pair.mcp._id}>
-                                                    <StepLabel 
-                                                    StepIconComponent={QontoStepIcon}
-                                                    sx={{
-                                                        '& .MuiStepLabel-iconContainer': {
-                                                            px: 0,
-                                                          },
-                                                    }}/>
+                                                    <StepLabel
+                                                        StepIconComponent={QontoStepIcon}
+                                                        sx={{
+                                                            '& .MuiStepLabel-iconContainer': {
+                                                                px: 0,
+                                                            },
+                                                        }} />
                                                 </Step>
                                             }
                                             )}
