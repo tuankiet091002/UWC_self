@@ -12,11 +12,8 @@ import { useGetTrucks } from "../../hooks/Trucks/useGetTrucks";
 import styles from "../Employee/Employee.module.css"
 function MapSearch({ display, setDisplay }) {
     const { tasks } = useTaskContext();
-
     const { getTrucks } = useGetTrucks();
     const { getMCPs } = useGetMCPs();
-
-
     const [task, setTask] = useState('');
 
     const handleSubmit = (e) => {
@@ -24,7 +21,7 @@ function MapSearch({ display, setDisplay }) {
         getTrucks({ task })
         getMCPs({ task })
     }
-
+    
     return (
         <div className={styles.search}>
             <Grid marginTop={2}>
@@ -44,19 +41,6 @@ function MapSearch({ display, setDisplay }) {
             </Grid>
 
             <Grid marginTop={2}>
-                <FormControl fullWidth>
-                    <InputLabel id="select-label">Nhiệm vụ</InputLabel>
-                    <Select
-                        labelId="select-label"
-                        label="Nhiệm vụ"
-                        value={task}
-                        onChange={(e) => setTask(e.target.value)}
-                    >
-                        {tasks.map((task) => (
-                            <MenuItem key={task._id} value={task._id}>{task._id}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
                 <FormControl fullWidth>
                     <InputLabel id="select-label">Nhiệm vụ</InputLabel>
                     <Select

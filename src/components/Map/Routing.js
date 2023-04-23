@@ -11,11 +11,6 @@ import { useTruckContext } from '../../hooks/Trucks/useTruckContext'
 import { useMCPContext } from '../../hooks/MCPs/useMCPContext.js';
 const Routing = ({truck, mcps}) => {
     const map = useMap();   
-    // const path = [
-    //     { x: 10.88131, y: 106.804855 },
-    //     { x: 10.876958, y: 106.794195 },
-    //     { x: 10.872158, y: 106.798235 },
-    // ]
     const [waypoints, setWaypoint] = useState([]);
     useEffect( ()=>{
         setWaypoint([{ x: truck.x.$numberDecimal, y: truck.y.$numberDecimal},

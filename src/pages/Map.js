@@ -11,15 +11,16 @@ import {
   Typography,
   ButtonGroup,
 } from "@mui/material";
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 import Grid from "@mui/material/Unstable_Grid2";
 import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useMap } from "react-leaflet";
 import "leaflet-routing-machine";
 import GetLocation from "../components/Map/MapLocation.js";
 import MapSearch from "../components/Map/MapSearch.js";
 import GetLatLng from "../components/Map/GetLatLng.js";
+import Routing from "../components/Map/Routing.js";
 import {
   truckIcon,
   MCPfull,
@@ -36,7 +37,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { useTruckContext } from "../hooks/Trucks/useTruckContext.js";
 import "./map.css";
-import Routing from "../components/Map/Routing.js";
+
 const Map = () => {
   const { mcps } = useMCPContext();
   const { trucks } = useTruckContext();
@@ -44,13 +45,13 @@ const Map = () => {
   const { deleteMCP } = useDeleteMCP();
   const { getTrucks } = useGetTrucks();
   const { getTasks } = useGetTasks();
-
   const [display, setDisplay] = useState(0);
   const [task, setTask] = useState('')
   const [displayMCP, setDisplayMCP] = useState(mcps);
   const [displayTruck, setDisplayTruck] = useState(trucks);
   const [open, setOpen] = useState(false);
-
+  const [position, setPosition] = useState(null);
+ 
   useEffect(() => {
     getMCPs();
     getTrucks();
@@ -67,12 +68,10 @@ const Map = () => {
     else setDisplayTruck([]);
   }, [trucks]);
 
-  const handleDeleteMCP = (id) => {
+  const handleDeleteMCP = (id) => { 
     deleteMCP(id);
   };
-  console.log(display);
-  console.log(trucks);
-  console.log(mcps);
+
   return (
     <Container maxWidth={false} sx={{ mx: 0, overflow: "hidden" }}>
       <Grid container spacing={3} sx={{ my: 2, height: "100%" }}>
@@ -107,8 +106,6 @@ const Map = () => {
             zoom={15}
             scrollWheelZoom={true}
           >
-            {/* <Routing /> */}
-
             <TileLayer
               attribution='&copy; <a href="https://www.facebook.com/chacachiene/">Nguyen Phat</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -118,7 +115,7 @@ const Map = () => {
             {(display === 2 || display === 0) &&
               mcps.map((mcp) => {
                 let icon;
-                if (mcp.load.$numberDecimal / mcp.cap > 0.7) {
+                if (mcp.load.$numberDecimal / mcp.cap > 0.8) {
                   icon = MCPfull;
                 } else if (mcp.load.$numberDecimal / mcp.cap > 0.3) {
                   icon = MCPhalf;
@@ -172,23 +169,32 @@ const Map = () => {
                     <Popup>
                       Load: {truck.load.$numberDecimal} <br />
                       Capacity: {truck.cap} <br />
-                      NextMCP: {truck.nextMCP} <br />
-                      Driver: {truck.driver}
+                      {truck.nextMCP &&  <div>NextMCP:  {truck.nextMCP.id} </div>}
+                      {truck.driver && <div> Driver: {truck.driver.name} </div>}
                     </Popup>
                   </Marker>
                 );
               })}
-
-            <GetLocation />
-
-            {trucks.length===1 && displayTruck.length===1 && trucks[0]._id===displayTruck[0]._id && task !=='' && (
+             
+              <div className="leaflet-top leaflet-left">
+                <button className="leaflet-bar" style={{ marginTop: "10vh", marginLeft:"0.7rem" }}>
+                <MyLocationIcon />
+                </button>
+              </div>
+              <GetLocation />
+            {/* {trucks.length===1 && displayTruck.length===1 && trucks[0]._id===displayTruck[0]._id && task !=='' && (
+              <Routing truck={trucks[0]} mcps={mcps} />
+            )} */}
+            {trucks.length===1 && displayTruck.length===1 && (
               <Routing truck={trucks[0]} mcps={mcps} />
             )}
+
           </MapContainer>
+         
+            
         </Grid>
       </Grid>
     </Container>
   );
 };
-//why can't change humand
 export default Map;

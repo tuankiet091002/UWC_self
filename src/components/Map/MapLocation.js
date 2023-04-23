@@ -5,7 +5,7 @@ import { mylocation } from './MapEntity';
 function GetLocation() {
     const [position, setPosition] = useState(null)
     const map = useMapEvents({
-        click() {
+        dblclick() {
             map.locate()
         },
         locationfound(e) {
@@ -18,6 +18,7 @@ function GetLocation() {
         <Marker position={position} icon={mylocation}>
             <Popup>You are here</Popup>
         </Marker>
+       
     )
 }
 export default GetLocation;

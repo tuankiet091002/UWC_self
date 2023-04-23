@@ -9,8 +9,8 @@ const truckSchema = new mongoose.Schema({
         ref: 'User',
         default: null
     },
-    x: { type: mongoose.Types.Decimal128, required: true, default: 0 },
-    y: { type: mongoose.Types.Decimal128, required: true, default: 0 },
+    x: { type: mongoose.Types.Decimal128, required: true, default: () => Math.random() * (10.881580 - 10.880000) + 10.881580 },
+    y: { type: mongoose.Types.Decimal128, required: true, default: () => Math.random() * (106.805000 - 106.804887) + 106.804887},
     // duong di 
     path: {
         type: [{ 
