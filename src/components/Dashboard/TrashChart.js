@@ -57,14 +57,14 @@ const data = {
     datasets: [
         {
             label: 'Janitor',
-            data: labels.map(() => Math.floor(Math.random() * 100)),
+            data: labels.map(() => Math.floor(Math.random() * 10)),
             backgroundColor: '#0F88F9',
             stack: 'Stack 0',
             barThickness:  16,
         },
         {
             label: 'Collector',
-            data: labels.map(() => Math.floor(Math.random() * 100)),
+            data: labels.map(() => Math.floor(Math.random() * 10)),
             backgroundColor: '#10D5F8',
             stack: 'Stack 1',
             barThickness:  16,
@@ -80,7 +80,6 @@ function TrashChart() {
             <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <Typography color="text.secondary"> Biểu đồ thu nhập </Typography>
-                    <Typography color="text.secondary"> Tổng: 535 đơn vị </Typography>
                 </Stack>
                 <TableContainer>
                     <Box>

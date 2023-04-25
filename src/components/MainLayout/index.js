@@ -67,7 +67,7 @@ const MainLayout = () => {
                     </Link>
 
 
-                    <Typography sx={{ flexGrow: 1 }} variant="h4" color="text.primary">Công nghệ phần mềm</Typography>
+                    <Typography sx={{ flexGrow: 1 }} variant="h4" color="text.primary">URBAN WASTED COLLECTION</Typography>
                     <Stack direction='row' spacing={3} alignItems='center' sx={{ flexGrow: 0.05, color: "text.primary" }}>
                         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={4} color="error">

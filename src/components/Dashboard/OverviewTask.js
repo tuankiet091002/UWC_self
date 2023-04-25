@@ -50,7 +50,7 @@ function OverviewTask() {
 
                 </Stack>
                 <Box sx={{ mt: 1 }}>
-                    <ProgressBar completed={finishedTask / totalTask * 100} bgColor="blue" />
+                    <ProgressBar completed={(finishedTask / totalTask * 100).toFixed(2)} bgColor="blue" />
                 </Box>
             </CardContent>
         </Card>
