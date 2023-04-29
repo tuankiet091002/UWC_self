@@ -8,7 +8,7 @@ export const authReducer = (state, action) => {
         case 'GET_TASKS':
             return { tasks: action.payload }
         case 'CREATE_TASK':
-            return { tasks: [...state.tasks, action.payload] }
+            return { tasks: [action.payload, ...state.tasks] }
         case 'CHECK_TASK':
         case 'UPDATE_TASK':
             console.log(action.payload)

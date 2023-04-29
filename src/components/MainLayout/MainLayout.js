@@ -69,7 +69,7 @@ const MainLayout = () => {
                         <Notification/>
 
                         <IconButton onClick={handleUser}>
-                            <Avatar src={user.avatar ? user.avatar : cum} sx={{ width: 40, height: 40 }} />
+                            <Avatar src={user.avatar ? user.avatar : logo} sx={{ width: 40, height: 40 }} />
                             <Typography padding={1} variant="h6" color="text.primary">{user.name}</Typography>
                             <ExpandMoreIcon sx={{ color: "text.primary" }} />
                         </IconButton>

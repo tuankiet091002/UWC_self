@@ -3,6 +3,7 @@ import UserModel from '../models/userModel.js'
 import MCPModel from '../models/mcpModel.js'
 import TruckModel from '../models/truckModel.js'
 import NotificationModel from '../models/notificationModel.js'
+import { LocalConvenienceStoreOutlined } from '@mui/icons-material'
 
 export const getTasks = async (req, res) => {
     const { date, shift, state } = req.query
@@ -74,14 +75,14 @@ export const createTask = async (req, res) => {
         await UserModel.findByIdAndUpdate(collector._id, { $push: { task: newTask._id } })
         await NotificationModel.create({
             receiver: collector._id, path: '/task',
-            content: `You have a new task at ${date.toDateString()} ${shift} shift, go to task page for further information`
+            content: `You have a new task at ${date.toDateString()} shift ${shift}`
         })
         for (const i in path)
             for (const k in path[i].janitor) {
                 await UserModel.findByIdAndUpdate(path[i].janitor[k]._id, { $push: { task: newTask._id } })
                 await NotificationModel.create({
                     receiver: path[i].janitor[k]._id, path: '/task',
-                    content: `You have a new task at ${date.toDateString()} ${shift} shift, go to task page for further information`
+                    content: `You have a new task at ${date.toDateString()} shift ${shift}`
                 })
             }
         res.status(201).json({ message: "Task created", result: newTask })
@@ -115,7 +116,8 @@ export const updateTask = async (req, res) => {
 
         truck = await TruckModel.findById(truck)
         if (!truck) return res.status(404).json({ message: "Truck not found" });
-        const anotherTask = await TaskModel.findOne({ truck: truck._id, shift: shift, date: date })
+        const anotherTask = await TaskModel.findOne({ _id: { $ne: task._id }, truck: truck._id, shift: shift, date: date })
+        console.log(anotherTask)
         if (anotherTask) return res.status(400).json({ message: "Truck is busy at that time" })
 
         for (const i in path) {
@@ -168,7 +170,7 @@ export const updateTask = async (req, res) => {
                 await UserModel.findByIdAndUpdate(path[i].janitor[k], { $push: { task: newTask._id } })
                 await NotificationModel.create({
                     receiver: path[i].janitor[k]._id, path: '/task',
-                    content: `You have a new task at ${date.toDateString()} ${shift} shift, go to task page for further information`
+                    content: `You have an updated task at ${date.toDateString()} ${shift} shift, go to task page for further information`
                 })
             }
 
@@ -236,6 +238,13 @@ export const checkTask = async (req, res) => {
                 await TruckModel.findByIdAndUpdate(task.truck._id, { driver: null, path: [], nextMCP: null })
             }
             else return res.status(400).json({ message: "Wrong time to check" })
+            const backOfficer = await UserModel.find({ role: "backofficer" })
+            for (const i in backOfficer) {
+                await NotificationModel.create({
+                    receiver: backOfficer[i]._id, path: '/task',
+                    content: `Collector ${req.user.name} just checked in task ${task._id}, task status: ${task.state}`
+                })
+            }
 
             await TaskModel.findByIdAndUpdate(id, task)
             // rut toan bo janitor ve neu task fail
@@ -261,7 +270,7 @@ export const checkTask = async (req, res) => {
                 return res.status(403).json({ message: "You are not belong to this task" })
 
             const path = (task.path.find((x) => x.janitor.map(y => y._id.toString())
-                .includes(req.user._id).toString()))
+                .includes(req.user._id.toString())))
 
             const mcp = await MCPModel.findById(path.mcp._id)
 

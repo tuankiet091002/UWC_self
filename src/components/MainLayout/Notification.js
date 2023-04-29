@@ -34,7 +34,7 @@ const Notification = () => {
         if (user) {
             getNotifications(user._id)
         }
-    }, [])
+    }, [user])
 
     return (<>
         <IconButton

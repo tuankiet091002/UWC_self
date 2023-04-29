@@ -22,7 +22,7 @@ export const readAllNotifications = async (req, res) => {
         const receiver = await UserModel.findById(user).select("-password");
         if (!receiver) return res.status(404).json({ message: "User not found" });
 
-        let notifications = await NotificationModel.find({ receiver: user });
+        let notifications = await NotificationModel.find({ receiver: user }).sort({ read: 1, createdAt: -1 });
 
         for (const i in notifications) {
             notifications[i] = await NotificationModel.findByIdAndUpdate(notifications[i]._id, { read: true }, { new: true, runValidators: true });

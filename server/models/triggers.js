@@ -20,13 +20,18 @@ exports = async function () {
             if (!task.checkIn && Date.now() > checkinDeadline.getTime()) {
                 task.state = "fail"
                 // thu don neu task fail
+                await notiCollection.insertOne({
+                    receiver: task.collector, path: '/task', read: false, createdAt: new Date(),
+                    content: `Your assigned task(${task._id}) has been failed, return to main headquarter`
+                })
                 for (const k in task.path) {
                     let mcpJan = task.path[k].janitor
+
                     for (const l in task.path[k].janitor) {
                         await userCollection.updateOne({ _id: task.path[k].janitor[l] }, { $set: { available: true } })
                         mcpJan = mcpJan.filter((jan) => jan.toString() != task.path[k].janitor[l])
                         await notiCollection.insertOne({
-                            receiver: task.path[i].janitor[k]._id, path: '/task', read: false,
+                            receiver: task.path[k].janitor[l], path: '/task', read: false, createdAt: new Date(),
                             content: `Your assigned task(${task._id}) has been failed, return to main headquarter`
                         })
                     }
@@ -39,7 +44,6 @@ exports = async function () {
         console.log(error)
     }
 };
-
 
 //////////////////////////////////// MCP Load Manager//////////////////////////////////
 exports = async function () {
@@ -66,6 +70,7 @@ exports = async function () {
                             receiver: mcp.janitor[k],
                             path: '/map',
                             read: false,
+                            createdAt: new Date(),
                             content: `Your assigned MCP ${mcp._id} is almost full`
                         })
                     }
@@ -79,8 +84,8 @@ exports = async function () {
 };
 
 /////////////////////////////Truck Location Manager/////////////////////////////////////////////
-const SPEED_MODIFIER = 0.00006782787;
-
+// const SPEED_MODIFIER = 0.00006782787;
+const SPEED_MODIFIER = 1;
 function dToInt(a) {
     // type nội bộ mongo => type float của js
     return parseFloat(a.toString());
@@ -110,6 +115,7 @@ exports = async function () {
                 const distance = Math.sqrt((nextMCP.x - truck.x) * (nextMCP.x - truck.x) + (nextMCP.y - truck.y) * (nextMCP.y - truck.y));
                 const cos = (nextMCP.x - truck.x) / distance;
                 const sin = (nextMCP.y - truck.y) / distance;
+                
 
                 if (distance <= SPEED_MODIFIER) {
                     // truong hop chua ve noi xuat phat
@@ -144,7 +150,7 @@ exports = async function () {
                         const backOfficer = await userCollection.find({ role: "backofficer" }).toArray()
                         for (const i in backOfficer) {
                             await notiCollection.insertOne({
-                                receiver: backOfficer[i]._id, path: '/map', read: false,
+                                receiver: backOfficer[i]._id, path: '/map', read: false, createdAt: new Date(),
                                 content: `Truck ${truck._id} in task ${task._id} has arrived at MCP ${nextMCP._id} to unload ${change} trash`
                             })
                         }
