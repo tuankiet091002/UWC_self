@@ -51,6 +51,7 @@ const Map = () => {
   const [displayTruck, setDisplayTruck] = useState(trucks);
   const [open, setOpen] = useState(false);
   const [position, setPosition] = useState(null);
+  const [route, setRoute] = useState(null);
  
   useEffect(() => {
     getMCPs();
@@ -73,7 +74,16 @@ const Map = () => {
     deleteMCP(id);
   };
 
+  useEffect(() => {
+    try {
+      console.log(mcps);
+      console.log(trucks);
 
+      setRoute(<Routing truck={displayTruck[0]} mcps={displayMCP} />);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [displayMCP, displayTruck]);
 
 
   return (
@@ -190,13 +200,10 @@ const Map = () => {
               <Routing truck={trucks[0]} mcps={mcps} />
             )} */}
   
-            { displayTruck.length === 1 && displayMCP.length > 0 &&
-              task != null && (
-                  <Routing truck={displayTruck[0]} mcps={mcps} />
-            )}
+            {route}
             
 
-  
+                
 
           </MapContainer>
          

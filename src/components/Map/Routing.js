@@ -15,9 +15,13 @@ const Routing = ({truck, mcps}) => {
     const [waypoints, setWaypoint] = useState([]);
     console.log({truck, mcps})
     useEffect(() => {
-        setWaypoint([{ x: truck.x.$numberDecimal, y: truck.y.$numberDecimal},
-            ...mcps.map(mcp => {return {x:mcp.x.$numberDecimal, y: mcp.y.$numberDecimal}})
-        ]);
+        try {
+            setWaypoint([{ x: truck.x.$numberDecimal, y: truck.y.$numberDecimal},
+                ...mcps.map(mcp => {return {x:mcp.x.$numberDecimal, y: mcp.y.$numberDecimal}})
+            ]);
+        } catch (error) {
+        console.error(error);
+        }
     }, [truck, mcps]);
 
     useEffect(() => {
@@ -51,6 +55,11 @@ const Routing = ({truck, mcps}) => {
     }, [truck, mcps, map]);
 
     return null;
+    try {
+        // your code here
+      } catch (error) {
+        console.error(error);
+      }
 }
 
 export default Routing;
