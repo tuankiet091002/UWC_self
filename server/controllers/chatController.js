@@ -9,7 +9,7 @@ export const getChats = async (req, res) => {
         if (name) query.name = { $regex: name, $options: 'i' }
 
         let chats = await ChatModel.find(query)
-            .populate("users", "name role available avatar")
+            .populate("users", "name role available")
             .populate("groupAdmin", "name role available avatar")
             .populate("latestMessage")
             .sort({ updateAt: -1 });
@@ -51,7 +51,7 @@ export const createChat = async (req, res) => {
         users.push(req.user._id)
 
         const chat = await ChatModel.create({ name, users, groupAdmin: req.user });
-        await chat.populate("users", "name role available avatar")
+        await chat.populate("users", "name role available")
         await chat.populate("groupAdmin", "name role available avatar");
 
         res.status(201).json({ message: "Chat created", result: chat });
@@ -79,7 +79,7 @@ export const updateChat = async (req, res) => {
 
         chat = await ChatModel.findByIdAndUpdate(id, chat, { new: true, runValidators: true });
         chat = await ChatModel.findById(id)
-            .populate("users", "name role available avatar")
+            .populate("users", "name role available")
             .populate("groupAdmin", "name role available avatar")
             .populate("latestMessage");
         chat = await UserModel.populate(chat, { path: "lastestMessage.sender", select: "name role available" })
@@ -98,7 +98,7 @@ export const deleteChat = async (req, res) => {
 
         if (!chat) return res.status(404).json({ message: "Chat not found" })
 
-        const messages = await MessageModel.find({chat: id});
+        const messages = await MessageModel.find({ chat: id });
 
         for (const i in messages) {
             await MessageModel.findByIdAndDelete(messages[i]._id);

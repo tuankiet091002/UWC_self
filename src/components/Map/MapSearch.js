@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import {
-    Button, Card, Select, FormControl, InputLabel,
-    MenuItem, Grid, Box, TextField,
+    Button, Select, FormControl, InputLabel,
+    MenuItem, Grid, Box
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -21,7 +21,7 @@ function MapSearch({ display, setDisplay }) {
         getTrucks({ task })
         getMCPs({ task })
     }
-    
+
     return (
         <div className={styles.search}>
             <Grid marginTop={2}>

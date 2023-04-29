@@ -9,6 +9,7 @@ import { TruckContextProvider } from './contexts/TruckContext';
 import { MCPContextProvider } from './contexts/MCPContext';
 import { ChatContextProvider } from './contexts/ChatContext';
 import { TaskContextProvider } from './contexts/TaskContext';
+import { NotificationContextProvider } from './contexts/NotificationContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,7 +20,9 @@ root.render(
                     <MCPContextProvider>
                         <TaskContextProvider>
                             <ChatContextProvider>
-                                <App />
+                                <NotificationContextProvider>
+                                    <App />
+                                </NotificationContextProvider>
                             </ChatContextProvider>
                         </TaskContextProvider>
                     </MCPContextProvider>

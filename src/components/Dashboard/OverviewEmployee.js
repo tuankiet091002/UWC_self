@@ -7,7 +7,6 @@ import { PieChart } from 'react-minimal-pie-chart';
 
 import { useGetEmps } from '../../hooks/Emps/useGetEmps';
 import { useEmpContext } from '../../hooks/Emps/useEmpContext';
-import DoughnutChart from '../ui/charts/DoughNutChart'
 
 function OverviewEmployee() {
     const { emps } = useEmpContext();
@@ -43,9 +42,9 @@ function OverviewEmployee() {
                                 { title: 'Col', value: workingCol, color: '#10D5F8' },
                                 { title: 'Jan', value: workingJan, color: '#0F88F9' },
                             ]}
-                            // label={x => x.dataEntry.title}
+                        // label={x => x.dataEntry.title}
                         />
-                         
+
                     </Box>
                     {/* <DoughnutChart dataInput={[ workingCol, workingJan, workerEmps]} size={120} /> */}
                 </Stack>

@@ -78,7 +78,7 @@ function QontoStepIcon(props) {
 
 function TaskProcess() {
     const { tasks } = useTaskContext();
-    const dailyTask = tasks.filter(task => new Date().getDate() == new Date(task.date).getDate()).sort((a, b) => a.shift - b.shift)
+    const dailyTask = tasks.filter(task => new Date().getDate() === new Date(task.date).getDate()).sort((a, b) => a.shift - b.shift)
 
     return (
         <Card sx={{ height: "100%" }}>

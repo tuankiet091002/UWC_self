@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import { useAuthContext } from '../../hooks/Auth/useAuthContext';
-import { TruckContextProvider } from '../../contexts/TruckContext';
-import { useLogout } from '../../hooks/Auth/useLogout';
 
 import {
     alpha, AppBar, Tooltip,
     Box, Toolbar, List, CssBaseline, Typography, IconButton, Avatar, Menu, MenuItem,
-    ListItem, ListItemButton, ListItemIcon, Paper, Badge, Stack, Divider
+    ListItem, ListItemButton, ListItemIcon, Paper, Stack, Divider
 } from '@mui/material';
+
+import { useAuthContext } from '../../hooks/Auth/useAuthContext';
+import { useLogout } from '../../hooks/Auth/useLogout';
+import Notification from './Notification';
 
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -18,7 +19,6 @@ import MapIcon from '@mui/icons-material/Map';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PersonIcon from '@mui/icons-material/Person';
 import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import ChatIcon from '@mui/icons-material/Chat';
 import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 
@@ -49,9 +49,8 @@ const MainLayout = () => {
             setAnchorElUser(null);
     };
 
-
     return (
-        <Paper elevation={1} sx={{ p: 1, height: '100%', borderRadius: '10px', display: 'block', backgroundColor: "white" }}>
+        <Paper sx={{ p: 1, height: '100%', borderRadius: '10px', boxShadow: 'none', display: 'block' }}>
             <CssBaseline />
             <AppBar
                 position="sticky"
@@ -65,23 +64,9 @@ const MainLayout = () => {
                             <Box component="img" sx={{ height: '60px', width: '100px' }} src={logo} />
                         </IconButton>
                     </Link>
-
-
                     <Typography sx={{ flexGrow: 1 }} variant="h4" color="text.primary">URBAN WASTED COLLECTION</Typography>
                     <Stack direction='row' spacing={3} alignItems='center' sx={{ flexGrow: 0.05, color: "text.primary" }}>
-                        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="error">
-                                <MailIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton
-                            size="large"
-                            color="inherit"
-                        >
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
+                        <Notification/>
 
                         <IconButton onClick={handleUser}>
                             <Avatar src={user.avatar ? user.avatar : cum} sx={{ width: 40, height: 40 }} />

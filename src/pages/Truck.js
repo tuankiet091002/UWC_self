@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Grid, Container, Stack, Typography, Button } from '@mui/material'
+import { Grid, Container, Typography, Button } from '@mui/material'
 
 import { useTruckContext } from '../hooks/Trucks/useTruckContext'
 import { useGetTrucks } from '../hooks/Trucks/useGetTrucks'
@@ -12,7 +12,7 @@ import TruckForm from '../components/Vehicle/TruckForm'
 
 const Truck = () => {
     const { trucks } = useTruckContext()
-    const { getTrucks, isLoading, error } = useGetTrucks()
+    const { getTrucks } = useGetTrucks()
 
     const [open, setOpen] = useState(false)
 

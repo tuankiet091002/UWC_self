@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import moment from 'moment'
 
 import { styled } from '@mui/material/styles';
 import {
@@ -62,8 +63,8 @@ const TaskRow = ({ task }) => {
                     {task.state}
                 </Typography>
             </StyledTableCell>
-            <StyledTableCell align="center"><Typography>{task.checkIn ? (new Date(task.checkIn)).toLocaleString() : 'chưa'}</Typography></StyledTableCell>
-            <StyledTableCell align="center"><Typography>{task.checkOut ? (new Date(task.checkOut)).toLocaleString() : 'chưa'}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.checkIn ? moment(task.checkIn).format('LTS') : 'chưa'}</Typography></StyledTableCell>
+            <StyledTableCell align="center"><Typography>{task.checkOut ? moment(task.checkOut).format('LTS') : 'chưa'}</Typography></StyledTableCell>
             {user.role === 'backofficer' ? <StyledTableCell align="center">
                 <Box >
                     <Typography color="error">{error}</Typography>
@@ -80,14 +81,14 @@ const TaskRow = ({ task }) => {
                 <TaskEditorForm open={openForm} handleClose={() => handleClose()} currTask={task}></TaskEditorForm>
             </StyledTableCell> :
                 <StyledTableCell align="center">
-                   <Box>
+                    <Box>
                         <Typography color="error" align="center">{errorCheck}</Typography>
                         <Button variant='contained' onClick={() => checkTask(task._id)} disabled={isLoadingCheck}><BeenhereIcon /></Button>
                     </Box>
                 </StyledTableCell>}
         </StyledTableRow>
         <TableRow>
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={99}>
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <Box sx={{ margin: 1 }}>
                         <Typography>
@@ -97,7 +98,7 @@ const TaskRow = ({ task }) => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>MCP</TableCell>
-                                    <TableCell align="center" sx={{ maxWidth: '1000px' }}>Nhân viên</TableCell>
+                                    <TableCell align="center">Nhân viên</TableCell>
                                     <TableCell align="center">Khối lượng</TableCell>
                                     <TableCell align="center">Hoàn thành lúc</TableCell>
                                 </TableRow>
@@ -109,7 +110,7 @@ const TaskRow = ({ task }) => {
                                         <TableCell align='center'><Typography>{state.janitor.map(x => x.name).join(', ')}</Typography></TableCell>
                                         <TableCell align="center"><Typography>{state.amount.$numberDecimal}</Typography></TableCell>
                                         <TableCell align='center' scope="row">
-                                            <Typography>{state.timestamp ? (new Date(state.timestamp).toLocaleString()) : 'chưa'}</Typography>
+                                            <Typography>{state.timestamp ? moment(state.timestamp).format('LTS') : 'chưa'}</Typography>
                                         </TableCell>
                                     </TableRow>
                                 ))}

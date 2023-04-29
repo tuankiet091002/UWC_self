@@ -5,7 +5,7 @@ export const getMessages = async (req, res) => {
     const { id } = req.params
     try {
         const chat = await ChatModel.findById(id).sort({ createdAt: -1 })
-            .populate("users", "name role available avatar")
+            .populate("users", "name role available")
             .populate("groupAdmin", "name role available avatar")
             .populate("latestMessage")
             .sort({ updateAt: -1 });

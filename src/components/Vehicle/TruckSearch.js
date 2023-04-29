@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import {
-    Button, Card, Select, FormControl, InputLabel,
+    Button, Select, FormControl, InputLabel,
     MenuItem, Grid, Box
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';

@@ -17,11 +17,6 @@ export const chatReducer = (state, action) => {
                 chats: state.chats.map(chat => chat._id === action.payload.chat._id ? action.payload.chat : chat),
                 messages: [...state.messages, action.payload.message]
             }
-        case 'CREATE_CHAT':
-            return {
-                ...state,
-                chats: [...state.chats, action.payload]
-            }
         case 'UPDATE_CHAT':
             return {
                 ...state,

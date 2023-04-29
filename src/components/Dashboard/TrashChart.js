@@ -11,10 +11,6 @@ import {
 
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import ReactApexChart from 'react-apexcharts';
-import { ApexOptions } from 'apexcharts';
-
-
 
 ChartJS.register(
     CategoryScale,

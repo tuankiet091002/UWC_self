@@ -14,6 +14,7 @@ import truckRouter from "./routes/truckRoute.js";
 import taskRouter from "./routes/taskRoute.js";
 import chatRouter from "./routes/chatRoute.js";
 import messageRouter from "./routes/messageRoute.js";
+import notificationRouter from "./routes/notificationRoute.js"
 
 const app = express();
 dotenv.config();
@@ -29,6 +30,7 @@ app.use('/truck', truckRouter);
 app.use('/task', taskRouter);
 app.use('/chat', chatRouter);
 app.use('/mess', messageRouter);
+app.use('/noti', notificationRouter);
 
 const CONNECTION_URL = process.env.MONGO_URL;
 const PORT = 5000;

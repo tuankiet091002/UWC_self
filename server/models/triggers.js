@@ -8,6 +8,7 @@ exports = async function () {
     var collection = db.collection("tasks");
     var userCollection = db.collection("users");
     var mcpCollection = db.collection("mcps");
+    var notiCollection = db.collection("notifications");
 
     try {
         const taskList = await collection.find().toArray();
@@ -24,6 +25,10 @@ exports = async function () {
                     for (const l in task.path[k].janitor) {
                         await userCollection.updateOne({ _id: task.path[k].janitor[l] }, { $set: { available: true } })
                         mcpJan = mcpJan.filter((jan) => jan.toString() != task.path[k].janitor[l])
+                        await notiCollection.insertOne({
+                            receiver: task.path[i].janitor[k]._id, path: '/task', read: false,
+                            content: `Your assigned task(${task._id}) has been failed, return to main headquarter`
+                        })
                     }
                     await mcpCollection.updateOne({ _id: task.path[k].mcp }, { $set: { janitor: mcpJan } })
                 }
@@ -42,6 +47,7 @@ exports = async function () {
     const db = mongodb.db("test");
     var mcpCollection = db.collection("mcps");
     var userCollection = db.collection("users");
+    var notiCollection = db.collection("notifications");
     try {
         const mcpList = await mcpCollection.find().toArray();
 
@@ -54,6 +60,16 @@ exports = async function () {
             }
             if (mcp.load < mcp.cap) {
                 mcp.load = Math.min(mcp.load + 1 / 6 * speed, mcp.cap)
+                if (mcp.load / mcp.cap >= 0.95) {
+                    for (const k in mcp.janitor) {
+                        await notiCollection.insertOne({
+                            receiver: mcp.janitor[k],
+                            path: '/map',
+                            read: false,
+                            content: `Your assigned MCP ${mcp._id} is almost full`
+                        })
+                    }
+                }
                 mcpCollection.updateOne({ _id: mcp._id }, { $set: mcp });
             }
         }
@@ -77,6 +93,7 @@ exports = async function () {
     var mcpCollection = db.collection("mcps");
     var taskCollection = db.collection('tasks')
     var userCollection = db.collection("users");
+    var notiCollection = db.collection("notifications");
     try {
         const truckList = await truckCollection.find().toArray();
 
@@ -84,7 +101,6 @@ exports = async function () {
             const truck = truckList[i];
             if (truck.nextMCP != null) {
                 const index = (truck.path.indexOf(truck.nextMCP))
-                console.log('index la', index)
 
                 const driver = await userCollection.findOne({ _id: truck.driver })
                 const task = await taskCollection.findOne({ _id: { $in: driver.task }, state: "executing" })
@@ -116,21 +132,28 @@ exports = async function () {
                             nextMCP.load = dToInt(nextMCP.load) - truck.cap + truck.load;
                         }
 
-                        if (index != -1)
-                            await taskCollection.updateOne({ _id: task._id }, {
-                                $set:
-                                {
-                                    path: task.path.map((x, i) => i === index ?
-                                        { ...task.path[i], timestamp: new Date(), amount: change } :
-                                        task.path[i])
-                                }
+                        await taskCollection.updateOne({ _id: task._id }, {
+                            $set:
+                            {
+                                path: task.path.map((x, i) => i === index ?
+                                    { ...task.path[i], timestamp: new Date(), amount: change } :
+                                    task.path[i])
+                            }
+                        })
+
+                        const backOfficer = await userCollection.find({ role: "backofficer" }).toArray()
+                        for (const i in backOfficer) {
+                            await notiCollection.insertOne({
+                                receiver: backOfficer[i]._id, path: '/map', read: false,
+                                content: `Truck ${truck._id} in task ${task._id} has arrived at MCP ${nextMCP._id} to unload ${change} trash`
                             })
+                        }
 
                     } else {
                         truck.path = [];
                         truck.load = 0;
-                        truck.x = 10.881356
-                        truck.y = 106.804923;
+                        truck.x = nextMCP.x
+                        truck.y = nextMCP.y;
                         truck.nextMCP = null;
                     }
                 } else {

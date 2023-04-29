@@ -3,7 +3,7 @@ import { useAuthContext } from './hooks/Auth/useAuthContext'
 import { Box, alpha } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import MainLayout from "./components/MainLayout";
+import MainLayout from "./components/MainLayout/MainLayout";
 
 import Login from "./pages/Login";
 import Signup from './pages/Signup';
@@ -14,9 +14,6 @@ import Map from "./pages/Map.js";
 import Truck from "./pages/Truck.js";
 import Employee from "./pages/Employee.js";
 import Chat from "./pages/Chat.js";
-import styles from "./App.module.css"
-
-
 
 const App = () => {
     const { user } = useAuthContext();

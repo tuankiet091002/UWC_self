@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import timeGridPlugin from '@fullcalendar/timegrid'
-import { Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 
 import { useTaskContext } from '../hooks/Tasks/useTaskContext';
 import { useGetTasks } from '../hooks/Tasks/useGetTasks';
