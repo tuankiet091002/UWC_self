@@ -9,25 +9,29 @@ import { useGetTrucks } from '../../hooks/Trucks/useGetTrucks';
 import { useGetMCPs } from '../../hooks/MCPs/useGetMCPs';
 import { useTruckContext } from '../../hooks/Trucks/useTruckContext'
 import { useMCPContext } from '../../hooks/MCPs/useMCPContext.js';
-const Routing = ({truck, mcps}) => {
-    const map = useMap();   
-    const [waypoints, setWaypoint] = useState([]);
-    useEffect( ()=>{
-        setWaypoint([{ x: truck.x.$numberDecimal, y: truck.y.$numberDecimal},
-        ...mcps.map(mcp => {return {x:mcp.x.$numberDecimal, y: mcp.y.$numberDecimal}})
-        ])
-    }, [truck, mcps])
-    const waypointsReal = waypoints.map(x => {
-        return L.latLng(x.x, x.y)  
-    })
 
-    console.log(waypointsReal);
-    console.log(map);
+const Routing = ({truck, mcps}) => {
+    const map = useMap();
+    const [waypoints, setWaypoint] = useState([]);
+    console.log({truck, mcps})
     useEffect(() => {
-        if(truck && mcps){
+        try {
+            setWaypoint([{ x: truck.x.$numberDecimal, y: truck.y.$numberDecimal},
+                ...mcps.map(mcp => {return {x:mcp.x.$numberDecimal, y: mcp.y.$numberDecimal}})
+            ]);
+        } catch (error) {
+        console.error(error);
+        }
+    }, [truck, mcps]);
+
+    useEffect(() => {
+        const waypointsReal = waypoints.map(x => {
+            return L.latLng(x.x, x.y);
+        });
+        
+        if (truck && mcps && map) {
             L.Routing.control({
-                waypoints: waypointsReal
-                ,
+                waypoints: waypointsReal,
                 lineOptions: {
                     styles: [{
                         color: "blue",
@@ -48,7 +52,14 @@ const Routing = ({truck, mcps}) => {
                 },
             }).addTo(map);
         }
-    }, []);
+    }, [truck, mcps, map]);
+
     return null;
+    try {
+        // your code here
+      } catch (error) {
+        console.error(error);
+      }
 }
-export default Routing
+
+export default Routing;
