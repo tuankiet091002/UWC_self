@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import Grid from "@mui/material/Unstable_Grid2";
-import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Tooltip , useMap, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-routing-machine";
@@ -61,6 +61,7 @@ const Map = () => {
   useEffect(() => {
     if (display !== 1) setDisplayMCP(mcps);
     else setDisplayMCP([]);
+    console.log(displayMCP);
   }, [mcps]);
 
   useEffect(() => {
@@ -71,6 +72,9 @@ const Map = () => {
   const handleDeleteMCP = (id) => { 
     deleteMCP(id);
   };
+
+
+
 
   return (
     <Container maxWidth={false} sx={{ mx: 0, overflow: "hidden" }}>
@@ -185,9 +189,14 @@ const Map = () => {
             {/* {trucks.length===1 && displayTruck.length===1 && trucks[0]._id===displayTruck[0]._id && task !=='' && (
               <Routing truck={trucks[0]} mcps={mcps} />
             )} */}
-            {trucks.length===1 && displayTruck.length===1 && (
-              <Routing truck={trucks[0]} mcps={mcps} />
+  
+            { displayTruck.length === 1 && displayMCP.length > 0 &&
+              task != null && (
+                  <Routing truck={displayTruck[0]} mcps={mcps} />
             )}
+            
+
+  
 
           </MapContainer>
          
