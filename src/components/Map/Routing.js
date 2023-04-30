@@ -10,27 +10,30 @@ import { useGetMCPs } from '../../hooks/MCPs/useGetMCPs';
 import { useTruckContext } from '../../hooks/Trucks/useTruckContext'
 import { useMCPContext } from '../../hooks/MCPs/useMCPContext.js';
 
-const Routing = ({truck, mcps}) => {
+const Routing = ({mytruck, mymcps}) => {
     const map = useMap();
-    const [waypoints, setWaypoint] = useState([]);
-    console.log({truck, mcps})
-    useEffect(() => {
-        try {
-            setWaypoint([{ x: truck.x.$numberDecimal, y: truck.y.$numberDecimal},
-                ...mcps.map(mcp => {return {x:mcp.x.$numberDecimal, y: mcp.y.$numberDecimal}})
-            ]);
-        } catch (error) {
-        console.error(error);
-        }
-    }, [truck, mcps]);
+    const [routingControl, setRoutingControl] = useState(undefined); // Keep track of the routing control instance
+
+    var waypoints = []
+    
+    try {
+        waypoints = [{ x: mytruck.x.$numberDecimal, y: mytruck.y.$numberDecimal},
+            ...mymcps.map(mcp => {return {x:mcp.x.$numberDecimal, y: mcp.y.$numberDecimal}})
+        ];
+    } catch (error) {
+    
+    }
+
+    var waypointsReal = waypoints.map(x => {
+        return L.latLng(x.x, x.y);
+    });
+
+    console.log('WAY POINTTTTTTTTT')
+    console.log(waypointsReal)
 
     useEffect(() => {
-        const waypointsReal = waypoints.map(x => {
-            return L.latLng(x.x, x.y);
-        });
-        
-        if (truck && mcps && map) {
-            L.Routing.control({
+        if (mytruck && mymcps && map) {
+            const newRoutingControl = L.Routing.control({
                 waypoints: waypointsReal,
                 lineOptions: {
                     styles: [{
@@ -51,15 +54,26 @@ const Routing = ({truck, mcps}) => {
                     return null; // This will prevent the marker icon from being shown
                 },
             }).addTo(map);
+            
+            setRoutingControl(newRoutingControl); // Save the instance to state
         }
-    }, [truck, mcps, map]);
+    }, [mytruck, mymcps, map]);
+
+    useEffect(() => {
+        return () => {
+            try {
+                // Remove the routing control instance when the component unmounts
+                if (routingControl !== undefined && routingControl !== null) {
+                    routingControl._clearLines();
+                    map.removeControl(routingControl);
+                }
+            } catch (error) {
+                // Catch and ignore the error
+            }
+        }
+    }, [routingControl, map]);
 
     return null;
-    try {
-        // your code here
-      } catch (error) {
-        console.error(error);
-      }
 }
 
 export default Routing;

@@ -60,14 +60,11 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
-    if (display !== 1) setDisplayMCP(mcps);
-    else setDisplayMCP([]);
-    console.log(displayMCP);
+    setDisplayMCP(mcps);
   }, [mcps]);
 
   useEffect(() => {
-    if (display !== 2) setDisplayTruck(trucks);
-    else setDisplayTruck([]);
+   setDisplayTruck(trucks);
   }, [trucks]);
 
   const handleDeleteMCP = (id) => { 
@@ -76,14 +73,15 @@ const Map = () => {
 
   useEffect(() => {
     try {
-      console.log(mcps);
-      console.log(trucks);
-
-      setRoute(<Routing truck={displayTruck[0]} mcps={displayMCP} />);
+      setRoute(null
+        );
+      setRoute(<Routing mytruck={displayTruck[0]} mymcps={displayMCP} />);
+      
     } catch (error) {
       console.log(error);
     }
-  }, [displayMCP, displayTruck]);
+    
+  }, [displayMCP, displayTruck, display]);
 
 
   return (
