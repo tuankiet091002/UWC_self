@@ -19,7 +19,7 @@ const Login = () => {
         
         <Box sx={{
             height: '100%',
-            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundImage: 'url(https://static.vecteezy.com/system/resources/previews/003/552/029/original/green-energy-environmental-concept-design-with-windmills-solar-panels-and-town-vector.jpg)',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             backgroundPosition: 'center',

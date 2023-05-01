@@ -43,7 +43,7 @@ const Notification = () => {
             color="inherit"
         >
             <Badge badgeContent={notifications.filter(x => !x.read).length} color="error">
-                <NotificationsIcon />
+                <NotificationsIcon style={{color: 'white'}}/>
             </Badge>
         </IconButton>
         <Menu
@@ -58,7 +58,7 @@ const Notification = () => {
                 },
             }}
         >
-            {notifications.map((noti) => (<>
+            {notifications.map((noti) => (
                 <MenuItem key={noti._id} onClick={() => navigate(noti.path)}>
                     <Stack direction='row' alignItems='center' justifyContent='space-between'>
                         <Stack onClick={() => navigate(noti.path)}>
@@ -79,7 +79,7 @@ const Notification = () => {
                     </Stack>
 
                 </MenuItem>
-            </>))}
+            ))}
         </Menu>
     </>)
 }

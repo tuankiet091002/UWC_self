@@ -10,7 +10,7 @@ export const useCreateMCP = () => {
         const token = localStorage.getItem('token')
         setIsLoading(true)
         setError(null)
-
+        console.log(form)
         const response = await fetch('http://localhost:5000/mcp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${JSON.parse(token)}`},

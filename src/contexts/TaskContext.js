@@ -11,8 +11,6 @@ export const authReducer = (state, action) => {
             return { tasks: [action.payload, ...state.tasks] }
         case 'CHECK_TASK':
         case 'UPDATE_TASK':
-            console.log(action.payload)
-            console.log(state.tasks)
             return { tasks: state.tasks.map(task => task._id === action.payload._id ? action.payload : task) }
         case 'DELETE_TASK':
             return { tasks: state.tasks.filter(task => task._id !== action.payload._id) }

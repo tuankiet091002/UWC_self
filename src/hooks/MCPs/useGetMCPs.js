@@ -6,7 +6,7 @@ export const useGetMCPs = () => {
     const [isLoading, setIsLoading] = useState(null)
     const { dispatch } = useMCPContext()
 
-    const getMCPs = async (query = {}) => {
+    const getMCPs = async (query = {task: ''}) => {
         const token = localStorage.getItem('token')
         setIsLoading(true)
         setError(null)

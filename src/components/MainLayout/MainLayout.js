@@ -18,12 +18,12 @@ import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import MapIcon from '@mui/icons-material/Map';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PersonIcon from '@mui/icons-material/Person';
-import MailIcon from '@mui/icons-material/Mail';
 import ChatIcon from '@mui/icons-material/Chat';
 import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 
 import logo from '../../assets/logo.png';
-import cum from '../../assets/cum.jpg';
+import title from '../../assets/title.png';
+import background from '../../assets/background.png';
 
 
 const links = [
@@ -55,23 +55,24 @@ const MainLayout = () => {
             <AppBar
                 position="sticky"
                 elevation={2}
-                sx={{ height: "12%", borderRadius: '10px', backgroundColor: alpha("#32850b", 0.04) }}>
+                sx={{ height: "12%", borderRadius: '10px', backgroundImage: `url(${background})`,backgroundSize: "cover", }}>
                 <Toolbar>
                     <Link to="/">
                         <IconButton
                             color="text.primary"
+                            sx={{marginLeft: '10px',marginRight: '100px'}}
                         >
                             <Box component="img" sx={{ height: '60px', width: '100px' }} src={logo} />
                         </IconButton>
                     </Link>
-                    <Typography sx={{ flexGrow: 1 }} variant="h4" color="text.primary">URBAN WASTED COLLECTION</Typography>
+                    <Typography variant="h4" sx={{flexGrow: 1, fontFamily: "Segoe UI Emoji"}}>URBAN WASTED COLLECTION</Typography>
                     <Stack direction='row' spacing={3} alignItems='center' sx={{ flexGrow: 0.05, color: "text.primary" }}>
                         <Notification/>
 
                         <IconButton onClick={handleUser}>
                             <Avatar src={user.avatar ? user.avatar : logo} sx={{ width: 40, height: 40 }} />
-                            <Typography padding={1} variant="h6" color="text.primary">{user.name}</Typography>
-                            <ExpandMoreIcon sx={{ color: "text.primary" }} />
+                            <Typography padding={1} variant="h6" color="white">{user.name}</Typography>
+                            <ExpandMoreIcon sx={{ color: "white" }} />
                         </IconButton>
 
                         <Menu

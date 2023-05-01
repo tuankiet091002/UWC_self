@@ -8,7 +8,7 @@ export const getMCPs = async (req, res) => {
             if (!pickedTask) return res.status(404).json({ message: "Task not found" });
 
             const mcps = await MCPModel.find({ _id: { $in: pickedTask.path.map(x => x.mcp) } }).populate("janitor", "name role available");
-           
+
             return res.status(200).json({ message: "MCPs fetched", result: mcps.filter(mcp => mcp._id != 0) })
         }
         const mcps = await MCPModel.find().sort({ _id: 1 }).populate("janitor", "name role available");

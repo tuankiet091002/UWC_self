@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react'
 
 import {
-    Dialog, DialogTitle, DialogContent, TextField, Stack, DialogActions, Button, Snackbar
+    Dialog, DialogTitle, DialogContent, TextField, Stack, DialogActions, Button, Snackbar, Typography
 } from '@mui/material'
 
-import { useCreateMCP } from '../../hooks/MCPs/useCreateMCP';
 import { useUpdateMCP } from '../../hooks/MCPs/useUpdateMCP';
 
-const DialogMCP = ({ open, onClose, curMCP = null }) => {
-    const { createMCP, isLoading, error } = useCreateMCP();
-    const { updateMCP } = useUpdateMCP();
+const MCPEditForm = ({ open, onClose, curMCP = null }) => {
+    const { updateMCP, isLoading, error } = useUpdateMCP();
 
     const [form, setForm] = React.useState(!(!curMCP) ? { x: curMCP.x.$numberDecimal, y: curMCP.y.$numberDecimal, load: curMCP.load.$numberDecimal, cap: curMCP.cap } : { x: 0, y: 0, load: 0, cap: 0 });
     const [isSuccess, setIsSuccess] = React.useState(false);
@@ -21,16 +19,10 @@ const DialogMCP = ({ open, onClose, curMCP = null }) => {
     }, [isSuccess]);
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (curMCP) {
-            updateMCP(curMCP._id, form).then(() => {
-                setIsSuccess(true);
-            });
-        } else {
-            createMCP(form).then(() => {
-                setIsSuccess(true);
-            });
-            console.log(form);
-        }
+        updateMCP(curMCP._id, form).then(() => {
+            setIsSuccess(true);
+        });
+
         onClose();
     }
     const handleClose = (e) => {
@@ -50,8 +42,7 @@ const DialogMCP = ({ open, onClose, curMCP = null }) => {
                 <DialogTitle align='center' variant="h5">MCP information
                     <Button onClick={handleClose}>Cancel</Button>
                 </DialogTitle>
-                {/* {error && <p>Error: {error}</p>}
-            {isSuccess &&<p>Success! MCP created.</p>} */}
+                <Typography color='error'>{error}</Typography>
                 <DialogContent>
                     <Stack alignItems='center' spacing={1}  >
                         <TextField label="Lat" required type='number' fullWidth variant="outlined"
@@ -81,4 +72,4 @@ const DialogMCP = ({ open, onClose, curMCP = null }) => {
         </>
     )
 }
-export default DialogMCP;
+export default MCPEditForm;

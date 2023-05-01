@@ -1,8 +1,6 @@
 import TruckModel from '../models/truckModel.js'
 import TaskModel from '../models/taskModel.js'
 
-import mongoose from 'mongoose'
-
 export const getTrucks = async (req, res) => {
     const { driver, cap, task } = req.query
     try {
@@ -10,7 +8,7 @@ export const getTrucks = async (req, res) => {
             const pickedTask = await TaskModel.findById(task)
             if(!pickedTask) return res.status(404).json({ message: "Task not found" });
 
-            const trucks = await TruckModel.find({ _id: pickedTask.truck }).select('-path -nextMCP').populate("driver", "name role available avatar");
+            const trucks = await TruckModel.find({ _id: pickedTask.truck }).populate("driver", "name role available avatar");
 
             return res.status(200).json({ message: "Trucks fetched", result: trucks });
         }
@@ -21,7 +19,7 @@ export const getTrucks = async (req, res) => {
             else if (driver === 'false') query.driver = null
         }
         if (cap && cap != '') query.cap = cap
-        const trucks = await TruckModel.find(query).select('-path -nextMCP').populate("driver", "name role available avatar");
+        const trucks = await TruckModel.find(query).populate("driver", "name role available avatar");
 
         res.status(200).json({ message: "Trucks fetched", result: trucks });
     } catch (error) {
@@ -87,11 +85,11 @@ export const updateTruck = async (req, res) => {
 export const deleteTruck = async (req, res) => {
     const { id } = req.params
     try {
-        let truck = await TruckModel.findById(id).select("-path -nextMCP")
+        let truck = await TruckModel.findById(id)
         if (!truck) return res.status(404).json({ message: "Truck not found" })
         if (truck.nextMCP) return res.status(400).json({ message: "Truck is still running" })
 
-        truck = await TruckModel.findByIdAndRemove(id).select("-path -nextMCP")
+        truck = await TruckModel.findByIdAndRemove(id)
 
         res.status(200).json({ message: "Truck removed", result: truck })
     } catch (error) {

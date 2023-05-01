@@ -198,7 +198,7 @@ export const checkTask = async (req, res) => {
         // const checkinDeadline = task.date.getTime() + 3600000 * (task.shift * 3 + 3.5)
         // const checkoutPoint = task.date.getTime() + 3600000 * (task.shift * 3 + 5.5)
 
-        const checkinDeadline = Date.now() - 360000
+        const checkinDeadline = Date.now() + 360000
         const checkoutPoint = Date.now() - 360000
 
         if (req.user.role == "collector") {

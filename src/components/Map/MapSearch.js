@@ -10,23 +10,24 @@ import { useTaskContext } from "../../hooks/Tasks/useTaskContext";
 import { useGetMCPs } from "../../hooks/MCPs/useGetMCPs";
 import { useGetTrucks } from "../../hooks/Trucks/useGetTrucks";
 import styles from "../Employee/Employee.module.css"
-function MapSearch({ display, setDisplay }) {
+
+function MapSearch({ task, setTask, display, setDisplay }) {
     const { tasks } = useTaskContext();
     const { getTrucks } = useGetTrucks();
     const { getMCPs } = useGetMCPs();
-    const [task, setTask] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        getTrucks({ task })
         getMCPs({ task })
+        getTrucks({ task })
     }
+
 
     return (
         <div className={styles.search}>
             <Grid marginTop={2}>
                 <FormControl fullWidth>
-                    <InputLabel id="select-label">Hiển thị</InputLabel>
+                    <InputLabel>Hiển thị</InputLabel>
                     <Select
                         labelId="select-label"
                         label="Hiển thị"
@@ -49,6 +50,7 @@ function MapSearch({ display, setDisplay }) {
                         value={task}
                         onChange={(e) => setTask(e.target.value)}
                     >
+                        <MenuItem value={''}>Tất cả</MenuItem>
                         {tasks.map((task) => (
                             <MenuItem key={task._id} value={task._id}>{task._id}</MenuItem>
                         ))}

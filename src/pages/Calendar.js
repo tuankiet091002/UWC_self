@@ -25,8 +25,6 @@ const Calendar = () => {
         }
     })
 
-    console.log(taskCalendar)
-
     return (<Container maxWidth={false} sx={{ mx: 0, height: '100%', width: '100%' }}>
         <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin]}
