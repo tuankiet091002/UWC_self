@@ -38,7 +38,7 @@ function OverviewEmployee() {
                     <Box sx={{ width: '100px', height: "100px" }}>
                         <PieChart
                             data={[
-                                { title: 'Else', value: workerEmps, color: '#0000ff' },
+                                { title: 'Else', value: workerEmps - workingCol - workingJan, color: '#0000ff' },
                                 { title: 'Col', value: workingCol, color: '#10D5F8' },
                                 { title: 'Jan', value: workingJan, color: '#0F88F9' },
                             ]}
