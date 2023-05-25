@@ -115,7 +115,7 @@ const Map = () => {
                         />
                         <GetLatLng />
 
-                        {mcps.map((mcp) => {
+                        {displayMCP.map((mcp) => {
                             let icon;
                             if (mcp.load.$numberDecimal / mcp.cap > 0.8) {
                                 icon = MCPfull;
@@ -157,14 +157,14 @@ const Map = () => {
                             );
                         })}
 
-                        {trucks.map((truck) => {
+                        {displayTruck.map((truck) => {
                             return (
                                 <Marker
                                     icon={truckIcon}
                                     position={[truck.x.$numberDecimal, truck.y.$numberDecimal]}
                                     key={truck._id}
                                 >
-                                    <Tooltip direction="bottom" offset={[0, -38]}>
+                                    <Tooltip direction="top" offset={[0, -38]}>
                                         Truck ID: {truck._id}
                                     </Tooltip>
                                     <Popup>
