@@ -8,7 +8,7 @@ import {
     Box, Typography, alpha, FormControl
 } from '@mui/material'
 
-import logo from '../assets/logo.png'
+import logo from '../assets/logo.jpg'
 
 const Login = () => {
     const { login, isLoading, error } = useLogin();

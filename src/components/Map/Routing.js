@@ -6,10 +6,8 @@ import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 
 
 const createRoutineMachineLayer = ({ waypoints }) => {
-    console.log(waypoints)
     const instance = L.Routing.control({
         waypoints: waypoints,
-        
         show: false,
         addWaypoints: false,
         routeWhileDragging: true,
@@ -21,7 +19,7 @@ const createRoutineMachineLayer = ({ waypoints }) => {
             return null; // This will prevent the marker icon from being shown
         },
     });
-
+    console.log(waypoints)
     return instance;
 };
 

@@ -2,7 +2,7 @@ import React from "react";
 
 import { Card, CardMedia, CardContent, Typography, Stack } from "@mui/material";
 
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.jpg";
 
 function EmployeeCard({ emp }) {
 

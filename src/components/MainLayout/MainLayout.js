@@ -21,7 +21,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import ChatIcon from '@mui/icons-material/Chat';
 import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo.jpg';
 import title from '../../assets/title.png';
 import background from '../../assets/background.png';
 
@@ -62,7 +62,7 @@ const MainLayout = () => {
                             color="text.primary"
                             sx={{marginLeft: '10px',marginRight: '100px'}}
                         >
-                            <Box component="img" sx={{ height: '60px', width: '100px' }} src={logo} />
+                            <Box component="img" sx={{ height: '80px', width: '100px' }} src={logo} />
                         </IconButton>
                     </Link>
                     <Typography variant="h4" sx={{flexGrow: 1, fontFamily: "Segoe UI Emoji"}}>URBAN WASTED COLLECTION</Typography>

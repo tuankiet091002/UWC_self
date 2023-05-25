@@ -62,7 +62,7 @@ const Map = () => {
     useEffect(() => {
         if (task && display === 0) {
             if (rMachine.current) {
-                if (!trucks[0].nextMCP)
+                if (trucks[0].nextMCP === null)
                     rMachine.current.setWaypoints([]);
                 else {
                     const truckPoint = { x: trucks[0].x, y: trucks[0].y }
