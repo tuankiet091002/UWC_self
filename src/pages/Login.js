@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useLogin } from '../hooks/Auth/useLogin'
-
+import { useAuthContext } from '../hooks/Auth/useAuthContext'
 
 import {
     Stack, Button, CssBaseline, TextField,
@@ -11,12 +11,13 @@ import {
 import logo from '../assets/logo.png'
 
 const Login = () => {
+    const { user } = useAuthContext();
     const { login, isLoading, error } = useLogin();
     const [username, setUsername] = React.useState('')
     const [password, setPassword] = React.useState('')
 
     return (
-        
+
         <Box sx={{
             height: '100%',
             backgroundImage: 'url(https://static.vecteezy.com/system/resources/previews/003/552/029/original/green-energy-environmental-concept-design-with-windmills-solar-panels-and-town-vector.jpg)',
@@ -71,9 +72,10 @@ const Login = () => {
                             Sign In
                         </Button>
 
-                        <Link to="/signup">
-                            {"Chưa có tài khoản? Đăng ký"}
-                        </Link>
+                        {user?.role === 'backofficer' &&
+                            <Link to="/signup">
+                                {"Tạo tài khoản mới"}
+                            </Link>}
                     </FormControl>
                 </Stack>
                 <Box sx={{ flexGrow: 2 }} />
