@@ -22,7 +22,6 @@ import ChatIcon from '@mui/icons-material/Chat';
 import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 
 import logo from '../../assets/logo.jpg';
-import title from '../../assets/title.png';
 import background from '../../assets/background.png';
 
 

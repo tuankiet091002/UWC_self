@@ -3,7 +3,7 @@ import { useChatContext } from "../../hooks/Chat/useChatContext";
 import { useGetChats } from "../../hooks/Chat/useGetChats";
 import { useChooseChat } from "../../hooks/Chat/useChooseChat";
 
-import cum from '../../assets/cum.jpg';
+import cum from '../../assets/logo.jpg';
 import { Typography, Stack, Box } from "@mui/material";
 
 const Chats = () => {

@@ -21,7 +21,7 @@ export const MCPhalf = new L.icon({
     iconUrl: Icons.trashHaflIcon,
     iconSize: [38, 38],
     iconAnchor: [19, 38],
-    popupAnchor: [0, 38],
+    popupAnchor: [0, -38],
 });
 export const truckIcon = new L.icon({
     //iconUrl: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',  

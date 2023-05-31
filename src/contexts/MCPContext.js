@@ -6,11 +6,11 @@ export const authReducer = (state, action) => {
     switch (action.type) {
         case 'GET_MCPS':
             return { mcps: action.payload }
-        case 'CREATE_MCPS':
+        case 'CREATE_MCP':
             return { mcps: [...state.mcps, action.payload] }
-        case 'UPDATE_TRUCK':
+        case 'UPDATE_MCP':
             return { mcps: state.mcps.map((mcp) => mcp._id === action.payload._id ? action.payload : mcp) }
-        case 'DELETE_TRUCK':
+        case 'DELETE_MCP':
             return { mcps: state.mcps.filter((mcp) => mcp._id !== action.payload._id) }
         default:
             return state

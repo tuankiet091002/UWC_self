@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
     Dialog, DialogTitle, DialogContent, TextField, Stack, DialogActions, Button, Snackbar, Typography
@@ -8,23 +8,28 @@ import { useUpdateMCP } from '../../hooks/MCPs/useUpdateMCP';
 
 const MCPEditForm = ({ open, onClose, curMCP = null }) => {
     const { updateMCP, isLoading, error } = useUpdateMCP();
+    const [form, setForm] = useState(!(!curMCP) ? { x: curMCP.x.$numberDecimal, y: curMCP.y.$numberDecimal, load: curMCP.load.$numberDecimal, cap: curMCP.cap } : { x: 0, y: 0, load: 0, cap: 0 });
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-    const [form, setForm] = React.useState(!(!curMCP) ? { x: curMCP.x.$numberDecimal, y: curMCP.y.$numberDecimal, load: curMCP.load.$numberDecimal, cap: curMCP.cap } : { x: 0, y: 0, load: 0, cap: 0 });
-    const [isSuccess, setIsSuccess] = React.useState(false);
-    const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
     useEffect(() => {
         if (isSuccess) {
             setShowSuccessMessage(true);
         }
     }, [isSuccess]);
+
+    useEffect(() => {
+        setForm(!(!curMCP) ? { x: curMCP.x.$numberDecimal, y: curMCP.y.$numberDecimal, load: curMCP.load.$numberDecimal, cap: curMCP.cap } : { x: 0, y: 0, load: 0, cap: 0 });
+    }, [curMCP]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         updateMCP(curMCP._id, form).then(() => {
             setIsSuccess(true);
         });
-
         onClose();
     }
+
     const handleClose = (e) => {
         e.preventDefault();
         onClose();
@@ -39,7 +44,7 @@ const MCPEditForm = ({ open, onClose, curMCP = null }) => {
     return (
         <>
             <Dialog open={open} onClose={onClose}>
-                <DialogTitle align='center' variant="h5">MCP information
+                <DialogTitle align='center' variant="h5">MCP Editor for MCP {curMCP?._id}
                     <Button onClick={handleClose}>Cancel</Button>
                 </DialogTitle>
                 <Typography color='error'>{error}</Typography>
@@ -60,7 +65,7 @@ const MCPEditForm = ({ open, onClose, curMCP = null }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClear}>Clear</Button>
-                    <Button onClick={handleSubmit} disabled={isLoading}>{isLoading ? 'Loading...' : 'Create MCP'}</Button>
+                    <Button onClick={handleSubmit} disabled={isLoading}>{isLoading ? 'Loading...' : 'Confirm'}</Button>
                 </DialogActions>
             </Dialog>
             <Snackbar

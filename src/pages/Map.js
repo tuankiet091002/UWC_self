@@ -37,6 +37,7 @@ const Map = () => {
     const { getTrucks } = useGetTrucks();
     const { getTasks } = useGetTasks();
     const [display, setDisplay] = useState(0);
+    const [curMCP, setCurMCP] = useState(null);
     const [task, setTask] = useState('')
     const [displayMCP, setDisplayMCP] = useState(mcps);
     const [displayTruck, setDisplayTruck] = useState(trucks);
@@ -134,7 +135,7 @@ const Map = () => {
                                         Load: {mcp.load.$numberDecimal} <br />
                                         Capacity: {mcp.cap} <br />
                                         <ButtonGroup variant="contained" size="xsmall">
-                                            <Button onClick={() => setOpen(true)}>
+                                            <Button onClick={() => setCurMCP(mcp)}>
                                                 <BorderColorIcon />
                                             </Button>
                                             <Button
@@ -144,11 +145,6 @@ const Map = () => {
                                                 <DeleteIcon />
                                             </Button>
                                         </ButtonGroup>
-                                        <MCPEditForm
-                                            curMCP={mcp}
-                                            open={open}
-                                            onClose={() => setOpen(false)}
-                                        />
                                     </Popup>
                                     <Tooltip direction="top" offset={[0, -38]}>
                                         MCP ID: {mcp._id}
@@ -156,6 +152,11 @@ const Map = () => {
                                 </Marker>
                             );
                         })}
+                        <MCPEditForm
+                            curMCP={curMCP}
+                            open={Boolean(curMCP)}
+                            onClose={() => setCurMCP(null)}
+                        />
 
                         {displayTruck.map((truck) => {
                             return (

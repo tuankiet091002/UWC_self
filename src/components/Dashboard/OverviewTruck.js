@@ -18,7 +18,7 @@ function OverviewTruck() {
 
     const dailyTask = tasks.filter(task => new Date().getDate() == new Date(task.date).getDate())
     const usedTruck = (new Set(dailyTask.map(task => task.truck._id))).size
-    
+
     const otwTruck = trucks.filter(truck => truck.driver != null).length;
 
     return (

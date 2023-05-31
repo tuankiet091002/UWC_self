@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useAuthContext } from "../../hooks/Auth/useAuthContext";
-import cum from "../../assets/cum.jpg";
+import cum from "../../assets/logo.jpg";
 
 const Message = ({ message }) => {
     const { user } = useAuthContext();

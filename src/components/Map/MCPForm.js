@@ -40,7 +40,7 @@ const MCPForm = ({ open, onClose }) => {
     return (
         <>
             <Dialog open={open} onClose={onClose}>
-                <DialogTitle align='center' variant="h5">MCP information
+                <DialogTitle align='center' variant="h5">MCP Form
                     <Button onClick={handleClose}>Cancel</Button>
                 </DialogTitle>
                 <Typography color='error'>{error}</Typography>
@@ -61,7 +61,7 @@ const MCPForm = ({ open, onClose }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClear}>Clear</Button>
-                    <Button onClick={handleSubmit} disabled={isLoading}>{isLoading ? 'Loading...' : 'Create MCP'}</Button>
+                    <Button onClick={handleSubmit} disabled={isLoading}>{isLoading ? 'Loading...' : 'Create'}</Button>
                 </DialogActions>
             </Dialog>
             <Snackbar
