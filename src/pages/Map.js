@@ -171,7 +171,7 @@ const Map = () => {
                                     <Popup>
                                         Load: {truck.load.$numberDecimal} <br />
                                         Capacity: {truck.cap} <br />
-                                        {truck.nextMCP && <div>NextMCP:  {truck.nextMCP.id} </div>}
+                                        {truck.nextMCP && <div>NextMCP: {truck.nextMCP} </div>}
                                         {truck.driver && <div> Driver: {truck.driver.name} </div>}
                                     </Popup>
                                 </Marker>
