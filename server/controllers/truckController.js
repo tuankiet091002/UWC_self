@@ -19,7 +19,7 @@ export const getTrucks = async (req, res) => {
             else if (driver === 'false') query.driver = null
         }
         if (cap && cap != '') query.cap = cap
-        const trucks = await TruckModel.find(query).populate("driver", "name role available avatar");
+        const trucks = await TruckModel.find(query).populate("driver", "name role available avatar").sort({_id: 1})
 
         res.status(200).json({ message: "Trucks fetched", result: trucks });
     } catch (error) {
@@ -89,7 +89,7 @@ export const deleteTruck = async (req, res) => {
         if (!truck) return res.status(404).json({ message: "Truck not found" })
         if (truck.nextMCP) return res.status(400).json({ message: "Truck is still running" })
 
-        truck = await TruckModel.findByIdAndRemove(id)
+        truck = await TruckModel.findByIdAndRemove(id);
 
         res.status(200).json({ message: "Truck removed", result: truck })
     } catch (error) {

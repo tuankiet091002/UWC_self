@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';
 import UserModel from '../models/userModel.js';
-import NotificationModel from '../models/notificationModel.js';
 
 export const getUsers = async (req, res) => {
     const { name, role, available } = req.query;
@@ -13,9 +12,6 @@ export const getUsers = async (req, res) => {
 
         const users = await UserModel.find(query).select('-password -task').sort({ role: 1, _id: 1 });
         
-        if (query.role == 'janitor') {
-            await NotificationModel.create({ receiver: '644547976f62d5877b8ab5cf', content: 'Test' })
-        }
         res.status(200).json({ message: "Users fetched", result: users });
     } catch (error) {
         res.status(500).json({ message: "Something went wrong in getUsers process" });

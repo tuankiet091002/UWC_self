@@ -3,7 +3,6 @@ import UserModel from '../models/userModel.js'
 import MCPModel from '../models/mcpModel.js'
 import TruckModel from '../models/truckModel.js'
 import NotificationModel from '../models/notificationModel.js'
-import { LocalConvenienceStoreOutlined } from '@mui/icons-material'
 
 export const getTasks = async (req, res) => {
     const { date, shift, state } = req.query
