@@ -25,10 +25,11 @@ Fullstack project for managing a Garbage Collection System. Details below
 - Database: MongoDB
 
 ## Directory Structure
+```bash
 ├── server/ # Backend source code
 ├── /# Frontend source code
 └── README.md # Main documentation (this file)
-
+```
 ## Installation
 
 Provide instructions on how to set up and configure the development environment for your project. You might include steps like:
